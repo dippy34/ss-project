@@ -1,0 +1,1791 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<!--
+  ====================================================================
+  === CUSTOMIZE ME ===
+  Sample website for a landscaping & snow-removal company.
+  Everything you need to rebrand it lives in three places near the top:
+
+  1. BUSINESS INFO   -> the `const BUSINESS = { ... }` object in the first
+     <script> below. Its values are copied into every element marked
+     data-biz="name | phone | email | address | hours".
+     <a data-biz="phone"> and <a data-biz="email"> also get tel:/mailto:
+     links. Links that wrap extra content (icons, "Call ...") use
+     data-biz-href="phone|email" so only their href is updated.
+     The same text is written into the HTML as a no-JavaScript fallback,
+     so also find-and-replace "Northshore Green Co.", "(847) 555-0142",
+     "hello@example.com" and the address in this file.
+  2. COLORS & FONTS  -> the first `:root { }` block inside <style>.
+     Every color and font stack is a CSS variable. If you swap fonts,
+     update the Google Fonts <link> below as well.
+  3. <title> and <meta name="description"> just below this comment.
+
+  Also worth editing:
+  - Page copy: look for the section comments (HERO, SERVICES, ABOUT,
+    SERVICE AREA, TESTIMONIALS, QUOTE FORM, FOOTER).
+  - The quote form is demo-only. See the "FORM BACKEND" comment in the
+    QUOTE FORM section to connect Formspree, Netlify Forms, etc.
+  - Remove the SAMPLE RIBBON in the footer before going live.
+  - Every name, number, statistic and review on this page is an
+    invented placeholder. Replace them with the client's real details.
+  ====================================================================
+-->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Northshore Green Co. | Lawn Care &amp; Snow Removal in Glenview, IL</title>
+<meta name="description" content="Family-run lawn care, seasonal cleanups and snow removal for Glenview and the North Shore. Mowing, mulching, leaf removal, plowing and salting. Get a free quote.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8C%BF%3C/text%3E%3C/svg%3E">
+
+<script>
+  /* === BUSINESS INFO: EDIT HERE ================================== */
+  const BUSINESS = {
+    name:    "Northshore Green Co.",
+    phone:   "(847) 555-0142",
+    email:   "hello@example.com",
+    address: "123 Sample Street, Glenview, IL 60025",
+    hours:   "Mon–Sat, 7am–6pm"
+  };
+  /* ================================================================ */
+
+  document.documentElement.classList.replace("no-js", "js");
+
+  document.addEventListener("DOMContentLoaded", function () {
+    var digits = BUSINESS.phone.replace(/\D/g, "");
+    var hrefs = {
+      phone: "tel:" + (digits.length === 10 ? "+1" + digits : digits),
+      email: "mailto:" + BUSINESS.email
+    };
+    document.querySelectorAll("[data-biz]").forEach(function (el) {
+      var key = el.getAttribute("data-biz");
+      if (!Object.prototype.hasOwnProperty.call(BUSINESS, key)) return;
+      el.textContent = BUSINESS[key];
+      if (el.tagName === "A" && hrefs[key]) el.setAttribute("href", hrefs[key]);
+    });
+    document.querySelectorAll("[data-biz-href]").forEach(function (el) {
+      var key = el.getAttribute("data-biz-href");
+      if (hrefs[key]) el.setAttribute("href", hrefs[key]);
+    });
+    var parts = document.title.split(" | ");
+    parts[0] = BUSINESS.name;
+    document.title = parts.join(" | ");
+    document.querySelectorAll("[data-year]").forEach(function (el) {
+      el.textContent = new Date().getFullYear();
+    });
+  });
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,600..700,100;1,9..144,500,100&family=Work+Sans:wght@400;500;600&display=swap">
+
+<style>
+:root {
+  /* === BRAND COLORS & FONTS: EDIT HERE === */
+
+  /* Greens */
+  --forest-900: #15291D;
+  --forest-800: #1F3D2B;
+  --forest-700: #2A4D37;
+  --forest-600: #3A6248;
+  --moss-600: #4E7A3A;
+  --sage-400: #9DB58F;
+  --sage-200: #CFDDC6;
+  --sage-100: #E5EDDF;
+
+  /* Warm neutrals */
+  --cream-50: #FFFCF5;
+  --cream-100: #FAF5EA;
+  --cream-200: #F2EAD9;
+  --sand-300: #E3D3B2;
+  --sand-500: #BFA77E;
+
+  /* Clay / terracotta accent */
+  --clay-100: #F5DCCB;
+  --clay-600: #B5562D;
+  --clay-700: #94431F;
+
+  /* Text */
+  --ink: #1C2A21;
+  --ink-muted: #4A5A4E;
+  --ink-soft: #6B776D;
+  --ink-on-dark: #F5EFE2;
+  --ink-on-dark-muted: #C9D4C3;
+  --error: #A3361F;
+
+  /* Season tints (icon chips) and season ink */
+  --spring: #E1EBD3;
+  --summer: #F0E6BF;
+  --fall: #F5DCC8;
+  --winter: #DCE7EA;
+  --spring-ink: #4E7A3A;
+  --summer-ink: #8A6A12;
+  --fall-ink: #B5562D;
+  --winter-ink: #3F6C7A;
+  --star: #C2802A;
+
+  /* Surfaces, lines, effects */
+  --card: #FFFDF8;
+  --field-bg: #FFFEFB;
+  --line: rgba(31, 61, 43, .12);
+  --line-strong: rgba(31, 61, 43, .24);
+  --line-dark: rgba(245, 239, 226, .14);
+  --glass: rgba(255, 252, 245, .72);
+  --header-bg: rgba(250, 245, 234, .95);
+  --ring: rgba(78, 122, 58, .28);
+  --moss-ring: rgba(78, 122, 58, .22);
+  --focus: #B5562D;
+  --shadow-xs: 0 1px 2px rgba(21, 41, 29, .06);
+  --shadow-sm: 0 1px 2px rgba(21, 41, 29, .05), 0 8px 20px -10px rgba(21, 41, 29, .16);
+  --shadow-md: 0 2px 4px rgba(21, 41, 29, .04), 0 22px 44px -22px rgba(21, 41, 29, .32);
+  --shadow-lg: 0 34px 70px -30px rgba(10, 25, 16, .55);
+  --shadow-btn: 0 6px 16px -8px rgba(148, 67, 31, .7);
+
+  /* Hero "photo" scene */
+  --sky-warm: #F7E6C4;
+  --sky-mid: #EEEEDD;
+  --sky-cool: #D2E1E1;
+  --sky-glow: rgba(255, 246, 222, .9);
+  --sun: #F6D48C;
+  --hill-far: #B8CCA6;
+  --hill-mid: #8CAE72;
+  --lawn-light: #6F9C51;
+  --lawn-dark: #3F6A35;
+  --lawn-stripe: #8DB66B;
+  --tree-dark: #2E5838;
+  --tree-mid: #467A41;
+  --tree-light: #6A9A50;
+  --pine: #2B5240;
+  --bark: #6A4934;
+  --roof: #7B4834;
+  --house: #F2E8D3;
+  --house-shade: #DCCDB0;
+  --window: #F4D07F;
+  --path: #E2D2AE;
+  --drive: #B9B1A3;
+  --snow: #FBFCFA;
+  --snow-2: #EEF3F0;
+  --snow-3: #DEE7E5;
+  --snow-shadow: #C4D3D4;
+  --lake: #B7D0CC;
+  --lake-ink: #3D6661;
+
+  /* Fonts */
+  --font-display: "Fraunces", "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  --font-body: "Work Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  /* Type scale, spacing, shape (not brand-specific) */
+  --step-0: clamp(1rem, .97rem + .15vw, 1.0625rem);
+  --step-1: clamp(1.0625rem, 1rem + .35vw, 1.25rem);
+  --step-2: clamp(1.25rem, 1.15rem + .5vw, 1.5rem);
+  --step-3: clamp(1.5rem, 1.3rem + 1vw, 2.05rem);
+  --step-4: clamp(1.95rem, 1.45rem + 2.3vw, 3.1rem);
+  --step-5: clamp(2.45rem, 1.55rem + 4.1vw, 4.15rem);
+  --gutter: clamp(1rem, 4vw, 2rem);
+  --container: 1200px;
+  --space-section: clamp(4rem, 2.8rem + 5vw, 7rem);
+  --radius-sm: 12px;
+  --radius-md: 18px;
+  --radius-lg: 26px;
+  --radius-xl: 34px;
+  --scene-h: clamp(250px, 40vw, 450px);
+}
+
+/* ---------- Base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+body {
+  margin: 0;
+  background: var(--cream-100);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3, h4 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 650;
+  line-height: 1.1;
+  letter-spacing: -.012em;
+  color: var(--forest-800);
+  font-optical-sizing: auto;
+  font-variation-settings: "SOFT" 100, "WONK" 0;
+  text-wrap: balance;
+}
+p { margin: 0; }
+a { color: inherit; }
+button, input, select, textarea { font: inherit; }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; border-radius: 6px; }
+.on-dark { --focus: var(--sand-300); }
+section[id] { scroll-margin-top: 76px; }
+
+.sr-only {
+  position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+.skip-link {
+  position: absolute; left: 1rem; top: -100px; z-index: 100;
+  padding: .75rem 1rem; border-radius: var(--radius-sm);
+  background: var(--forest-800); color: var(--cream-50); font-weight: 600; text-decoration: none;
+}
+.skip-link:focus { top: .75rem; }
+.container {
+  width: 100%;
+  max-width: calc(var(--container) + 2 * var(--gutter));
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+.icon {
+  display: inline-block; flex: none; width: 1.25em; height: 1.25em; vertical-align: middle;
+  fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+}
+.icon--fill { fill: currentColor; stroke: none; }
+.sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: .55rem;
+  min-height: 48px; padding: .75rem 1.4rem;
+  border: 2px solid transparent; border-radius: 999px;
+  font: 600 1rem/1.2 var(--font-body); text-decoration: none; white-space: nowrap;
+  cursor: pointer;
+  transition: background-color .2s, color .2s, border-color .2s, transform .2s, box-shadow .2s;
+}
+.btn .icon { width: 1.15em; height: 1.15em; transition: transform .2s; }
+.btn:hover .icon--arrow { transform: translateX(3px); }
+.btn--clay { background: var(--clay-600); color: var(--cream-50); box-shadow: var(--shadow-btn); }
+.btn--clay:hover { background: var(--clay-700); transform: translateY(-1px); }
+.btn--ghost { background: var(--glass); color: var(--forest-800); border-color: var(--forest-800); }
+.btn--ghost:hover { background: var(--forest-800); color: var(--cream-50); }
+.btn--cream { background: var(--cream-50); color: var(--forest-800); }
+.btn--cream:hover { background: var(--sand-300); }
+.btn--outline { background: transparent; color: var(--forest-800); border-color: var(--line-strong); }
+.btn--outline:hover { border-color: var(--forest-800); }
+.btn--sm { min-height: 44px; padding: .5rem 1.05rem; font-size: .9375rem; }
+.btn--lg { min-height: 54px; padding: .9rem 1.6rem; font-size: 1.0625rem; }
+.btn--block { width: 100%; }
+
+/* ---------- Header ---------- */
+.site-header {
+  position: sticky; top: 0; z-index: 50;
+  background: var(--header-bg);
+  border-bottom: 1px solid var(--line);
+}
+.header-bar { display: flex; align-items: center; gap: .5rem; min-height: 64px; }
+.brand {
+  display: inline-flex; align-items: center; gap: .6rem; min-height: 44px; min-width: 0;
+  margin-right: auto; color: var(--forest-800); text-decoration: none;
+}
+.brand__mark { width: 38px; height: 38px; flex: none; }
+.brand__name {
+  font-family: var(--font-display); font-weight: 650; font-size: 1.0625rem; line-height: 1.05;
+  letter-spacing: -.01em; max-width: 7.2em;
+  font-variation-settings: "SOFT" 100, "WONK" 0;
+}
+.m-forest { fill: var(--forest-800); }
+.m-leaf { fill: var(--sage-400); }
+.m-vein { fill: none; stroke: var(--forest-800); stroke-width: 2; stroke-linecap: round; }
+.m-snow { fill: var(--cream-50); }
+.brand--light { color: var(--cream-50); }
+.brand--light .m-forest { fill: var(--forest-600); }
+
+.nav-toggle {
+  display: inline-grid; place-items: center; width: 44px; height: 44px; padding: 0;
+  border: 1.5px solid var(--line-strong); border-radius: 14px;
+  background: transparent; color: var(--forest-800); cursor: pointer;
+}
+.nav-toggle .icon { width: 22px; height: 22px; }
+.nav-toggle[aria-expanded="true"] .icon--menu,
+.nav-toggle[aria-expanded="false"] .icon--close { display: none; }
+.nav-menu {
+  display: none; list-style: none; margin: 0;
+  position: absolute; left: 0; right: 0; top: 100%;
+  padding: .25rem var(--gutter) 1.25rem;
+  background: var(--cream-50);
+  border-bottom: 1px solid var(--line);
+  box-shadow: var(--shadow-md);
+}
+.nav-menu.is-open { display: block; }
+.nav-menu a:not(.btn) {
+  display: flex; align-items: center; gap: .6rem; min-height: 52px; padding: .5rem .25rem;
+  border-bottom: 1px solid var(--line);
+  font-weight: 500; font-size: 1.0625rem; color: var(--forest-800); text-decoration: none;
+}
+.nav-menu a:not(.btn):hover { color: var(--clay-700); }
+.nav-menu .nav-phone a { border-bottom: 0; color: var(--clay-700); font-weight: 600; }
+.nav-menu .nav-cta { display: none; }
+.no-js .nav-toggle { display: none; }
+.no-js .header-bar { flex-wrap: wrap; }
+.no-js .site-nav { flex-basis: 100%; }
+.no-js .nav-menu {
+  display: flex; flex-wrap: wrap; gap: 0 1rem; position: static;
+  padding: 0 0 .5rem; background: none; border: 0; box-shadow: none;
+}
+.no-js .nav-menu a:not(.btn) { border: 0; min-height: 44px; }
+
+/* ---------- Hero ---------- */
+.hero {
+  position: relative; isolation: isolate; overflow: hidden;
+  background:
+    radial-gradient(ellipse 70% 60% at 12% 0%, var(--sky-glow) 0%, transparent 70%),
+    linear-gradient(100deg, var(--sky-warm) 0%, var(--sky-mid) 52%, var(--sky-cool) 100%);
+}
+.hero__scene {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: -1;
+  display: block; width: 100%; height: var(--scene-h);
+}
+.hero__inner {
+  padding-top: clamp(2.25rem, 1.5rem + 3.5vw, 4.5rem);
+  padding-bottom: calc(var(--scene-h) * .72);
+}
+.hero__copy { max-width: 40rem; }
+.eyebrow-pill {
+  display: inline-flex; align-items: center; gap: .55rem;
+  padding: .4rem .9rem .4rem .7rem; border-radius: 999px;
+  background: var(--glass); border: 1px solid var(--line);
+  font-size: .875rem; font-weight: 500; line-height: 1.3; color: var(--forest-800);
+}
+.dot {
+  width: 8px; height: 8px; flex: none; border-radius: 50%;
+  background: var(--moss-600); box-shadow: 0 0 0 4px var(--moss-ring);
+}
+.hero__title {
+  margin-top: 1.1rem;
+  font-size: var(--step-5); line-height: 1.02; letter-spacing: -.025em;
+}
+.hero__title em {
+  display: block; font-style: italic; font-weight: 500; color: var(--clay-600);
+}
+.hero__lead {
+  margin-top: 1.15rem; max-width: 34rem;
+  font-size: var(--step-1); line-height: 1.55; color: var(--ink-muted);
+}
+.hero__actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.75rem; }
+.hero__actions .btn { flex: 1 1 auto; }
+.hero-card { display: none; }
+
+/* Hero scene fills (all colors come from :root) */
+.f-sun { fill: var(--sun); }
+.st-sun { stop-color: var(--sun); }
+.st-sun-0 { stop-color: var(--sun); stop-opacity: 0; }
+.st-lawn-light { stop-color: var(--lawn-light); }
+.st-lawn-dark { stop-color: var(--lawn-dark); }
+.st-snow { stop-color: var(--snow); }
+.st-snow-2 { stop-color: var(--snow-2); }
+.f-hill-far { fill: var(--hill-far); }
+.f-hill-mid { fill: var(--hill-mid); }
+.f-stripe { fill: var(--lawn-stripe); opacity: .38; }
+.f-tree-dark { fill: var(--tree-dark); }
+.f-tree-mid { fill: var(--tree-mid); }
+.f-tree-light { fill: var(--tree-light); }
+.f-pine { fill: var(--pine); }
+.f-bark { fill: var(--bark); }
+.s-bark { fill: none; stroke: var(--bark); stroke-linecap: round; }
+.f-roof { fill: var(--roof); }
+.f-house { fill: var(--house); }
+.f-house-shade { fill: var(--house-shade); }
+.f-window { fill: var(--window); }
+.f-trim { fill: var(--forest-800); }
+.s-trim { fill: none; stroke: var(--forest-800); stroke-width: 2; }
+.s-shade { fill: none; stroke: var(--house-shade); stroke-width: 2; }
+.f-fence { fill: var(--cream-50); }
+.f-path { fill: var(--path); }
+.f-drive { fill: var(--drive); }
+.f-snow { fill: var(--snow); }
+.f-snow-2 { fill: var(--snow-2); }
+.f-snow-3 { fill: var(--snow-3); }
+.s-snow { fill: none; stroke: var(--snow); stroke-linecap: round; }
+.s-snow-shadow { fill: none; stroke: var(--snow-shadow); stroke-linecap: round; }
+.s-bird { fill: none; stroke: var(--forest-700); stroke-width: 2.2; stroke-linecap: round; opacity: .55; }
+.flakes circle { fill: var(--snow); stroke: var(--snow-shadow); stroke-width: .8; }
+@media (prefers-reduced-motion: no-preference) {
+  .flakes { animation: drift 7s ease-in-out infinite alternate; }
+  @keyframes drift { to { transform: translate(-6px, 14px); } }
+}
+
+/* ---------- Trust strip ---------- */
+.trust { position: relative; z-index: 2; margin-top: -3rem; }
+.trust__card {
+  list-style: none; margin: 0; padding: 1.25rem;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem 1rem;
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: var(--radius-lg); box-shadow: var(--shadow-md);
+}
+.trust__card li { display: flex; flex-direction: column; gap: .55rem; }
+.trust__icon {
+  display: grid; place-items: center; width: 44px; height: 44px; flex: none;
+  border-radius: 14px; background: var(--sage-100); color: var(--forest-800);
+}
+.trust__icon .icon { width: 22px; height: 22px; }
+.trust strong { display: block; font-size: .95rem; font-weight: 600; line-height: 1.3; color: var(--forest-800); }
+.trust small { display: block; margin-top: .1rem; font-size: .8125rem; line-height: 1.4; color: var(--ink-muted); }
+
+/* ---------- Sections ---------- */
+.section { padding-block: var(--space-section); }
+.section-head { max-width: 44rem; margin-bottom: clamp(2rem, 1.5rem + 2vw, 3rem); }
+.eyebrow {
+  display: inline-flex; align-items: center; gap: .6rem; margin-bottom: .9rem;
+  font-size: .8125rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--clay-700);
+}
+.eyebrow::before { content: ""; width: 22px; height: 2px; border-radius: 2px; background: currentColor; }
+.on-dark .eyebrow { color: var(--sand-300); }
+h2 { font-size: var(--step-4); }
+.lead { margin-top: 1rem; font-size: var(--step-1); line-height: 1.6; color: var(--ink-muted); }
+
+/* ---------- Services ---------- */
+.season-tabs {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: .25rem;
+  max-width: 40rem; margin-bottom: 2rem; padding: .35rem;
+  background: var(--cream-200); border: 1px solid var(--line); border-radius: 22px;
+}
+.no-js .season-tabs { display: none; }
+.season-tab {
+  position: relative;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .3rem;
+  min-height: 64px; padding: .5rem .25rem;
+  border: 0; border-radius: 17px; background: transparent; color: var(--ink-muted);
+  font-weight: 600; font-size: .875rem; line-height: 1.1; cursor: pointer;
+  transition: background-color .2s, color .2s, box-shadow .2s;
+}
+.season-tab .icon { width: 22px; height: 22px; }
+.season-tab:hover { color: var(--forest-800); background: var(--glass); }
+.season-tab[aria-selected="true"] { background: var(--card); color: var(--forest-800); box-shadow: var(--shadow-sm); }
+.season-tab[data-season="spring"][aria-selected="true"] .icon { color: var(--spring-ink); }
+.season-tab[data-season="summer"][aria-selected="true"] .icon { color: var(--summer-ink); }
+.season-tab[data-season="fall"][aria-selected="true"] .icon { color: var(--fall-ink); }
+.season-tab[data-season="winter"][aria-selected="true"] .icon { color: var(--winter-ink); }
+.now-dot {
+  position: absolute; top: 9px; right: 10px; width: 8px; height: 8px; border-radius: 50%;
+  background: var(--clay-600);
+}
+.season-panel { --tint: var(--sage-100); --season-ink: var(--moss-600); }
+.season-panel[data-season="spring"] { --tint: var(--spring); --season-ink: var(--spring-ink); }
+.season-panel[data-season="summer"] { --tint: var(--summer); --season-ink: var(--summer-ink); }
+.season-panel[data-season="fall"]   { --tint: var(--fall);   --season-ink: var(--fall-ink); }
+.season-panel[data-season="winter"] { --tint: var(--winter); --season-ink: var(--winter-ink); }
+.season-panel + .season-panel { margin-top: 3rem; }
+.js .season-panel + .season-panel { margin-top: 0; }
+.season-panel:focus-visible { outline-offset: 8px; border-radius: var(--radius-md); }
+.season-panel__head {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: .35rem 1rem; margin-bottom: 1.35rem;
+}
+.season-panel__title { font-size: var(--step-3); }
+.season-panel__months {
+  font-family: var(--font-body); font-size: .875rem; font-weight: 600; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--season-ink); margin-left: .35rem;
+}
+.season-panel__intro { flex-basis: 100%; color: var(--ink-muted); }
+.in-season {
+  align-self: center; display: inline-flex; align-items: center; gap: .4rem;
+  padding: .25rem .7rem; border-radius: 999px;
+  background: var(--clay-100); color: var(--clay-700);
+  font-size: .75rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+}
+.in-season::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.in-season[hidden] { display: none; }
+
+.service-grid { list-style: none; margin: 0; padding: 0; display: grid; gap: 1rem; }
+.service-card {
+  display: flex; flex-direction: column; height: 100%;
+  padding: 1.6rem 1.5rem 1.5rem;
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);
+  transition: transform .25s, box-shadow .25s;
+}
+.service-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+.service-card__icon {
+  display: grid; place-items: center; width: 58px; height: 58px; margin-bottom: 1.15rem;
+  border-radius: 18px; background: var(--tint); color: var(--forest-800);
+}
+.service-card__icon .icon { width: 30px; height: 30px; stroke-width: 1.6; }
+.service-card h4 { font-size: 1.375rem; margin-bottom: .55rem; }
+.service-card p { color: var(--ink-muted); }
+.checks {
+  list-style: none; display: grid; gap: .45rem;
+  margin: auto 0 0; padding: 1.1rem 0 0;
+  font-size: .9375rem; color: var(--ink);
+}
+.service-card p + .checks { margin-top: 1.15rem; border-top: 1px dashed var(--line-strong); }
+.checks li { display: flex; gap: .55rem; align-items: flex-start; }
+.checks .icon { width: 1.05em; height: 1.05em; margin-top: .22em; stroke-width: 2.6; color: var(--season-ink, var(--moss-600)); }
+
+.plan-banner {
+  position: relative; overflow: hidden; isolation: isolate;
+  display: grid; gap: 1.5rem; margin-top: 2.5rem;
+  padding: clamp(1.6rem, 1rem + 3vw, 2.75rem);
+  border-radius: var(--radius-xl);
+  background:
+    radial-gradient(circle at 100% 0%, var(--forest-600) 0%, transparent 55%),
+    var(--forest-800);
+  color: var(--ink-on-dark);
+}
+.plan-banner .plan-banner__kicker {
+  display: inline-block; margin-bottom: .8rem; padding: .25rem .7rem; border-radius: 999px;
+  background: var(--sand-300); color: var(--forest-900);
+  font-size: .75rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+}
+.plan-banner h3 { font-size: var(--step-3); color: var(--cream-50); }
+.plan-banner p { margin-top: .6rem; max-width: 40rem; color: var(--ink-on-dark-muted); }
+.plan-banner__art {
+  position: absolute; right: -36px; bottom: -48px; z-index: -1;
+  width: 230px; height: 230px; color: var(--sage-400); opacity: .14;
+}
+.plan-banner .btn { justify-self: start; }
+
+/* ---------- About ---------- */
+.about { background: var(--cream-200); }
+.about__grid { display: grid; gap: 3rem; grid-template-columns: minmax(0, 1fr); }
+.about__copy p { color: var(--ink-muted); }
+.about__copy .lead + p { margin-top: 1rem; }
+.stats {
+  list-style: none; margin: 2rem 0 0; padding: 0;
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .65rem;
+}
+.stats li {
+  padding: 1rem .85rem; border-radius: var(--radius-md);
+  background: var(--card); border: 1px solid var(--line);
+}
+.stats strong {
+  display: block; font-family: var(--font-display); font-weight: 650;
+  font-size: clamp(1.55rem, 1.2rem + 1.5vw, 2.3rem); line-height: 1; color: var(--forest-800);
+  font-variation-settings: "SOFT" 100, "WONK" 0;
+}
+.stats span { display: block; margin-top: .45rem; font-size: .8125rem; line-height: 1.35; color: var(--ink-muted); }
+
+.promise {
+  position: relative; margin-top: 1rem;
+  padding: clamp(1.6rem, 1rem + 3vw, 2.5rem);
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: var(--radius-xl); box-shadow: var(--shadow-md);
+}
+.promise__title { font-size: var(--step-3); padding-right: 92px; }
+.promise ul { list-style: none; margin: 1.5rem 0 0; padding: 0; display: grid; gap: 1.15rem; }
+.promise li { display: grid; grid-template-columns: auto 1fr; gap: .9rem; align-items: start; }
+.promise__check {
+  display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%;
+  background: var(--sage-100); color: var(--moss-600);
+}
+.promise__check .icon { width: 18px; height: 18px; stroke-width: 2.6; }
+.promise li strong { display: block; font-weight: 600; color: var(--forest-800); line-height: 1.35; }
+.promise li span { display: block; margin-top: .15rem; font-size: .9375rem; color: var(--ink-muted); }
+.promise__sign {
+  margin-top: 1.75rem; padding-top: 1.25rem; border-top: 1px dashed var(--line-strong);
+  font-family: var(--font-display); font-style: italic; font-weight: 500; font-size: 1.2rem;
+  color: var(--forest-700);
+}
+.stamp {
+  position: absolute; top: -30px; right: -8px; width: 112px; height: 112px;
+  transform: rotate(-10deg);
+}
+.stamp__bg { fill: var(--cream-50); stroke: var(--clay-600); stroke-width: 1.5; }
+.stamp__ring { fill: none; stroke: var(--clay-600); stroke-width: 1; stroke-dasharray: 2 3; }
+.stamp__text { font: 600 9.5px var(--font-body); letter-spacing: .12em; fill: var(--clay-700); }
+.stamp__leaf { fill: var(--moss-600); }
+.stamp__vein { fill: none; stroke: var(--cream-50); stroke-width: 1.6; stroke-linecap: round; }
+
+/* ---------- Service area ---------- */
+.area { background: var(--sage-100); }
+.area__grid { display: grid; gap: 2.5rem; grid-template-columns: minmax(0, 1fr); }
+.chips { list-style: none; margin: 1.75rem 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: .55rem; }
+.chip {
+  display: inline-flex; align-items: center; gap: .45rem; min-height: 44px;
+  padding: .45rem 1rem .45rem .8rem; border-radius: 999px;
+  background: var(--card); border: 1px solid var(--line); box-shadow: var(--shadow-xs);
+  font-weight: 500; color: var(--forest-800);
+}
+.chip .icon { width: 1.05em; height: 1.05em; color: var(--moss-600); }
+.chip--home { background: var(--forest-800); border-color: transparent; color: var(--cream-50); }
+.chip--home .icon { color: var(--sand-300); }
+.chip__tag {
+  margin-left: .2rem; padding: .15rem .5rem; border-radius: 999px;
+  background: var(--clay-600); color: var(--cream-50);
+  font-size: .6875rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+}
+.area__note { margin-top: 1.5rem; color: var(--ink-muted); }
+.area__note a { color: var(--forest-800); font-weight: 600; text-underline-offset: 3px; }
+.map-card {
+  margin: 0; padding: .75rem; border-radius: var(--radius-xl);
+  background: var(--card); border: 1px solid var(--line); box-shadow: var(--shadow-md);
+}
+.area-map { display: block; width: 100%; height: auto; }
+.map-card figcaption { padding: .7rem .5rem .2rem; font-size: .8125rem; color: var(--ink-muted); text-align: center; }
+.m-land { fill: var(--cream-200); }
+.m-grid { fill: none; stroke: var(--sand-300); stroke-width: 1; opacity: .7; }
+.m-road { fill: none; stroke: var(--card); stroke-width: 5; stroke-linecap: round; }
+.m-lake { fill: var(--lake); }
+.m-shore { fill: none; stroke: var(--lake-ink); stroke-width: 1; opacity: .35; }
+.m-wave { fill: none; stroke: var(--card); stroke-width: 1.4; stroke-linecap: round; opacity: .7; }
+.m-radius { fill: var(--moss-ring); stroke: var(--moss-600); stroke-width: 1.5; stroke-dasharray: 5 6; }
+.m-dot { fill: var(--forest-800); stroke: var(--card); stroke-width: 2; }
+.m-label { font: 500 12px var(--font-body); fill: var(--ink); }
+.m-home { font: 650 16px var(--font-display); fill: var(--forest-800); }
+.m-home-tag { font: 600 8.5px var(--font-body); letter-spacing: .14em; fill: var(--clay-700); }
+.m-pin { fill: var(--clay-600); }
+.m-pin-dot { fill: var(--cream-50); }
+.m-lake-label { font: italic 500 11px var(--font-display); letter-spacing: .2em; fill: var(--lake-ink); }
+.m-compass { fill: var(--forest-800); }
+.m-compass-text { font: 600 10px var(--font-body); fill: var(--forest-800); }
+
+/* ---------- Testimonials ---------- */
+.reviews__grid { list-style: none; margin: 0; padding: 0; display: grid; gap: 1rem; }
+.review {
+  position: relative; height: 100%; margin: 0;
+  display: flex; flex-direction: column;
+  padding: 1.75rem 1.6rem 1.5rem;
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);
+}
+.review::before {
+  content: "\201C"; position: absolute; top: .4rem; right: 1.25rem;
+  font-family: var(--font-display); font-size: 5.5rem; line-height: 1; color: var(--clay-100);
+}
+.stars { display: flex; gap: 3px; color: var(--star); }
+.stars .icon { width: 18px; height: 18px; }
+.review blockquote { flex: 1; margin: 1rem 0 0; }
+.review blockquote p { font-size: 1.0625rem; line-height: 1.6; color: var(--ink); }
+.review figcaption {
+  display: flex; align-items: center; gap: .85rem;
+  margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--line);
+}
+.avatar {
+  display: grid; place-items: center; width: 46px; height: 46px; flex: none; border-radius: 50%;
+  background: var(--tint, var(--sage-100)); color: var(--forest-800);
+  font-weight: 600; font-size: .9375rem; letter-spacing: .02em;
+}
+.review__name { display: block; font-weight: 600; color: var(--forest-800); line-height: 1.3; }
+.review__meta { display: block; font-size: .875rem; color: var(--ink-muted); line-height: 1.4; }
+
+/* ---------- Quote ---------- */
+.quote {
+  position: relative; overflow: hidden;
+  background:
+    radial-gradient(circle at 0% 0%, var(--forest-700) 0%, transparent 45%),
+    radial-gradient(circle at 100% 100%, var(--forest-700) 0%, transparent 40%),
+    var(--forest-800);
+  color: var(--ink-on-dark);
+}
+.quote h2 { color: var(--cream-50); }
+.quote .lead { color: var(--ink-on-dark-muted); }
+.quote__grid { display: grid; gap: 2.5rem; grid-template-columns: minmax(0, 1fr); }
+.steps { list-style: none; counter-reset: step; margin: 2rem 0 0; padding: 0; display: grid; gap: 1.1rem; }
+.steps li {
+  counter-increment: step;
+  display: grid; grid-template-columns: auto 1fr; gap: 1rem; align-items: start;
+}
+.steps li::before {
+  content: counter(step);
+  display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%;
+  background: var(--forest-700); border: 1px solid var(--line-dark); color: var(--sand-300);
+  font-family: var(--font-display); font-weight: 650; font-size: 1.1rem;
+}
+.steps strong { display: block; font-weight: 600; color: var(--cream-50); line-height: 1.4; }
+.steps span { display: block; font-size: .9375rem; color: var(--ink-on-dark-muted); }
+.quote__contact {
+  margin-top: 2rem; padding: 1.1rem 1.25rem; border-radius: var(--radius-md);
+  border: 1px solid var(--line-dark);
+}
+.quote__contact > p { font-size: .875rem; color: var(--ink-on-dark-muted); margin-bottom: .25rem; }
+.contact-line {
+  display: flex; align-items: center; gap: .7rem; min-height: 44px;
+  color: var(--cream-50); text-decoration: none; font-weight: 500;
+}
+a.contact-line:hover span { text-decoration: underline; text-underline-offset: 3px; }
+.contact-line .icon { color: var(--sage-400); }
+.contact-line--big { font-family: var(--font-display); font-size: 1.45rem; font-weight: 650; font-variation-settings: "SOFT" 100, "WONK" 0; }
+
+.form-card {
+  --focus: var(--clay-600);
+  padding: clamp(1.5rem, 1rem + 3vw, 2.5rem);
+  background: var(--cream-50); color: var(--ink);
+  border-radius: var(--radius-xl); box-shadow: var(--shadow-lg);
+}
+.form-card__title { font-size: var(--step-3); }
+.form-card__sub { margin-top: .5rem; font-size: .9375rem; color: var(--ink-muted); }
+.form-grid { display: grid; gap: 1.1rem; margin-top: 1.5rem; }
+.field label {
+  display: flex; justify-content: space-between; align-items: baseline; gap: .5rem;
+  margin-bottom: .4rem; font-weight: 600; font-size: .9375rem; color: var(--forest-800);
+}
+.optional { font-weight: 400; font-size: .8125rem; color: var(--ink-muted); }
+.field input, .field select, .field textarea {
+  display: block; width: 100%; min-height: 50px; padding: .75rem 1rem;
+  font-size: 1rem; color: var(--ink);
+  background: var(--field-bg); border: 1.5px solid var(--line-strong); border-radius: 14px;
+  transition: border-color .2s, box-shadow .2s;
+  -webkit-appearance: none; appearance: none;
+}
+.field textarea { min-height: 124px; resize: vertical; line-height: 1.5; }
+.field select {
+  padding-right: 2.75rem; cursor: pointer;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--forest-800) 50%),
+    linear-gradient(135deg, var(--forest-800) 50%, transparent 50%);
+  background-position: calc(100% - 22px) 50%, calc(100% - 16px) 50%;
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+}
+.field ::placeholder { color: var(--ink-soft); opacity: 1; }
+.field input:hover, .field select:hover, .field textarea:hover { border-color: var(--forest-600); }
+.field input:focus, .field select:focus, .field textarea:focus {
+  outline: none; border-color: var(--moss-600); box-shadow: 0 0 0 4px var(--ring);
+}
+.field input:user-invalid, .field select:user-invalid { border-color: var(--error); }
+.form-card .btn--block { margin-top: 1.5rem; }
+.form-note { margin-top: .9rem; font-size: .8125rem; color: var(--ink-muted); text-align: center; }
+.form-success { padding: 1.5rem .25rem; text-align: center; }
+.form-success:focus { outline: none; }
+.form-success[hidden], .quote-form[hidden] { display: none; }
+.success-icon {
+  display: grid; place-items: center; width: 76px; height: 76px; margin: 0 auto 1.25rem;
+  border-radius: 50%; background: var(--sage-100); color: var(--moss-600);
+}
+.success-icon .icon { width: 38px; height: 38px; stroke-width: 2.4; }
+.form-success h3 { font-size: var(--step-3); }
+.form-success p { max-width: 26rem; margin: .75rem auto 0; color: var(--ink-muted); }
+.form-success p a { color: var(--forest-800); font-weight: 600; }
+.form-success .btn { margin-top: 1.5rem; }
+
+/* ---------- Footer ---------- */
+.site-footer {
+  padding-top: clamp(3rem, 2rem + 4vw, 4.75rem);
+  background: var(--forest-900); color: var(--ink-on-dark-muted); font-size: .9375rem;
+}
+.footer__grid { display: grid; gap: 2.25rem; grid-template-columns: minmax(0, 1fr); }
+.footer__brand p { margin-top: 1rem; max-width: 22rem; }
+.footer__brand .btn { margin-top: 1.4rem; }
+.footer__heading {
+  margin-bottom: .6rem;
+  font-family: var(--font-body); font-size: .8125rem; font-weight: 600; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--sand-300);
+}
+.footer__list { list-style: none; margin: 0; padding: 0; }
+.footer__list li { display: flex; align-items: center; gap: .65rem; min-height: 44px; }
+.footer__list .icon { color: var(--sage-400); }
+.site-footer a { color: var(--cream-100); text-decoration: none; }
+.site-footer a:hover { color: var(--cream-50); text-decoration: underline; text-underline-offset: 3px; }
+.footer__list a { display: inline-flex; align-items: center; min-height: 44px; }
+.footer__list .muted { color: var(--ink-on-dark-muted); }
+.footer__bottom {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem;
+  margin-top: 3rem; padding-block: 1.5rem 1.75rem;
+  border-top: 1px solid var(--line-dark); font-size: .875rem;
+}
+.sample-ribbon {
+  display: inline-flex; align-items: center; gap: .45rem;
+  padding: .3rem 1.2rem .3rem .75rem;
+  background: var(--sand-300); color: var(--forest-900);
+  font-size: .6875rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
+  clip-path: polygon(0 0, 100% 0, calc(100% - 9px) 50%, 100% 100%, 0 100%);
+  border-radius: 4px 0 0 4px;
+}
+.sample-ribbon::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--clay-600); }
+
+/* ====================================================================
+   Larger screens
+   ==================================================================== */
+@media (min-width: 600px) {
+  .hero__actions .btn { flex: 0 0 auto; }
+  .form-grid { grid-template-columns: 1fr 1fr; }
+  .field--full { grid-column: 1 / -1; }
+  .season-tab { flex-direction: row; min-height: 54px; gap: .5rem; font-size: .9375rem; }
+  .now-dot { top: 7px; right: 8px; }
+  .stats li { padding: 1.25rem 1.1rem; }
+  .stats span { font-size: .875rem; }
+}
+@media (min-width: 700px) {
+  .service-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .footer__grid { grid-template-columns: 1fr 1fr; }
+}
+@media (min-width: 860px) {
+  .trust__card { grid-template-columns: repeat(4, minmax(0, 1fr)); padding: 1.4rem 1.6rem; gap: 1.5rem; }
+  .trust__card li { flex-direction: row; align-items: center; gap: .85rem; }
+  .reviews__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; }
+  .plan-banner { grid-template-columns: 1fr auto; align-items: center; gap: 2.5rem; }
+  .plan-banner .btn { justify-self: end; }
+}
+@media (min-width: 960px) {
+  .header-bar { min-height: 76px; gap: 1.25rem; }
+  .brand__mark { width: 42px; height: 42px; }
+  .brand__name { max-width: none; font-size: 1.3rem; }
+  .header-cta--mobile, .nav-toggle { display: none; }
+  .nav-menu, .no-js .nav-menu {
+    display: flex; align-items: center; gap: .15rem;
+    position: static; padding: 0; background: none; border: 0; box-shadow: none;
+  }
+  .no-js .site-nav { flex-basis: auto; }
+  .no-js .header-bar { flex-wrap: nowrap; }
+  .nav-menu a:not(.btn) {
+    min-height: 44px; padding: .5rem .85rem; border: 0; border-radius: 999px;
+    font-size: .975rem;
+  }
+  .nav-menu a:not(.btn):hover { background: var(--sage-100); color: var(--forest-800); }
+  .nav-menu .nav-phone { display: none; }
+  .nav-menu .nav-cta { display: block; margin-left: .6rem; }
+
+  .hero__inner {
+    display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 2rem; align-items: start;
+  }
+  .hero-card {
+    display: flex; gap: .9rem; align-items: flex-start; justify-self: end;
+    margin-top: 5.5rem; padding: 1.15rem 1.2rem 1rem;
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: var(--radius-lg); box-shadow: var(--shadow-md);
+  }
+  .hero-card__icon {
+    display: grid; place-items: center; width: 44px; height: 44px; flex: none;
+    border-radius: 14px; background: var(--winter); color: var(--winter-ink);
+  }
+  .hero-card__icon .icon { width: 24px; height: 24px; }
+  .hero-card__kicker { font-size: .75rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--winter-ink); }
+  .hero-card__title { margin-top: .15rem; font-family: var(--font-display); font-weight: 650; font-size: 1.15rem; line-height: 1.2; color: var(--forest-800); font-variation-settings: "SOFT" 100, "WONK" 0; }
+  .hero-card__text { margin-top: .35rem; font-size: .875rem; line-height: 1.5; color: var(--ink-muted); }
+  .hero-card__link {
+    display: inline-flex; align-items: center; gap: .35rem; min-height: 44px;
+    font-weight: 600; font-size: .9375rem; color: var(--clay-700); text-decoration: none;
+  }
+  .hero-card__link:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+  .about__grid { grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); gap: clamp(3rem, 6vw, 5.5rem); align-items: center; }
+  .promise { margin-top: 0; }
+  .area__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(3rem, 6vw, 5rem); align-items: center; }
+  .quote__grid { grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: clamp(3rem, 6vw, 5rem); align-items: start; }
+  .quote__intro { position: sticky; top: 110px; }
+}
+@media (min-width: 1024px) {
+  .service-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; }
+  .footer__grid { grid-template-columns: 1.6fr 1.1fr 1fr .8fr; gap: 3rem; }
+}
+@media (min-width: 1200px) {
+  .nav-menu .nav-phone { display: block; }
+  .nav-menu .nav-phone a { padding-inline: .6rem; background: none; }
+  .nav-menu .nav-phone a:hover { background: none; text-decoration: underline; text-underline-offset: 3px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important; animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important; scroll-behavior: auto !important;
+  }
+  .service-card:hover, .btn--clay:hover { transform: none; }
+}
+</style>
+</head>
+
+<body id="top">
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<!-- Icon sprite (decorative line icons, reused with <use>) -->
+<svg class="sprite" aria-hidden="true" focusable="false">
+  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M5.2 3.5h3.2l1.6 4.2-2.1 1.4a11.5 11.5 0 0 0 7 7l1.4-2.1 4.2 1.6v3.2a2 2 0 0 1-2.1 2A16.5 16.5 0 0 1 3.2 5.6a2 2 0 0 1 2-2.1z"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m3.8 6.5 8.2 6.5 8.2-6.5"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21.5s-7-6.2-7-11.7a7 7 0 0 1 14 0c0 5.5-7 11.7-7 11.7z"/><circle cx="12" cy="9.8" r="2.6"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5.2l3.2 2"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4.5 12h15M13.5 6l6 6-6 6"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 2.8 2.8 5.8 6.3.8-4.6 4.4 1.2 6.3L12 17l-5.7 3.1 1.2-6.3-4.6-4.4 6.3-.8z"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8 7.5 9.5 4.3-1.5 7.5-4.9 7.5-9.5V6z"/><path d="m8.6 12 2.4 2.4 4.4-4.6"/></symbol>
+  <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4M9 15l2 2 4-4"/></symbol>
+  <symbol id="i-clipboard" viewBox="0 0 24 24"><rect x="5" y="4.5" width="14" height="17" rx="2.5"/><path d="M9 4.5v-1a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1M8.5 11h7M8.5 15h4.5"/></symbol>
+  <symbol id="i-snowflake" viewBox="0 0 24 24"><path d="M12 2.5v19M3.8 7.2l16.4 9.6M3.8 16.8l16.4-9.6"/><path d="M9.6 4.2 12 6.4l2.4-2.2M9.6 19.8l2.4-2.2 2.4 2.2M4.4 10.4l3.2.8-.9 3.1M19.6 13.6l-3.2-.8.9-3.1M6.7 9.7l.9 3.1-3.2.8M17.3 14.3l-.9-3.1 3.2-.8"/></symbol>
+  <symbol id="i-sprout" viewBox="0 0 24 24"><path d="M12 21v-8.5"/><path d="M12 12.5C12 8.6 9.4 6 5 6c0 4 2.7 6.5 7 6.5zM12 10.5c0-3.7 2.6-6.5 7-6.5 0 4.1-2.8 6.5-7 6.5z"/><path d="M7.5 21h9"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6"/></symbol>
+  <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M12 2.8l1.5 3.3 2.9-1.1-.6 3.7 3.3-.5-1.3 3.1 2.6 1.6-4.1 1.5.7 2.4-3.6-.9L12 19.2l-1.4-3.3-3.6.9.7-2.4-4.1-1.5 2.6-1.6-1.3-3.1 3.3.5-.6-3.7 2.9 1.1z"/><path d="M12 13v8.5"/></symbol>
+  <symbol id="i-mower" viewBox="0 0 24 24"><path d="M14.6 11.2 20 4.6M18.4 3.4l3 2.4"/><path d="M3 16.2v-3a2 2 0 0 1 2-2h10.4l1 5"/><path d="M6.6 11.2V8.6h4.6v2.6"/><circle cx="6.5" cy="18" r="2.2"/><circle cx="14" cy="18" r="2.2"/></symbol>
+  <symbol id="i-rake" viewBox="0 0 24 24"><path d="M20.5 3.5 10.6 13.4"/><path d="M6 9l7 7"/><path d="M6 9l-2.5 2.5M8.3 11.3l-2.5 2.5M10.7 13.7l-2.5 2.5M13 16l-2.5 2.5"/><path d="M15.5 19.5c1.4-.2 2.6.5 3 1.8-1.4.3-2.6-.4-3-1.8zM18.6 15.3c1.2.4 1.9 1.5 1.7 2.8-1.3-.4-2-1.5-1.7-2.8z"/></symbol>
+  <symbol id="i-flower" viewBox="0 0 24 24"><path d="M3 20.5c2.2-2.4 5.4-3.5 9-3.5s6.8 1.1 9 3.5"/><path d="M12 17v-6"/><circle cx="12" cy="7" r="1.6"/><path d="M12 5.4c-.9-1.9.3-3.4 0-3.4s.9 1.5 0 3.4zM12 5.4C10.4 3.2 8 4.6 8.6 6.4c.5 1.5 2.3 1.6 3.4.6M12 5.4c1.6-2.2 4-.8 3.4 1 -.5 1.5-2.3 1.6-3.4.6M10.6 7.6c-2.2.6-2.2 3.2-.4 3.4 1.2.1 2-.9 1.8-2.4M13.4 7.6c2.2.6 2.2 3.2.4 3.4-1.2.1-2-.9-1.8-2.4"/><path d="M12 14.6c-1.6.1-3-.7-3.5-2 1.6-.1 3 .7 3.5 2z"/></symbol>
+  <symbol id="i-hedge" viewBox="0 0 24 24"><path d="M4 16.5V11a4.5 4.5 0 0 1 4.5-4.5h7A4.5 4.5 0 0 1 20 11v5.5z"/><path d="M8 16.5V20M16 16.5V20M3 20h18"/><path d="M7.5 10.2h.01M11 9.2h.01M14.5 10.4h.01M9.2 13h.01M13 12.8h.01M16.5 13.2h.01"/></symbol>
+  <symbol id="i-water" viewBox="0 0 24 24"><path d="M4 10.5h10.5v6.5a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3z"/><path d="M14.5 12.5l5-4"/><path d="M18.6 6.6l2 2.6"/><path d="M6 10.5V9a3.3 3.3 0 0 1 6.5 0v1.5"/><path d="M21 12.5v.01M19.6 14.6v.01M21.4 15.8v.01"/></symbol>
+  <symbol id="i-key" viewBox="0 0 24 24"><circle cx="8" cy="15.5" r="4.3"/><path d="M11 12.5 19.5 4M16.5 7l2.6 2.6M14.2 9.3l2 2"/><path d="M6.8 15.5h.01"/></symbol>
+  <symbol id="i-aerate" viewBox="0 0 24 24"><path d="M3 20h18"/><path d="M6 20c0-3 .6-5 2-6.8M10.2 20c0-4 1-6.8 3-8.8M16 20c0-3-1-5-3-6.4M19 20c0-2.4-.6-4-1.8-5"/><path d="M7 3.5v2.6M12 2.5v2.6M17 3.5v2.6"/></symbol>
+  <symbol id="i-pine" viewBox="0 0 24 24"><path d="M12 2.5 6.8 10h3L5.5 16.5h13L14.2 10h3z"/><path d="M12 16.5V21M8.5 21h7"/><path d="M8.2 13.4l7.6-1.3"/></symbol>
+  <symbol id="i-plow" viewBox="0 0 24 24"><path d="M3 16v-3.8a1 1 0 0 1 1-1h6.6V7.5h4.6l2.6 3.7V16"/><path d="M12.8 9.2v2h3.6"/><path d="M17.8 13.4h1.6"/><path d="M19.4 9.4c1.6.9 2.4 3.2 2.4 7.2h-2.4z"/><circle cx="7" cy="17" r="2"/><circle cx="14.6" cy="17" r="2"/></symbol>
+  <symbol id="i-shovel" viewBox="0 0 24 24"><path d="M17.3 2.8l3.9 3.9"/><path d="M19.2 4.8 11 13"/><path d="M8.2 10.2 13.8 15.8 9.8 19.8a3 3 0 0 1-2.1.9H4.3a1 1 0 0 1-1-1v-3.4a3 3 0 0 1 .9-2.1z"/></symbol>
+  <symbol id="i-salt" viewBox="0 0 24 24"><path d="M3 20.5h18"/><path d="M6.4 9.5 9 6.9l2.6 2.6L9 12.1zM13.2 5.2l2-2 2 2-2 2zM14 14l2.3-2.3 2.3 2.3-2.3 2.3z"/><path d="M5.5 16h.01M10.2 15.2h.01M11.6 18h.01M19.5 8.8h.01M7.6 18.4h.01"/></symbol>
+</svg>
+
+<!-- ==================== HEADER ==================== -->
+<header class="site-header">
+  <div class="container header-bar">
+    <a class="brand" href="#top">
+      <svg class="brand__mark" viewBox="0 0 40 40" aria-hidden="true" focusable="false">
+        <rect class="m-forest" width="40" height="40" rx="12"/>
+        <path class="m-leaf" d="M10.5 29.5c0-10.5 6.6-17.6 19.5-18.5 0 12.8-7.2 19.5-18.6 19.5z"/>
+        <path class="m-vein" d="M11.8 28.6c3.6-5.2 8-9.2 13.4-12.4"/>
+        <circle class="m-snow" cx="30.5" cy="29" r="2"/>
+        <circle class="m-snow" cx="25.5" cy="32.5" r="1.3"/>
+      </svg>
+      <span class="brand__name" data-biz="name">Northshore Green Co.</span>
+    </a>
+
+    <a class="btn btn--clay btn--sm header-cta--mobile" href="#quote">Free Quote</a>
+
+    <nav class="site-nav" aria-label="Main">
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-menu" aria-label="Open menu">
+        <svg class="icon icon--menu" aria-hidden="true" focusable="false"><use href="#i-menu"/></svg>
+        <svg class="icon icon--close" aria-hidden="true" focusable="false"><use href="#i-close"/></svg>
+      </button>
+      <ul id="site-menu" class="nav-menu">
+        <li><a href="#services">Services</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#area">Service Area</a></li>
+        <li><a href="#reviews">Reviews</a></li>
+        <li class="nav-phone">
+          <a href="tel:+18475550142" data-biz-href="phone">
+            <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg>
+            <span data-biz="phone">(847) 555-0142</span>
+          </a>
+        </li>
+        <li class="nav-cta"><a class="btn btn--clay btn--sm" href="#quote">Get a Free Quote</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ==================== HERO ==================== -->
+  <section class="hero" aria-labelledby="hero-title">
+
+    <!-- Decorative "photo" landscape: summer lawn on the left, fresh snow on the right -->
+    <svg class="hero__scene" viewBox="0 0 1440 560" preserveAspectRatio="xMidYMax slice" aria-hidden="true" focusable="false">
+      <defs>
+        <radialGradient id="g-sun">
+          <stop offset="0" class="st-sun"/>
+          <stop offset=".28" class="st-sun"/>
+          <stop offset="1" class="st-sun-0"/>
+        </radialGradient>
+        <linearGradient id="g-lawn" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" class="st-lawn-light"/>
+          <stop offset="1" class="st-lawn-dark"/>
+        </linearGradient>
+        <linearGradient id="g-snow" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" class="st-snow"/>
+          <stop offset="1" class="st-snow-2"/>
+        </linearGradient>
+        <!-- Mask: summer (left) fades into winter (right) -->
+        <linearGradient id="g-fade" gradientUnits="userSpaceOnUse" x1="850" y1="0" x2="1030" y2="0">
+          <stop offset="0" stop-color="black"/>
+          <stop offset="1" stop-color="white"/>
+        </linearGradient>
+        <mask id="m-winter" maskUnits="userSpaceOnUse" x="0" y="0" width="1440" height="560">
+          <rect width="1440" height="560" fill="url(#g-fade)"/>
+        </mask>
+
+        <path id="p-far" d="M0 292C140 246 300 238 450 262C600 286 720 248 880 232C1030 218 1170 262 1300 250C1370 244 1410 246 1440 250V560H0Z"/>
+        <path id="p-mid" d="M0 356C170 318 330 326 500 344C680 364 820 330 980 318C1140 306 1290 344 1440 326V560H0Z"/>
+        <path id="p-front" d="M0 448C230 404 470 398 720 424C960 450 1210 424 1440 404V560H0Z"/>
+        <clipPath id="c-front"><use href="#p-front"/></clipPath>
+
+        <g id="tree">
+          <path class="f-bark" d="M-5 0-3.5-62h7L5 0z"/>
+          <circle class="f-tree-dark" cx="0" cy="-80" r="40"/>
+          <circle class="f-tree-dark" cx="-31" cy="-58" r="28"/>
+          <circle class="f-tree-dark" cx="30" cy="-56" r="30"/>
+          <circle class="f-tree-mid" cx="-9" cy="-91" r="27"/>
+          <circle class="f-tree-mid" cx="-35" cy="-66" r="16"/>
+          <circle class="f-tree-mid" cx="20" cy="-74" r="19"/>
+          <circle class="f-tree-light" cx="-16" cy="-100" r="12"/>
+          <circle class="f-tree-light" cx="14" cy="-82" r="7"/>
+        </g>
+        <g id="pine">
+          <rect class="f-bark" x="-5" y="-14" width="10" height="16"/>
+          <path class="f-pine" d="M0-122 26-80H14L38-44H22L46-11H-46L-22-44H-38L-14-80H-26Z"/>
+          <path class="f-snow" d="M0-122 10-105Q4-100 0-103Q-5-99-10-105ZM-26-80H26L22-75Q13-71 7-75Q0-70-7-75Q-15-71-22-75ZM-38-44H38L33-38Q22-33 13-38Q3-32-6-38Q-17-33-33-38ZM-46-11H46L41-6Q27-2 16-7Q4-1-8-7Q-22-2-41-6Z"/>
+        </g>
+      </defs>
+
+      <!-- sun + birds -->
+      <circle cx="560" cy="268" r="170" fill="url(#g-sun)" opacity=".75"/>
+      <circle class="f-sun" cx="560" cy="268" r="40"/>
+      <path class="s-bird" d="M806 214q7-7 14 0q7-7 14 0M846 196q5-5 10 0q5-5 10 0"/>
+
+      <!-- far hills -->
+      <use href="#p-far" class="f-hill-far"/>
+      <g mask="url(#m-winter)"><use href="#p-far" class="f-snow-3"/></g>
+      <use href="#tree" transform="translate(170 266) scale(.42)"/>
+      <use href="#tree" transform="translate(212 262) scale(.32)"/>
+      <use href="#tree" transform="translate(338 254) scale(.38)"/>
+      <use href="#pine" transform="translate(1086 240) scale(.4)"/>
+      <use href="#pine" transform="translate(1118 240) scale(.3)"/>
+      <use href="#pine" transform="translate(1336 256) scale(.36)"/>
+
+      <!-- mid hills -->
+      <use href="#p-mid" class="f-hill-mid"/>
+      <g mask="url(#m-winter)"><use href="#p-mid" class="f-snow-2"/></g>
+
+      <!-- trees -->
+      <use href="#tree" transform="translate(95 366) scale(.95)"/>
+      <use href="#tree" transform="translate(265 356) scale(.85)"/>
+      <use href="#tree" transform="translate(585 372) scale(.55)"/>
+      <use href="#tree" transform="translate(440 366) scale(1.1)"/>
+      <g class="s-bark">
+        <path stroke-width="5" d="M1112 352v-72"/>
+        <path stroke-width="3.2" d="M1112 318l-24-26M1112 304l20-30M1112 288l-6-26"/>
+        <path stroke-width="2" d="M1100 305l-6-20M1124 290l14-8M1100 300l-16 2"/>
+      </g>
+      <use href="#pine" transform="translate(952 356) scale(.8)"/>
+      <use href="#pine" transform="translate(1018 350) scale(1.05)"/>
+      <use href="#pine" transform="translate(1192 352) scale(.8)"/>
+      <use href="#pine" transform="translate(1272 360) scale(1.15)"/>
+      <use href="#pine" transform="translate(1378 352) scale(.85)"/>
+
+      <!-- house + garage -->
+      <rect class="f-bark" x="728" y="262" width="16" height="36"/>
+      <rect class="f-house" x="620" y="312" width="150" height="80"/>
+      <path class="f-roof" d="M602 318 695 254 788 318Z"/>
+      <circle class="f-window" cx="695" cy="292" r="9"/>
+      <rect class="f-trim" x="630" y="334" width="7" height="26"/>
+      <rect class="f-trim" x="669" y="334" width="7" height="26"/>
+      <rect class="f-window" x="638" y="334" width="30" height="26" rx="2"/>
+      <path class="s-trim" d="M653 334v26M638 347h30"/>
+      <rect class="f-trim" x="714" y="334" width="7" height="26"/>
+      <rect class="f-trim" x="753" y="334" width="7" height="26"/>
+      <rect class="f-window" x="722" y="334" width="30" height="26" rx="2"/>
+      <path class="s-trim" d="M737 334v26M722 347h30"/>
+      <path class="f-trim" d="M682 392v-35a13 13 0 0 1 26 0v35z"/>
+      <rect class="f-house-shade" x="676" y="389" width="38" height="5" rx="1"/>
+      <rect class="f-house" x="770" y="338" width="76" height="54"/>
+      <path class="f-roof" d="M764 342 808 314 852 342Z"/>
+      <path class="s-snow" stroke-width="6" d="M767 340 808 315 849 340"/>
+      <rect class="f-house-shade" x="781" y="352" width="54" height="40" rx="2"/>
+      <path class="s-shade" d="M781 362h54M781 372h54M781 382h54" style="stroke: var(--house);"/>
+      <ellipse class="f-tree-mid" cx="634" cy="391" rx="15" ry="11"/>
+      <ellipse class="f-tree-dark" cx="661" cy="394" rx="11" ry="8"/>
+      <ellipse class="f-tree-mid" cx="730" cy="392" rx="13" ry="10"/>
+      <ellipse class="f-tree-dark" cx="755" cy="394" rx="10" ry="8"/>
+      <ellipse class="f-tree-light" cx="630" cy="386" rx="6" ry="4"/>
+      <ellipse class="f-tree-light" cx="726" cy="387" rx="5" ry="3.5"/>
+
+      <!-- picket fence -->
+      <g class="f-fence">
+        <rect x="446" y="392" width="156" height="3.5" rx="1"/>
+        <rect x="446" y="401" width="156" height="3.5" rx="1"/>
+        <path d="M452 412v-24l3-5 3 5v24zM464 412v-24l3-5 3 5v24zM476 412v-24l3-5 3 5v24zM488 412v-24l3-5 3 5v24zM500 412v-24l3-5 3 5v24zM512 412v-24l3-5 3 5v24zM524 412v-24l3-5 3 5v24zM536 412v-24l3-5 3 5v24zM548 412v-24l3-5 3 5v24zM560 412v-24l3-5 3 5v24zM572 412v-24l3-5 3 5v24zM584 412v-24l3-5 3 5v24zM596 412v-24l3-5 3 5v24z"/>
+      </g>
+
+      <!-- front lawn with mowing stripes, then snow -->
+      <use href="#p-front" fill="url(#g-lawn)"/>
+      <g clip-path="url(#c-front)">
+        <path class="f-stripe" d="M-60 400h64l-110 160h-64zM68 400h64L22 560h-64zM196 400h64L150 560H86zM324 400h64L278 560h-64zM452 400h64L406 560h-64zM580 400h64L534 560h-64zM708 400h64L662 560h-64zM836 400h64L790 560h-64zM964 400h64L918 560h-64z"/>
+      </g>
+      <g mask="url(#m-winter)"><use href="#p-front" fill="url(#g-snow)"/></g>
+
+      <!-- walkway (summer side) and freshly plowed driveway (winter side) -->
+      <path class="f-path" d="M685 393h20c7 48-5 108-37 167h-72c44-59 80-119 89-167z"/>
+      <path class="f-drive" d="M780 392h58c42 56 152 113 262 168H880c-44-60-84-114-100-168z"/>
+      <g mask="url(#m-winter)">
+        <path class="s-snow-shadow" stroke-width="4" d="M783 394c16 54 56 108 100 166M835 394c42 56 152 112 262 166"/>
+        <path class="s-snow" stroke-width="10" d="M777 392c16 54 56 108 100 168M842 392c42 56 152 112 262 168"/>
+      </g>
+
+      <!-- falling snow -->
+      <g class="flakes">
+        <circle cx="905" cy="128" r="3"/><circle cx="962" cy="74" r="2.5"/><circle cx="1012" cy="166" r="3.5"/>
+        <circle cx="1078" cy="104" r="2.2"/><circle cx="1132" cy="190" r="3"/><circle cx="1190" cy="62" r="2.5"/>
+        <circle cx="1244" cy="146" r="3.5"/><circle cx="1302" cy="92" r="2.2"/><circle cx="1352" cy="184" r="3"/>
+        <circle cx="1404" cy="120" r="2.5"/><circle cx="1058" cy="232" r="2.5"/><circle cx="1268" cy="226" r="3"/>
+        <circle cx="1386" cy="250" r="2.2"/><circle cx="936" cy="250" r="2.2"/><circle cx="1162" cy="276" r="2.5"/>
+        <circle cx="1220" cy="20" r="2.2"/><circle cx="1000" cy="30" r="2"/><circle cx="1424" cy="40" r="2.5"/>
+      </g>
+    </svg>
+
+    <div class="container hero__inner">
+      <div class="hero__copy">
+        <p class="eyebrow-pill"><span class="dot" aria-hidden="true"></span>Booking fall cleanups &amp; snow routes</p>
+        <h1 id="hero-title" class="hero__title">Green lawns in July. <em>Clear driveways in January.</em></h1>
+        <p class="hero__lead">We're a family-run Glenview crew that mows, mulches, rakes and plows for our North Shore neighbors, all year long. Same faces every visit, fair prices, and we show up when we say we will.</p>
+        <div class="hero__actions">
+          <a class="btn btn--clay btn--lg" href="#quote">
+            Get a Free Quote
+            <svg class="icon icon--arrow" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg>
+          </a>
+          <a class="btn btn--ghost btn--lg" href="tel:+18475550142" data-biz-href="phone">
+            <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg>
+            <span>Call <span data-biz="phone">(847) 555-0142</span></span>
+          </a>
+        </div>
+      </div>
+
+      <aside class="hero-card" aria-labelledby="hero-card-title">
+        <span class="hero-card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-snowflake"/></svg></span>
+        <div>
+          <p class="hero-card__kicker">This winter</p>
+          <p id="hero-card-title" class="hero-card__title">Snow routes are filling up</p>
+          <p class="hero-card__text">Reserve your driveway before the first flake. Our Glenview routes usually fill by mid-November.</p>
+          <a class="hero-card__link" href="#quote">Save my spot <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ==================== TRUST STRIP ==================== -->
+  <section class="trust" aria-label="Why neighbors choose us">
+    <div class="container">
+      <ul class="trust__card">
+        <li>
+          <span class="trust__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-shield"/></svg></span>
+          <span><strong>Licensed &amp; insured</strong><small>Fully covered on every job</small></span>
+        </li>
+        <li>
+          <span class="trust__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-calendar"/></svg></span>
+          <span><strong>Same crew, same day</strong><small>Your schedule, kept</small></span>
+        </li>
+        <li>
+          <span class="trust__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-clipboard"/></svg></span>
+          <span><strong>Free written quotes</strong><small>No pressure, no surprises</small></span>
+        </li>
+        <li>
+          <span class="trust__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-snowflake"/></svg></span>
+          <span><strong>24/7 storm watch</strong><small>Plowed before your commute</small></span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ==================== SERVICES ==================== -->
+  <section id="services" class="section services" aria-labelledby="services-title">
+    <div class="container">
+      <header class="section-head">
+        <p class="eyebrow">What we do</p>
+        <h2 id="services-title">Yard care for every season, snowstorms included</h2>
+        <p class="lead">From the first spring cleanup to the last 5 a.m. plow, one local crew handles it all. Pick a season to see what we do.</p>
+      </header>
+
+      <div class="season-tabs" role="tablist" aria-label="Services by season">
+        <button class="season-tab" type="button" role="tab" id="tab-spring" data-season="spring" aria-controls="panel-spring" aria-selected="false" tabindex="-1">
+          <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-sprout"/></svg><span>Spring</span>
+        </button>
+        <button class="season-tab" type="button" role="tab" id="tab-summer" data-season="summer" aria-controls="panel-summer" aria-selected="false" tabindex="-1">
+          <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-sun"/></svg><span>Summer</span>
+        </button>
+        <button class="season-tab" type="button" role="tab" id="tab-fall" data-season="fall" aria-controls="panel-fall" aria-selected="false" tabindex="-1">
+          <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-leaf"/></svg><span>Fall</span>
+        </button>
+        <button class="season-tab" type="button" role="tab" id="tab-winter" data-season="winter" aria-controls="panel-winter" aria-selected="false" tabindex="-1">
+          <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-snowflake"/></svg><span>Winter</span>
+        </button>
+      </div>
+
+      <!-- SPRING -->
+      <div class="season-panel" id="panel-spring" data-season="spring" role="tabpanel" aria-labelledby="tab-spring" tabindex="0">
+        <div class="season-panel__head">
+          <h3 class="season-panel__title">Spring <span class="season-panel__months">Mar–May</span></h3>
+          <span class="in-season" hidden>In season now</span>
+          <p class="season-panel__intro">Wake the yard up right after a long Illinois winter.</p>
+        </div>
+        <ul class="service-grid">
+          <li>
+            <article class="service-card">
+              <span class="service-card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-rake"/></svg></span>
+              <h4>Spring Cleanup</h4>
+              <p>We clear out winter's leftovers (matted leaves, fallen branches, plow-scraped turf) then edge the beds and give the lawn its first cut.</p>
+              <ul class="checks">
+                <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Debris hauled away</li>
+                <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Plow damage patched</li>
+                <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>First mow &amp; edge</li>
+              </ul>
+            </article>
+          </li>
+          <li>
+            <article class="service-card">
+              <span class="service-card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-flower"/></svg></span>
+              <h4>Mulching &amp; Garden Beds</h4>
+              <p>Crisp hand-cut bed edges, weeds pulled by the root, and a fresh 2–3" layer of hardwood mulch that holds moisture all summer.</p>
+              <ul class="checks">
+                <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Choice of mulch color</li>
+                <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Annuals &amp; perennials planted</li>
+                <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Bed redesigns on request</li>
+              </ul>
+            </article>
+          </li>
+          <li>
+            <article class="service-card">
+              <span class="service-card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-hedge"/></svg></span>
+              <h4>Shrub &amp; Hedge Pruning</h4>
+              <p>Shaping before new growth kicks in keeps hedges full and healthy instead of leggy, and keeps walkways clear.</p>
+              <ul class="checks">
+                <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Hand-shaped, not hacked</li>
+                <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Clippings cleaned up</li>
+                <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Touch-ups in July</li>
+              </ul>
+            </article>
+          </li>
+        </ul>
+      </div>
+
+      <!-- SUMMER -->
+      <div class="season-panel" id="panel-summer" data-season="summer" role="tabpanel" aria-labelledby="tab-summer" tabindex="0">
+        <div class="season-panel__head">
+          <h3 class="season-panel__title">Summer <span class="season-panel__months">Jun–Aug</span></h3>
+          <span class="in-season" hidden>In season now</span>
+          <p class="season-panel__intro">The weekly rhythm that keeps your yard the nicest on the block.</p>
+        </div>
+        <ul class="service-grid">
+          <li>
+            <article class="service-card">
+              <span class="service-card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-mower"/></svg></span>
+              <h4>Lawn Mowing &amp; Edging</h4>
+              <p>Same day every week, cut at the right height for Illinois heat. Every walk and drive edged, clippings blown off before we go.</p>
+              <ul class="checks">
+                <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Weekly or every other week</li>
+                <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Trimming &amp; edging included</li>
+                <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Text when we're on the way</li>
+              </ul>
+            </article>
+          </li>
+          <li>
+            <article class="service-card">
+              <span class="service-card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-water"/></svg></span>
+              <h4>Garden Bed Upkeep</h4>
+              <p>Weeding, deadheading and mulch top-ups so your beds look like early June all the way into September.</p>
+              <ul class="checks">
+                <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Every-other-week visits</li>
+                <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Container &amp; planter care</li>
+                <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Heat-stress check-ins</li>
+              </ul>
+            </article>
+          </li>
+          <li>
+            <article class="service-card">
+              <span class="service-card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-key"/></svg></span>
+              <h4>Vacation Yard Watch</h4>
+              <p>Heading up north for a week? We'll mow, water the planters and make sure the place looks lived-in while you're gone.</p>
+              <ul class="checks">
+                <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Packages moved out of sight</li>
+                <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Photo update each visit</li>
+                <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Keys kept locked &amp; logged</li>
+              </ul>
+            </article>
+          </li>
+        </ul>
+      </div>
+
+      <!-- FALL -->
+      <div class="season-panel" id="panel-fall" data-season="fall" role="tabpanel" aria-labelledby="tab-fall" tabindex="0">
+        <div class="season-panel__head">
+          <h3 class="season-panel__title">Fall <span class="season-panel__months">Sep–Nov</span></h3>
+          <span class="in-season" hidden>In season now</span>
+          <p class="season-panel__intro">Leaves down, lawn tucked in, driveway ready for the plow.</p>
+        </div>
+        <ul class="service-grid">
+          <li>
+            <article class="service-card">
+              <span class="service-card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-leaf"/></svg></span>
+              <h4>Fall Cleanup &amp; Leaf Removal</h4>
+              <p>We rake, blow and haul away every last leaf (beds and gutters too, if you like) so your lawn isn't smothered all winter.</p>
+              <ul class="checks">
+                <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Hauled away, no curb piles</li>
+                <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>One visit or weekly to Dec</li>
+                <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Gutter clearing on request</li>
+              </ul>
+            </article>
+          </li>
+          <li>
+            <article class="service-card">
+              <span class="service-card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-aerate"/></svg></span>
+              <h4>Aeration &amp; Overseeding</h4>
+              <p>Fall is the best time to fix thin, tired turf. We core-aerate and overseed so it comes back thick and green in spring.</p>
+              <ul class="checks">
+                <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Core aeration</li>
+                <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Shade &amp; sun seed blends</li>
+                <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Starter feed included</li>
+              </ul>
+            </article>
+          </li>
+          <li>
+            <article class="service-card">
+              <span class="service-card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-pine"/></svg></span>
+              <h4>Winter Prep &amp; Final Mow</h4>
+              <p>A short final cut, perennials trimmed back, tender shrubs wrapped in burlap, and plow stakes set along your drive.</p>
+              <ul class="checks">
+                <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Burlap wrap for evergreens</li>
+                <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Hoses &amp; spigots shut down</li>
+                <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Plow markers installed</li>
+              </ul>
+            </article>
+          </li>
+        </ul>
+      </div>
+
+      <!-- WINTER -->
+      <div class="season-panel" id="panel-winter" data-season="winter" role="tabpanel" aria-labelledby="tab-winter" tabindex="0">
+        <div class="season-panel__head">
+          <h3 class="season-panel__title">Winter <span class="season-panel__months">Dec–Mar</span></h3>
+          <span class="in-season" hidden>In season now</span>
+          <p class="season-panel__intro">Snow and ice handled before you've finished your coffee.</p>
+        </div>
+        <ul class="service-grid">
+          <li>
+            <article class="service-card">
+              <span class="service-card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-plow"/></svg></span>
+              <h4>Snow Plowing</h4>
+              <p>Driveways plowed once snowfall hits 2 inches, and again as it keeps coming. Season contracts or per-push, your choice.</p>
+              <ul class="checks">
+                <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Cleared before 7 a.m.</li>
+                <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>End-of-drive plow ridge cleared</li>
+                <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Storm updates by text</li>
+              </ul>
+            </article>
+          </li>
+          <li>
+            <article class="service-card">
+              <span class="service-card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-shovel"/></svg></span>
+              <h4>Sidewalk &amp; Driveway Shoveling</h4>
+              <p>Walks, steps and stoops hand-shoveled so the mail carrier, your neighbors and you all stay on your feet.</p>
+              <ul class="checks">
+                <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Front walk, steps &amp; stoop</li>
+                <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Public sidewalk cleared</li>
+                <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Path to the mailbox, too</li>
+              </ul>
+            </article>
+          </li>
+          <li>
+            <article class="service-card">
+              <span class="service-card__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-salt"/></svg></span>
+              <h4>Salting &amp; De-icing</h4>
+              <p>Pet- and concrete-friendly ice melt on walks and drives, reapplied after those sneaky freeze–thaw nights.</p>
+              <ul class="checks">
+                <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Pet-safe ice melt</li>
+                <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Refreeze patrols</li>
+                <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Bundled with any plow plan</li>
+              </ul>
+            </article>
+          </li>
+        </ul>
+      </div>
+
+      <div class="plan-banner on-dark">
+        <svg class="icon plan-banner__art" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-leaf"/></svg>
+        <div>
+          <p class="plan-banner__kicker">Most popular</p>
+          <h3>The Year-Round Plan</h3>
+          <p>Mowing, spring and fall cleanups, and snow removal from one crew on one simple monthly bill. Plan members also get first spot on our plow routes.</p>
+        </div>
+        <a class="btn btn--cream btn--lg" href="#quote">
+          Ask about the plan
+          <svg class="icon icon--arrow" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== ABOUT ==================== -->
+  <section id="about" class="section about" aria-labelledby="about-title">
+    <div class="container about__grid">
+      <div class="about__copy">
+        <p class="eyebrow">About us</p>
+        <h2 id="about-title">A family crew that lives right here</h2>
+        <p class="lead"><span data-biz="name">Northshore Green Co.</span> started in 2009 with one truck, one mower and a few neighbors on our own Glenview street. We're still family-run, and still mowing some of those very same lawns.</p>
+        <p>Today we're a small crew of nine. We're fully licensed and insured, we pay our people fairly, and we keep our routes tight so the same faces show up at your place every week. It's the kind of service you'd trust with a gate code, or your house keys.</p>
+        <ul class="stats">
+          <li><strong>15+</strong><span>years on the North Shore</span></li>
+          <li><strong>600+</strong><span>yards &amp; drives cared for each year</span></li>
+          <li><strong>$2M</strong><span>liability coverage on every job</span></li>
+        </ul>
+      </div>
+
+      <div class="promise">
+        <svg class="stamp" viewBox="0 0 120 120" aria-hidden="true" focusable="false">
+          <defs><path id="stamp-path" d="M60 60m-42 0a42 42 0 1 1 84 0a42 42 0 1 1-84 0"/></defs>
+          <circle class="stamp__bg" cx="60" cy="60" r="57"/>
+          <circle class="stamp__ring" cx="60" cy="60" r="52"/>
+          <circle class="stamp__ring" cx="60" cy="60" r="33"/>
+          <text class="stamp__text"><textPath href="#stamp-path" textLength="262" lengthAdjust="spacing">EST. 2009 • GLENVIEW, IL • FAMILY RUN •</textPath></text>
+          <path class="stamp__leaf" d="M47 73c0-14 9-24 27-25 0 17-10 26-25.5 26z"/>
+          <path class="stamp__vein" d="M48.5 72c5-7 11-12.5 18.5-16.5"/>
+        </svg>
+        <h3 class="promise__title">Our neighbor promise</h3>
+        <ul>
+          <li>
+            <span class="promise__check"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg></span>
+            <span><strong>We show up when we say we will.</strong><span>Same day, same crew, every single week.</span></span>
+          </li>
+          <li>
+            <span class="promise__check"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg></span>
+            <span><strong>We text before we arrive.</strong><span>And again when we're done, with a photo.</span></span>
+          </li>
+          <li>
+            <span class="promise__check"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg></span>
+            <span><strong>We leave it cleaner than we found it.</strong><span>Clippings blown off, gates latched behind us.</span></span>
+          </li>
+          <li>
+            <span class="promise__check"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg></span>
+            <span><strong>A real person answers the phone.</strong><span>Usually one of us. No phone trees, ever.</span></span>
+          </li>
+        </ul>
+        <!-- Placeholder owner names -->
+        <p class="promise__sign">— Tom &amp; Rosa, owners</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== SERVICE AREA ==================== -->
+  <section id="area" class="section area" aria-labelledby="area-title">
+    <div class="container area__grid">
+      <div>
+        <p class="eyebrow">Service area</p>
+        <h2 id="area-title">Proudly serving Glenview and nearby suburbs</h2>
+        <p class="lead">Our trucks stay close to home. That means faster plowing after a storm and fewer missed appointments. If you're on the North Shore, we're probably already on your street.</p>
+        <ul class="chips" aria-label="Communities we serve">
+          <li class="chip chip--home"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-pin"/></svg>Glenview <span class="chip__tag">Home base</span></li>
+          <li class="chip"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-pin"/></svg>Northbrook</li>
+          <li class="chip"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-pin"/></svg>Wilmette</li>
+          <li class="chip"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-pin"/></svg>Northfield</li>
+          <li class="chip"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-pin"/></svg>Skokie</li>
+          <li class="chip"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-pin"/></svg>Golf</li>
+          <li class="chip"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-pin"/></svg>Morton Grove</li>
+          <li class="chip"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-pin"/></svg>Winnetka</li>
+        </ul>
+        <p class="area__note">Just outside the list? Call <a href="tel:+18475550142" data-biz="phone">(847) 555-0142</a> and we'll tell you straight.</p>
+      </div>
+
+      <figure class="map-card">
+        <svg class="area-map" viewBox="0 0 340 280" role="img" aria-labelledby="map-title map-desc">
+          <title id="map-title">Service area map</title>
+          <desc id="map-desc">A stylized map with Glenview at the center of our service radius. Northbrook and Northfield sit to the north, Winnetka and Wilmette to the northeast and east along Lake Michigan, and Golf, Skokie and Morton Grove to the south.</desc>
+          <defs><clipPath id="map-clip"><rect width="340" height="280" rx="22"/></clipPath></defs>
+          <g clip-path="url(#map-clip)">
+            <rect class="m-land" width="340" height="280"/>
+            <path class="m-grid" d="M0 46h340M0 98h340M0 150h340M0 202h340M0 254h340M34 0v280M86 0v280M138 0v280M190 0v280M242 0v280"/>
+            <path class="m-road" d="M102 0c6 70 14 140 24 280"/>
+            <path class="m-road" d="M0 172c96 4 190-6 290-8"/>
+            <path class="m-road" d="M36 0c18 70 20 150 8 280"/>
+            <circle class="m-radius" cx="118" cy="148" r="146"/>
+            <path class="m-lake" d="M266 0c-8 58 4 108 14 158 8 42 12 82 14 122h46V0z"/>
+            <path class="m-shore" d="M266 0c-8 58 4 108 14 158 8 42 12 82 14 122"/>
+            <path class="m-wave" d="M296 48q5-4 10 0t10 0M304 92q5-4 10 0t10 0M300 200q5-4 10 0t10 0M310 238q5-4 10 0t10 0"/>
+            <text class="m-lake-label" transform="translate(318 150) rotate(82)" text-anchor="middle">LAKE MICHIGAN</text>
+
+            <circle class="m-dot" cx="76" cy="58" r="5"/><text class="m-label" x="85" y="62">Northbrook</text>
+            <circle class="m-dot" cx="162" cy="94" r="5"/><text class="m-label" x="171" y="98">Northfield</text>
+            <circle class="m-dot" cx="222" cy="52" r="5"/><text class="m-label" x="213" y="56" text-anchor="end">Winnetka</text>
+            <circle class="m-dot" cx="238" cy="126" r="5"/><text class="m-label" x="238" y="114" text-anchor="middle">Wilmette</text>
+            <circle class="m-dot" cx="152" cy="192" r="5"/><text class="m-label" x="161" y="196">Golf</text>
+            <circle class="m-dot" cx="232" cy="210" r="5"/><text class="m-label" x="223" y="214" text-anchor="end">Skokie</text>
+            <circle class="m-dot" cx="106" cy="236" r="5"/><text class="m-label" x="115" y="240">Morton Grove</text>
+
+            <g transform="translate(118 148)">
+              <circle r="16" class="m-radius" style="stroke-dasharray:none"/>
+              <path class="m-pin" d="M0 0C-2-6-11-11-11-20a11 11 0 0 1 22 0C11-11 2-6 0 0z"/>
+              <circle class="m-pin-dot" cy="-20" r="4.2"/>
+            </g>
+            <text class="m-home" x="134" y="146">Glenview</text>
+            <text class="m-home-tag" x="135" y="159">HOME BASE</text>
+
+            <g transform="translate(26 30)">
+              <path class="m-compass" d="M0-14 6 6 0 2-6 6z"/>
+              <text class="m-compass-text" x="0" y="20" text-anchor="middle">N</text>
+            </g>
+          </g>
+        </svg>
+        <figcaption>Stylized map, not to scale.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ==================== TESTIMONIALS (invented placeholders) ==================== -->
+  <section id="reviews" class="section reviews" aria-labelledby="reviews-title">
+    <div class="container">
+      <header class="section-head">
+        <p class="eyebrow">Kind words</p>
+        <h2 id="reviews-title">Neighbors say it best</h2>
+      </header>
+      <ul class="reviews__grid">
+        <li>
+          <figure class="review" style="--tint: var(--winter)">
+            <div class="stars" role="img" aria-label="5 out of 5 stars">
+              <svg class="icon icon--fill" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="icon icon--fill" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="icon icon--fill" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="icon icon--fill" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="icon icon--fill" aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
+            </div>
+            <blockquote><p>They've plowed our driveway for three winters and I've never once had to call. It's just done before I'm out the door at 6:30.</p></blockquote>
+            <figcaption>
+              <span class="avatar" aria-hidden="true">DR</span>
+              <span><span class="review__name">Dana R., Glenview</span><span class="review__meta">Snow plowing customer</span></span>
+            </figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure class="review" style="--tint: var(--summer)">
+            <div class="stars" role="img" aria-label="5 out of 5 stars">
+              <svg class="icon icon--fill" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="icon icon--fill" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="icon icon--fill" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="icon icon--fill" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="icon icon--fill" aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
+            </div>
+            <blockquote><p>Our yard went from the one on the block to the one people slow down for. The crew is polite and quick, and they always latch the gate.</p></blockquote>
+            <figcaption>
+              <span class="avatar" aria-hidden="true">MT</span>
+              <span><span class="review__name">Marcus T., Northbrook</span><span class="review__meta">Weekly mowing customer</span></span>
+            </figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure class="review" style="--tint: var(--fall)">
+            <div class="stars" role="img" aria-label="5 out of 5 stars">
+              <svg class="icon icon--fill" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="icon icon--fill" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="icon icon--fill" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="icon icon--fill" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="icon icon--fill" aria-hidden="true" focusable="false"><use href="#i-star"/></svg>
+            </div>
+            <blockquote><p>Fall cleanup used to eat two of my weekends. Now it's one phone call, and every leaf is gone by Friday. Worth every penny.</p></blockquote>
+            <figcaption>
+              <span class="avatar" aria-hidden="true">PK</span>
+              <span><span class="review__name">Priya K., Wilmette</span><span class="review__meta">Fall cleanup customer</span></span>
+            </figcaption>
+          </figure>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ==================== QUOTE FORM ==================== -->
+  <section id="quote" class="section quote on-dark" aria-labelledby="quote-title">
+    <div class="container quote__grid">
+      <div class="quote__intro">
+        <p class="eyebrow">Free quote</p>
+        <h2 id="quote-title">Tell us about your yard. We'll take it from there.</h2>
+        <p class="lead">No pressure and no obligation. We'll walk your property, answer your questions and leave you a clear, written price.</p>
+        <ol class="steps">
+          <li><span><strong>Send the form</strong><span>Two minutes, tops.</span></span></li>
+          <li><span><strong>We call within one business day</strong><span>Usually the same afternoon.</span></span></li>
+          <li><span><strong>Free walk-through &amp; written quote</strong><span>You decide, with no pushy follow-ups.</span></span></li>
+        </ol>
+        <div class="quote__contact">
+          <p>Rather talk to a person?</p>
+          <a class="contact-line contact-line--big" href="tel:+18475550142" data-biz-href="phone">
+            <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg>
+            <span data-biz="phone">(847) 555-0142</span>
+          </a>
+          <a class="contact-line" href="mailto:hello@example.com" data-biz-href="email">
+            <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-mail"/></svg>
+            <span data-biz="email">hello@example.com</span>
+          </a>
+          <p class="contact-line">
+            <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-clock"/></svg>
+            <span data-biz="hours">Mon–Sat, 7am–6pm</span>
+          </p>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <!--
+          FORM BACKEND: this form is demo-only. A small script at the bottom
+          of the page (look for "DEMO FORM HANDLER") stops the submit and shows
+          the thank-you message. To collect real requests, pick one:
+            - Formspree:     set action="https://formspree.io/f/YOUR_FORM_ID"
+                             (keep method="post"), then in the demo handler
+                             send the data with fetch() before showing thanks.
+            - Netlify Forms: add  data-netlify="true"  name="quote"  to <form>
+                             and remove the demo handler.
+            - Your own endpoint / CRM webhook: set action to its URL.
+        -->
+        <form id="quote-form" class="quote-form" action="#" method="post">
+          <h3 class="form-card__title">Request a free quote</h3>
+          <p class="form-card__sub">All fields are required unless marked optional.</p>
+          <div class="form-grid">
+            <div class="field">
+              <label for="f-name">Your name</label>
+              <input id="f-name" name="name" type="text" autocomplete="name" required>
+            </div>
+            <div class="field">
+              <label for="f-phone">Phone</label>
+              <input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="(847) 555-0123" required>
+            </div>
+            <div class="field">
+              <label for="f-email">Email <span class="optional">Optional</span></label>
+              <input id="f-email" name="email" type="email" autocomplete="email" placeholder="you@example.com">
+            </div>
+            <div class="field">
+              <label for="f-address">Street address or suburb</label>
+              <input id="f-address" name="address" type="text" autocomplete="street-address" placeholder="e.g. Glenview" required>
+            </div>
+            <div class="field field--full">
+              <label for="f-service">Service needed</label>
+              <select id="f-service" name="service" required>
+                <option value="">Choose a service…</option>
+                <optgroup label="Spring &amp; Summer">
+                  <option>Lawn mowing &amp; edging</option>
+                  <option>Spring cleanup</option>
+                  <option>Mulching &amp; garden beds</option>
+                  <option>Shrub &amp; hedge pruning</option>
+                  <option>Garden bed upkeep</option>
+                </optgroup>
+                <optgroup label="Fall">
+                  <option>Fall cleanup &amp; leaf removal</option>
+                  <option>Aeration &amp; overseeding</option>
+                  <option>Winter prep &amp; final mow</option>
+                </optgroup>
+                <optgroup label="Winter">
+                  <option>Snow plowing</option>
+                  <option>Sidewalk &amp; driveway shoveling</option>
+                  <option>Salting &amp; de-icing</option>
+                </optgroup>
+                <optgroup label="Other">
+                  <option>Year-Round Plan</option>
+                  <option>Not sure yet, help me decide</option>
+                </optgroup>
+              </select>
+            </div>
+            <div class="field field--full">
+              <label for="f-message">Anything we should know? <span class="optional">Optional</span></label>
+              <textarea id="f-message" name="message" rows="4" placeholder="Lot size, gate codes, problem spots, best time to call…"></textarea>
+            </div>
+          </div>
+          <button class="btn btn--clay btn--lg btn--block" type="submit">
+            Request my free quote
+            <svg class="icon icon--arrow" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg>
+          </button>
+          <p class="form-note">We only use your info to reply about your quote. No spam, ever.</p>
+        </form>
+
+        <div id="form-success" class="form-success" role="status" tabindex="-1" hidden>
+          <div class="success-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg></div>
+          <h3>Thanks<span data-thanks-name></span>, we've got it!</h3>
+          <p>Someone from our crew will reach out within one business day (usually much sooner) to set up your free walk-through.</p>
+          <p>Need us sooner? Call <a href="tel:+18475550142" data-biz="phone">(847) 555-0142</a>.</p>
+          <button class="btn btn--outline" type="button" data-form-reset>Send another request</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ==================== FOOTER ==================== -->
+<footer class="site-footer on-dark">
+  <div class="container footer__grid">
+    <div class="footer__brand">
+      <a class="brand brand--light" href="#top">
+        <svg class="brand__mark" viewBox="0 0 40 40" aria-hidden="true" focusable="false">
+          <rect class="m-forest" width="40" height="40" rx="12"/>
+          <path class="m-leaf" d="M10.5 29.5c0-10.5 6.6-17.6 19.5-18.5 0 12.8-7.2 19.5-18.6 19.5z"/>
+          <path class="m-vein" d="M11.8 28.6c3.6-5.2 8-9.2 13.4-12.4"/>
+          <circle class="m-snow" cx="30.5" cy="29" r="2"/>
+          <circle class="m-snow" cx="25.5" cy="32.5" r="1.3"/>
+        </svg>
+        <span class="brand__name" data-biz="name" style="max-width:none">Northshore Green Co.</span>
+      </a>
+      <p>Lawn care, seasonal cleanups and snow removal for Glenview and the North Shore. Family-run since 2009.</p>
+      <a class="btn btn--clay btn--sm" href="#quote">Get a Free Quote</a>
+    </div>
+
+    <div>
+      <h2 class="footer__heading">Contact</h2>
+      <ul class="footer__list">
+        <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><a href="tel:+18475550142" data-biz="phone">(847) 555-0142</a></li>
+        <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-mail"/></svg><a href="mailto:hello@example.com" data-biz="email">hello@example.com</a></li>
+        <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-pin"/></svg><span data-biz="address">123 Sample Street, Glenview, IL 60025</span></li>
+      </ul>
+    </div>
+
+    <div>
+      <h2 class="footer__heading">Hours</h2>
+      <ul class="footer__list">
+        <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-clock"/></svg><span data-biz="hours">Mon–Sat, 7am–6pm</span></li>
+        <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-snowflake"/></svg><span>Snow service 24/7 during storms</span></li>
+      </ul>
+    </div>
+
+    <nav aria-label="Footer">
+      <h2 class="footer__heading">Explore</h2>
+      <ul class="footer__list">
+        <li><a href="#services">Services</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#area">Service area</a></li>
+        <li><a href="#quote">Free quote</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="container footer__bottom">
+    <p>© <span data-year>2026</span> <span data-biz="name">Northshore Green Co.</span> All rights reserved.</p>
+    <!-- SAMPLE RIBBON: remove when customizing for a real client -->
+    <div class="sample-ribbon">Sample design</div>
+    <!-- /SAMPLE RIBBON -->
+  </div>
+</footer>
+
+<script>
+(function () {
+  /* ---------- Mobile menu ---------- */
+  var toggle = document.querySelector(".nav-toggle");
+  var menu = document.getElementById("site-menu");
+  function setMenu(open) {
+    toggle.setAttribute("aria-expanded", String(open));
+    toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+    menu.classList.toggle("is-open", open);
+  }
+  toggle.addEventListener("click", function () {
+    setMenu(toggle.getAttribute("aria-expanded") !== "true");
+  });
+  menu.addEventListener("click", function (e) {
+    if (e.target.closest("a")) setMenu(false);
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && toggle.getAttribute("aria-expanded") === "true") {
+      setMenu(false);
+      toggle.focus();
+    }
+  });
+
+  /* ---------- Season tabs (opens on the current season) ---------- */
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.season-tab[role="tab"]'));
+  var panels = tabs.map(function (t) { return document.getElementById(t.getAttribute("aria-controls")); });
+  function selectTab(i, focus) {
+    tabs.forEach(function (t, j) {
+      var on = i === j;
+      t.setAttribute("aria-selected", String(on));
+      t.tabIndex = on ? 0 : -1;
+      panels[j].hidden = !on;
+    });
+    if (focus) tabs[i].focus();
+  }
+  tabs.forEach(function (t, i) {
+    t.addEventListener("click", function () { selectTab(i); });
+    t.addEventListener("keydown", function (e) {
+      var n = tabs.length, next = -1;
+      if (e.key === "ArrowRight") next = (i + 1) % n;
+      else if (e.key === "ArrowLeft") next = (i - 1 + n) % n;
+      else if (e.key === "Home") next = 0;
+      else if (e.key === "End") next = n - 1;
+      if (next > -1) { e.preventDefault(); selectTab(next, true); }
+    });
+  });
+  if (tabs.length) {
+    var m = new Date().getMonth(); // 0 = Jan
+    var current = m >= 2 && m <= 4 ? 0 : m >= 5 && m <= 7 ? 1 : m >= 8 && m <= 10 ? 2 : 3;
+    var dot = document.createElement("span");
+    dot.className = "now-dot";
+    dot.setAttribute("aria-hidden", "true");
+    tabs[current].appendChild(dot);
+    var sr = document.createElement("span");
+    sr.className = "sr-only";
+    sr.textContent = " (in season now)";
+    tabs[current].appendChild(sr);
+    panels[current].querySelector(".in-season").hidden = false;
+    selectTab(current);
+  }
+
+  /* ---------- DEMO FORM HANDLER ----------
+     Stops the real submit and shows a thank-you message.
+     To send real data, see the FORM BACKEND comment above the form. */
+  var form = document.getElementById("quote-form");
+  var success = document.getElementById("form-success");
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    if (!form.checkValidity()) { form.reportValidity(); return; }
+    // e.g. fetch(form.action, { method: "POST", body: new FormData(form), headers: { Accept: "application/json" } });
+    var first = (form.elements.namedItem("name").value || "").trim().split(/\s+/)[0];
+    success.querySelector("[data-thanks-name]").textContent = first ? ", " + first : "";
+    form.hidden = true;
+    success.hidden = false;
+    success.focus();
+  });
+  success.querySelector("[data-form-reset]").addEventListener("click", function () {
+    form.reset();
+    success.hidden = true;
+    form.hidden = false;
+    form.elements.namedItem("name").focus();
+  });
+})();
+</script>
+</body>
+</html>
