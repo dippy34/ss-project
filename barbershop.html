@@ -51,15 +51,20 @@
     document.querySelectorAll("[data-biz]").forEach(function (el) {
       var key = el.getAttribute("data-biz"), val = BUSINESS[key];
       if (val == null) return;
-      el.textContent = "";
-      /* each " · " separated part stays on one line */
-      String(val).split(" · ").forEach(function (part, i) {
-        if (i) el.appendChild(document.createTextNode(" · "));
-        var span = document.createElement("span");
-        span.className = "nowrap";
-        span.textContent = part;
-        el.appendChild(span);
-      });
+      var parts = String(val).split(" · ");
+      if (parts.length === 1) {
+        el.textContent = val;
+      } else {
+        /* keep each " · " separated part (e.g. "Sat 8am–4pm") on one line */
+        el.textContent = "";
+        parts.forEach(function (part, i) {
+          if (i) el.appendChild(document.createTextNode(" · "));
+          var span = document.createElement("span");
+          span.className = "nowrap";
+          span.textContent = part;
+          el.appendChild(span);
+        });
+      }
       if (el.tagName === "A" && hrefs[key]) el.setAttribute("href", hrefs[key]);
     });
     document.querySelectorAll("[data-biz-href]").forEach(function (el) {
@@ -176,7 +181,7 @@ h1, h2, h3 { margin: 0; font-family: var(--font-display); font-weight: 700; line
   letter-spacing: .24em; text-transform: uppercase; color: var(--brass);
 }
 .kicker::after { content: ""; flex: 0 1 4.5rem; height: 1px; background: var(--brass); opacity: .7; }
-.kicker > span { white-space: nowrap; }
+.kicker { white-space: nowrap; }
 .kicker-no { font-family: var(--font-display); font-style: italic; font-weight: 400; font-size: 1rem; letter-spacing: 0; text-transform: none; color: var(--cream-muted); }
 .kicker-center { justify-content: center; }
 .kicker-center::before { content: ""; flex: 0 1 4.5rem; height: 1px; background: var(--brass); opacity: .7; }
@@ -452,10 +457,10 @@ html.js .site-nav.is-open { display: block; }
 .barber-role { margin: 0 0 .7rem; font-family: var(--font-label); font-weight: 600; font-size: .8125rem; letter-spacing: .22em; text-transform: uppercase; color: var(--brass); }
 .barber-spec { margin: 0 0 .9rem; color: var(--cream-muted); font-size: 1rem; line-height: 1.5; }
 .barber-years {
-  display: flex; align-items: baseline; gap: .55rem; margin: 0; padding-top: .75rem; border-top: 1px solid var(--line);
-  font-family: var(--font-label); font-weight: 500; font-size: var(--fs-label); letter-spacing: .16em; text-transform: uppercase; color: var(--cream-muted);
+  display: flex; align-items: center; gap: .75rem; margin: 0; padding-top: .85rem; border-top: 1px solid var(--line);
+  font-family: var(--font-label); font-weight: 500; font-size: .75rem; line-height: 1.25; letter-spacing: .18em; text-transform: uppercase; color: var(--cream-muted);
 }
-.years-num { font-family: var(--font-display); font-weight: 900; font-size: 1.75rem; line-height: 1; letter-spacing: 0; color: var(--brass-light); }
+.years-num { font-family: var(--font-display); font-weight: 900; font-size: 2.25rem; line-height: 1; letter-spacing: 0; color: var(--brass-light); }
 
 /* Hours */
 .hours-grid { display: grid; gap: 3.5rem; }
@@ -980,7 +985,7 @@ html.js .site-nav.is-open { display: block; }
             <h3 class="barber-name">Marco Vitale</h3>
             <p class="barber-role">Owner &middot; Master Barber</p>
             <p class="barber-spec">Scissor-over-comb and the classic cut, done the long way.</p>
-            <p class="barber-years"><span class="years-num">18</span> years behind the chair</p>
+            <p class="barber-years"><span class="years-num">18</span><span class="years-label">years behind<br>the chair</span></p>
           </div>
         </li>
         <li class="barber">
@@ -992,7 +997,7 @@ html.js .site-nav.is-open { display: block; }
             <h3 class="barber-name">Dez Okafor</h3>
             <p class="barber-role">Senior Barber</p>
             <p class="barber-spec">Skin fades, tapers and line-ups you could set a level by.</p>
-            <p class="barber-years"><span class="years-num">11</span> years behind the chair</p>
+            <p class="barber-years"><span class="years-num">11</span><span class="years-label">years behind<br>the chair</span></p>
           </div>
         </li>
         <li class="barber">
@@ -1004,7 +1009,7 @@ html.js .site-nav.is-open { display: block; }
             <h3 class="barber-name">Hank Lindqvist</h3>
             <p class="barber-role">Barber</p>
             <p class="barber-spec">Hot towel shaves and beard sculpting. Very calm. Suspiciously calm.</p>
-            <p class="barber-years"><span class="years-num">9</span> years behind the chair</p>
+            <p class="barber-years"><span class="years-num">9</span><span class="years-label">years behind<br>the chair</span></p>
           </div>
         </li>
         <li class="barber">
@@ -1016,7 +1021,7 @@ html.js .site-nav.is-open { display: block; }
             <h3 class="barber-name">Ruby Calloway</h3>
             <p class="barber-role">Barber</p>
             <p class="barber-spec">Kids&rsquo; cuts, gray blending, and a first-haircut certificate for the fridge.</p>
-            <p class="barber-years"><span class="years-num">6</span> years behind the chair</p>
+            <p class="barber-years"><span class="years-num">6</span><span class="years-label">years behind<br>the chair</span></p>
           </div>
         </li>
       </ul>
