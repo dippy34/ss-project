@@ -97,7 +97,7 @@
   --leaf-shade: #3b2408;     /* sign-painter drop shade */
   --oxblood: #6f1d23;        /* leather, awning, accents */
   --oxblood-deep: #3e1014;
-  --ticket-red: #b0252c;     /* ticket numbers, prices on cards */
+  --ticket-red: #a82228;     /* ticket numbers, prices on cards */
   --paper: #f3e8cd;          /* showcards, tickets, appointment book */
   --paper-2: #e2d1ab;
   --paper-ink: #1e1813;
@@ -259,10 +259,9 @@ html.js .site-nav.is-open { display: block; }
 .interior { position: absolute; inset: 0; z-index: -1; width: 100%; height: 100%; }
 .interior .g-lamp { stop-color: var(--lamp); stop-opacity: .5; }
 .interior .g-none { stop-color: var(--lamp); stop-opacity: 0; }
-.interior .i-dark { fill: var(--ink); stroke: var(--lamp-a); stroke-width: 1.5; }
+.interior .i-dark { fill: var(--ink); stroke: var(--lamp-b); stroke-width: 1; }
 .interior .i-cord { stroke: var(--ink); stroke-width: 2; }
 .interior .i-bulb { fill: var(--leaf-hi); }
-.interior .i-frame { fill: none; stroke: var(--lamp-a); stroke-width: 2; }
 .glare {
   position: absolute; inset: 0; z-index: 2; pointer-events: none;
   background:
@@ -283,7 +282,7 @@ html.js .site-nav.is-open { display: block; }
 .l-swash { fill: url(#leaf); }
 .glass-line {
   max-width: 30rem; margin: .5rem auto 1.1rem;
-  font: 700 clamp(.8125rem, .74rem + .35vw, 1rem)/1.5 var(--font-body); letter-spacing: .24em; text-transform: uppercase;
+  font: 700 clamp(.8125rem, .74rem + .35vw, 1rem)/1.5 var(--font-body); letter-spacing: clamp(.14em, .05em + .4vw, .26em); text-transform: uppercase; white-space: nowrap;
   color: var(--leaf); text-shadow: -1px -1px 0 var(--ink), 1px -1px 0 var(--ink), -1px 1px 0 var(--ink), 2px 2px 0 var(--leaf-shade);
 }
 .glass-ribbon { margin: 0 0 1.4rem; }
@@ -352,7 +351,7 @@ html.js .site-nav.is-open { display: block; }
 .board-grid { display: grid; gap: 2.5rem; }
 .letterboard {
   padding: clamp(.7rem, 1.4vw, 1.1rem);
-  background: repeating-linear-gradient(90deg, transparent 0 6px, var(--shadow-b) 6px 7px, transparent 7px 15px), linear-gradient(180deg, var(--oak), var(--oak-dark));
+  background: repeating-linear-gradient(177deg, transparent 0 7px, var(--shadow-b) 7px 8px, transparent 8px 19px, var(--glare) 19px 21px), linear-gradient(90deg, var(--oak-dark), var(--oak) 18%, var(--oak) 82%, var(--oak-dark));
   box-shadow: 0 30px 50px -25px var(--shadow-a), inset 0 0 0 1px var(--oak-dark), inset 0 1px 0 var(--glare-strong);
 }
 .felt {
@@ -381,9 +380,9 @@ html.js .site-nav.is-open { display: block; }
 .fine li:last-child { border-bottom: 1px solid var(--line); }
 
 /* Checkerboard floor */
-.floor { position: relative; height: clamp(4.5rem, 3rem + 6vw, 9rem); overflow: hidden; perspective: 18rem; perspective-origin: 50% 100%; background: var(--ink); border-top: .5rem solid var(--oak-dark); }
-.floor::before { content: ""; position: absolute; left: -60%; right: -60%; bottom: 0; height: 320%; transform-origin: 50% 100%; transform: rotateX(68deg); background: repeating-conic-gradient(var(--tile) 0 25%, var(--ink) 0 50%) 50% 100% / 4.5rem 4.5rem; }
-.floor::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, var(--shadow-a), transparent 45%, var(--ink) 100%), radial-gradient(ellipse 60% 120% at 50% 0, transparent 30%, var(--ink) 90%); }
+.floor { position: relative; height: clamp(6rem, 4rem + 6vw, 10rem); overflow: hidden; perspective: 16rem; perspective-origin: 50% 100%; background: var(--ink); border-top: .5rem solid var(--oak-dark); }
+.floor::before { content: ""; position: absolute; left: -150%; right: -150%; bottom: 0; height: 1000%; transform-origin: 50% 100%; transform: rotateX(58deg); background: repeating-conic-gradient(var(--tile) 0 25%, var(--ink) 0 50%) 50% 100% / 4.5rem 4.5rem; }
+.floor::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, var(--ink) 0, var(--shadow-a) 30%, transparent 60%, var(--shadow-b) 85%, var(--ink) 100%), radial-gradient(ellipse 75% 140% at 50% 100%, transparent 35%, var(--ink) 95%); }
 
 /* ---------- About + house rules ---------- */
 .about { padding-block: var(--section); }
@@ -402,9 +401,7 @@ html.js .site-nav.is-open { display: block; }
     radial-gradient(circle at calc(100% - 1.05rem) 1.05rem, var(--chrome-hi) 0 .14rem, var(--chrome-lo) .2rem .3rem, transparent .34rem),
     radial-gradient(circle at 1.05rem calc(100% - 1.05rem), var(--chrome-hi) 0 .14rem, var(--chrome-lo) .2rem .3rem, transparent .34rem),
     radial-gradient(circle at calc(100% - 1.05rem) calc(100% - 1.05rem), var(--chrome-hi) 0 .14rem, var(--chrome-lo) .2rem .3rem, transparent .34rem),
-    radial-gradient(ellipse .7rem .4rem at 88% 100%, var(--paper-ink) 50%, transparent 60%),
-    radial-gradient(ellipse .35rem .5rem at 0 62%, var(--paper-ink) 50%, transparent 60%),
-    linear-gradient(125deg, transparent 0 55%, var(--glare-strong) 55% 58%, transparent 58%);
+    linear-gradient(125deg, transparent 0 62%, var(--glare) 62% 66%, transparent 66%);
   opacity: .9;
 }
 .enamel h3 { margin: .2rem .2rem 1.25rem; padding: 1.4rem 1rem 1.1rem; border-radius: .45rem .45rem 0 0; background: var(--oxblood); color: var(--enamel); text-align: center; font: 900 clamp(1.75rem, 1.5rem + 1vw, 2.25rem)/1 var(--font-display); text-transform: uppercase; letter-spacing: .05em; }
@@ -420,7 +417,7 @@ html.js .site-nav.is-open { display: block; }
 .team-grid { display: grid; gap: 3rem; }
 .mirror { position: relative; aspect-ratio: 3 / 4; padding: .5rem; border-radius: var(--mr); background: linear-gradient(135deg, var(--chrome-hi), var(--chrome-lo) 28%, var(--chrome) 48%, var(--chrome-lo) 72%, var(--chrome-hi)); box-shadow: 0 20px 30px -20px var(--shadow-a); }
 .mirror-glass { position: relative; display: grid; place-items: center; height: 100%; overflow: hidden; border-radius: var(--mr); background: linear-gradient(115deg, transparent 0 30%, var(--glare) 30% 36%, transparent 36% 40%, var(--glare-soft) 40% 42%, transparent 42%), linear-gradient(165deg, var(--mirror), var(--ink) 75%); box-shadow: inset 0 0 0 1px var(--shadow), inset 0 0 2rem var(--shadow-b); }
-.mirror--arch { --mr: 999px 999px .3rem .3rem; width: min(100%, 17rem); }
+.mirror--arch { --mr: 999px 999px .3rem .3rem; width: min(100%, 14rem); }
 .mirror--oval { --mr: 50%; width: 100%; padding: .35rem; }
 .mirror-name { font: 400 3.75rem/1 var(--font-script); padding: 0 .1em .15em; transform: rotate(-6deg); }
 .mirror--oval .mirror-name { font-size: 1.6rem; }
@@ -479,7 +476,7 @@ html.js .site-nav.is-open { display: block; }
 .door { position: relative; width: min(100%, 25rem); margin-inline: auto; padding: 1rem 1rem 4.75rem; background: linear-gradient(90deg, var(--wall-2), var(--soot) 50%, var(--wall-2)); box-shadow: inset 0 0 0 1px var(--line), 0 30px 60px -30px var(--shadow-a); }
 .door::after { content: ""; position: absolute; left: 1rem; right: 1rem; bottom: 1rem; height: 2.5rem; background: var(--brass); box-shadow: inset 0 0 0 1px var(--leaf-lo); opacity: .85; }
 .door-handle { position: absolute; right: .3rem; top: 46%; width: .45rem; height: 6.5rem; border-radius: .25rem; background: var(--chrome-bar); background: linear-gradient(90deg, var(--leaf-lo), var(--leaf-hi) 45%, var(--leaf) 70%, var(--leaf-lo)); }
-.door-glass { position: relative; overflow: hidden; padding: 6rem 1.5rem 1.75rem; background: linear-gradient(115deg, transparent 0 60%, var(--glare) 60% 67%, transparent 67%), linear-gradient(180deg, var(--glass), var(--ink)); box-shadow: inset 0 0 0 1px var(--shadow), inset 0 0 0 .35rem var(--soot); }
+.door-glass { position: relative; overflow: hidden; padding: 7.25rem 1.5rem 1.75rem; background: linear-gradient(115deg, transparent 0 60%, var(--glare) 60% 67%, transparent 67%), linear-gradient(180deg, var(--glass), var(--ink)); box-shadow: inset 0 0 0 1px var(--shadow), inset 0 0 0 .35rem var(--soot); }
 .hang {
   position: absolute; top: 1.5rem; left: 50%; min-width: 9.5rem; padding: .45rem .9rem .5rem; text-align: center;
   background: var(--paper); color: var(--ticket-red); border: 2px solid var(--ticket-red);
@@ -567,6 +564,7 @@ html.js .site-nav.is-open { display: block; }
 .stub-no small { font: 700 1rem/1 var(--font-body); letter-spacing: .1em; vertical-align: 2.4em; margin-right: .2rem; }
 .stub h3 { margin: 0 0 .75rem; padding-top: .9rem; border-top: 2px dashed var(--paper-ink-dim); font: 700 1.5rem/1.15 var(--font-display); }
 .stub p { color: var(--paper-ink); }
+.stub .stub-top, .stub .stub-no { color: var(--ticket-red); }
 .stub .stub-fine { font-size: .9375rem; color: var(--paper-ink-dim); }
 .stub-again { min-height: 44px; padding: 0 .5rem; font: 700 .875rem/1 var(--font-body); letter-spacing: .14em; text-transform: uppercase; color: var(--ticket-red); background: none; border: 0; text-decoration: underline; text-underline-offset: .25em; cursor: pointer; }
 
@@ -698,7 +696,7 @@ html.js .site-nav.is-open { display: block; }
         <li><a href="#team">Barbers</a></li>
         <li><a href="#hours">Hours</a></li>
       </ul>
-      <a class="ticket" href="#book"><span class="ticket-no">No.</span>Book Now</a>
+      <a class="ticket" href="#book"><span class="ticket-no">48</span>Book Now</a>
     </nav>
   </div>
 </header>
@@ -729,7 +727,7 @@ html.js .site-nav.is-open { display: block; }
             </defs>
             <ellipse cx="220" cy="110" rx="270" ry="210" fill="url(#lamp-glow)"/>
             <ellipse cx="590" cy="110" rx="270" ry="210" fill="url(#lamp-glow)" opacity=".8"/>
-            <rect x="300" y="150" width="200" height="140" class="i-frame"/>
+            <ellipse cx="400" cy="560" rx="460" ry="170" fill="url(#lamp-glow)" opacity=".55"/>
             <path d="M220 0v62M590 0v62" class="i-cord"/>
             <path d="M194 84l12-24h28l12 24z" class="i-dark"/>
             <path d="M564 84l12-24h28l12 24z" class="i-dark"/>
@@ -763,7 +761,7 @@ html.js .site-nav.is-open { display: block; }
                 <use href="#sign-swash" class="l-swash"/>
               </svg>
             </h1>
-            <p class="glass-line">Haircuts &middot; Hot Towel Shaves &middot; Beard Work</p>
+            <p class="glass-line">Haircuts &middot; Shaves &middot; Beard Work</p>
             <p class="glass-ribbon"><span>Walk-ins Welcome</span></p>
             <p class="glass-foot"><span>Est. 2009</span><span>Tues &ndash; Sat</span><span data-biz="phone">(847) 555-0167</span></p>
           </div>
@@ -906,7 +904,7 @@ html.js .site-nav.is-open { display: block; }
           <div class="mirror mirror--arch" aria-hidden="true"><div class="mirror-glass"><span class="mirror-name leaf-text">Marco</span><span class="chair-no">Chair 1</span></div></div>
           <div>
             <h3>Marco Vitale</h3>
-            <p class="barber-meta">Owner &middot; Chair 1 &middot; 17 years behind the chair</p>
+            <p class="barber-meta">Owner &middot; Chair 1 &middot; 17 years</p>
             <p class="barber-known"><b>Known for:</b> the scissor-over-comb taper, done the slow way.</p>
             <p>Rebuilt every chair in the shop, starting with his own. Learned the trade sweeping up in his uncle&rsquo;s two-chair shop on the West Side. Ask him about it and clear your afternoon.</p>
           </div>
@@ -1115,7 +1113,7 @@ html.js .site-nav.is-open { display: block; }
               <textarea id="f-notes" name="notes" rows="3" placeholder="First visit? Bringing a photo? Want the quiet chair?"></textarea>
             </div>
             <div class="field-full form-actions">
-              <button class="ticket ticket-red" type="submit"><span class="ticket-no" style="color:inherit">No.</span>Take a Number</button>
+              <button class="ticket ticket-red" type="submit">Take a Number</button>
               <p>Fields marked <span aria-hidden="true">*</span><span class="sr-only">with an asterisk</span> are required.</p>
             </div>
           </div>
@@ -1169,7 +1167,7 @@ html.js .site-nav.is-open { display: block; }
 <!-- Sticky mobile booking bar -->
 <div class="book-bar" id="book-bar">
   <a class="bar-call" href="tel:+18475550167" data-biz-href="phone"><svg aria-hidden="true" focusable="false"><use href="#i-phone"/></svg>Call</a>
-  <a class="ticket" href="#book"><span class="ticket-no">No.</span>Book Now</a>
+  <a class="ticket" href="#book"><span class="ticket-no">48</span>Book Now</a>
 </div>
 
 <script>
