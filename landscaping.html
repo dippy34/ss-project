@@ -244,8 +244,8 @@ section[id] { scroll-margin-top: 70px; }
 .poster__art { position: absolute; inset: 0; z-index: -1; display: block; width: 100%; height: 100%; }
 .poster__title { position: relative; z-index: 1; padding-top: clamp(2rem, 1.2rem + 3vw, 3.6rem); text-align: center; }
 .poster h1 {
-  max-width: 13.5em; margin-inline: auto;
-  font-size: clamp(2.5rem, .9rem + 6.6vw, 6.4rem); font-weight: 900; line-height: .9; letter-spacing: .012em;
+  max-width: 14em; margin-inline: auto;
+  font-size: clamp(2.5rem, .9rem + 6.6vw, 5.6rem); font-weight: 900; line-height: .9; letter-spacing: .012em;
 }
 .f-sky-sum { fill: var(--sky-sum); }
 .f-ray { fill: var(--sky-sum-ray); }
@@ -276,6 +276,8 @@ section[id] { scroll-margin-top: 70px; }
 .s-pine { fill: none; stroke: var(--pine-800); stroke-linecap: round; stroke-linejoin: round; }
 .s-pine9 { fill: none; stroke: var(--pine-900); stroke-linecap: round; }
 .s-ochre { fill: none; stroke: var(--ochre); }
+.s-mulch { fill: none; stroke: var(--mulch); }
+.f-mulch { fill: var(--mulch); }
 .s-slate { fill: none; stroke: var(--slate); stroke-linecap: round; }
 .s-smoke { fill: none; stroke: var(--snow); stroke-width: 7; stroke-linecap: round; opacity: .85; }
 .flakes circle { fill: var(--snow); }
@@ -329,15 +331,16 @@ section[id] { scroll-margin-top: 70px; }
 .cal-track::before { content: none; }
 .has-now .cal-track::before { content: ""; grid-row: 1; grid-column: var(--now) / span 2; align-self: stretch; margin-block: -6px; background: var(--ochre-wash); }
 .cal-track .bar { grid-row: 1; height: 12px; border-radius: 3px; background: var(--c); }
-.now-tag { display: inline-block; margin-left: .2rem; padding: .2rem .45rem; border-radius: 4px; background: var(--ochre); color: var(--pine-900); font-size: .62rem; vertical-align: middle; }
+.now-tag { display: inline-block; white-space: nowrap; margin-left: .2rem; padding: .2rem .45rem; border-radius: 4px; background: var(--ochre); color: var(--pine-900); font-size: .62rem; vertical-align: middle; }
 .year__foot { margin-top: 1.4rem; color: var(--ink-2); font-size: .9rem; }
 
 /* ---------- Snow season ---------- */
 .snow { padding-block: var(--space); background: var(--slate-900); color: var(--ink-on-dark); overflow: hidden; }
 .snow h2 { color: var(--paper); }
-.snow__grid { display: grid; gap: 3rem; }
+.snow__top { display: grid; gap: 2.5rem; }
+.snow__link { margin-top: 1.25rem; }
 .snow .lede { margin-top: 1rem; color: var(--ink-on-slate-2); max-width: 32rem; }
-.rules { list-style: none; margin: 2rem 0 0; padding: 0; border-top: 2px solid var(--line-dark); }
+.rules { list-style: none; margin: 3rem 0 0; padding: 0; border-top: 2px solid var(--line-dark); }
 .rules li { display: grid; grid-template-columns: 4.6rem minmax(0, 1fr); gap: 1rem; padding-block: 1.15rem; border-bottom: 1px solid var(--line-dark); }
 .rules__num { font: 900 2.4rem/.9 var(--font-display); color: var(--ochre); }
 .rules h3 { color: var(--paper); font-size: 1.45rem; }
@@ -347,11 +350,12 @@ section[id] { scroll-margin-top: 70px; }
   position: relative; padding: 1.3rem 1.4rem 1.35rem; border-radius: 18px;
   background: var(--paper-2); color: var(--ink); box-shadow: var(--shadow-deep);
 }
-.ticket::before, .ticket::after { content: ""; position: absolute; top: 7.55rem; width: 22px; height: 22px; border-radius: 50%; background: var(--slate-900); }
-.ticket::before { left: -11px; }
-.ticket::after { right: -11px; }
+.ticket__price { position: relative; }
+.ticket__price::before, .ticket__price::after { content: ""; position: absolute; bottom: -12px; width: 22px; height: 22px; border-radius: 50%; background: var(--slate-900); }
+.ticket__price::before { left: calc(-1.4rem - 11px); }
+.ticket__price::after { right: calc(-1.4rem - 11px); }
 .ticket__top { display: flex; justify-content: space-between; gap: 1rem; color: var(--ink-2); }
-.ticket h3 { margin-top: .5rem; font-size: 1.6rem; }
+.ticket h3 { margin: .55rem 0 .5rem; font-size: 1.6rem; }
 .ticket__price { display: flex; align-items: baseline; gap: .5rem; padding-bottom: 1rem; border-bottom: 2px dashed var(--rule-strong); }
 .ticket__price b { font: 900 3.6rem/1 var(--font-display); color: var(--rust); }
 .ticket ul { list-style: none; margin: 1rem 0 0; padding: 0; display: grid; gap: .45rem; font-size: .95rem; }
@@ -362,17 +366,17 @@ section[id] { scroll-margin-top: 70px; }
 
 /* ---------- Crew (about) ---------- */
 .crew { padding-block: var(--space); background: var(--sage-100); overflow: hidden; }
-.crew__grid { display: grid; gap: 2.5rem; }
+.crew__grid { display: grid; gap: 2rem; margin-top: 3rem; }
 .crew__copy .lede { margin-top: 1.25rem; }
 .crew__copy .lede + p { margin-top: 1rem; color: var(--ink-2); }
 .spec { display: grid; grid-template-columns: auto minmax(0, 1fr); margin: 2rem 0 0; border-top: 2px solid var(--pine-800); }
 .spec dt, .spec dd { margin: 0; padding-block: .65rem; border-bottom: 1px solid var(--rule-strong); }
 .spec dt { padding-right: 1.25rem; color: var(--ink-2); align-self: stretch; display: flex; align-items: center; }
 .spec dd { font: 800 1.25rem/1.2 var(--font-display); letter-spacing: .02em; text-transform: uppercase; color: var(--pine-800); }
-.truck { margin: 0; }
+.truck { max-width: 1060px; margin: 0 auto; }
 .truck svg { display: block; width: 100%; height: auto; }
-.truck figcaption { margin-top: .75rem; color: var(--ink-2); }
-.tl-name { font: 900 40px var(--font-display); letter-spacing: .02em; fill: var(--pine-800); }
+.truck figcaption { margin-top: .75rem; color: var(--ink-2); text-align: center; }
+.tl-name { font: 900 40px var(--font-display); letter-spacing: .02em; text-transform: uppercase; fill: var(--pine-800); }
 .tl-line { font: 800 15px var(--font-display); letter-spacing: .22em; fill: var(--fern-600); }
 .tl-phone { font: 900 25px var(--font-display); letter-spacing: .04em; fill: var(--rust); }
 .tl-small { font: 800 15px var(--font-display); letter-spacing: .16em; fill: var(--paper-2); }
@@ -409,7 +413,7 @@ section[id] { scroll-margin-top: 70px; }
 .routes .home th::after { content: "The shop"; margin-left: .55rem; padding: .15rem .4rem; border-radius: 4px; background: var(--rust); color: var(--paper-2); font: 500 .62rem/1 var(--font-mono); letter-spacing: .06em; vertical-align: middle; }
 .area__note { margin-top: 1.25rem; color: var(--ink-2); }
 .area__note a { color: var(--pine-800); font-weight: 600; text-underline-offset: 3px; }
-.map { margin: 0; padding: .6rem; background: var(--paper-2); border: 2px solid var(--pine-800); border-radius: 20px; box-shadow: 8px 8px 0 var(--kraft); }
+.map { width: 100%; max-width: 540px; justify-self: center; margin: 0; padding: .6rem; background: var(--paper-2); border: 2px solid var(--pine-800); border-radius: 20px; box-shadow: 8px 8px 0 var(--kraft); }
 .map svg { display: block; width: 100%; height: auto; border-radius: 13px; }
 .map figcaption { padding: .55rem .4rem .1rem; color: var(--ink-2); text-align: center; }
 .m-land { fill: var(--paper-2); }
@@ -418,10 +422,10 @@ section[id] { scroll-margin-top: 70px; }
 .m-hatch { stroke: var(--slate); stroke-width: 1; opacity: .35; }
 .m-road { fill: none; stroke: var(--kraft); stroke-width: 4; stroke-linecap: round; }
 .m-loop { fill: none; stroke: var(--rust); stroke-width: 2; stroke-dasharray: 6 6; }
-.m-loop-text { font: 800 12px var(--font-display); letter-spacing: .24em; fill: var(--rust); }
+.m-legend { font: 800 12px var(--font-display); letter-spacing: .14em; fill: var(--rust); }
 .m-dot { fill: var(--pine-800); }
-.m-town { font: 800 15px var(--font-display); letter-spacing: .06em; fill: var(--pine-800); text-transform: uppercase; }
-.m-home { font: 900 22px var(--font-display); letter-spacing: .04em; fill: var(--pine-800); }
+.m-town { font: 800 13.5px var(--font-display); letter-spacing: .06em; fill: var(--pine-800); text-transform: uppercase; paint-order: stroke; stroke: var(--paper-2); stroke-width: 4px; stroke-linejoin: round; }
+.m-home { font: 900 19px var(--font-display); letter-spacing: .05em; fill: var(--pine-800); paint-order: stroke; stroke: var(--paper-2); stroke-width: 5px; stroke-linejoin: round; }
 .m-lake-label { font: 800 13px var(--font-display); letter-spacing: .3em; fill: var(--slate-900); }
 
 /* ---------- Quote (work order) ---------- */
@@ -468,8 +472,8 @@ section[id] { scroll-margin-top: 70px; }
 .received { padding: 2.25rem 1.3rem 2rem; text-align: center; }
 .received:focus { outline: none; }
 .received[hidden], .quote-form[hidden] { display: none; }
-.stamp {
-  display: inline-block; padding: .35rem 1rem .25rem; border: 5px double var(--rust); border-radius: 8px;
+.received .stamp {
+  display: inline-block; margin: 0; max-width: none; text-transform: uppercase; padding: .35rem 1rem .25rem; border: 5px double var(--rust); border-radius: 8px;
   color: var(--rust); font: 900 2.6rem/1 var(--font-display); letter-spacing: .1em; transform: rotate(-6deg);
 }
 @media (prefers-reduced-motion: no-preference) {
@@ -483,7 +487,7 @@ section[id] { scroll-margin-top: 70px; }
 
 /* ---------- Footer ---------- */
 .site-footer { background: var(--pine-900); color: var(--ink-on-dark-2); font-size: .95rem; }
-.footer__word { padding-block: 2.75rem 1.75rem; border-bottom: 1px solid var(--line-dark); }
+.footer__word { padding-block: 2.75rem 1.75rem; background: linear-gradient(var(--line-dark), var(--line-dark)) center bottom / calc(100% - 2 * var(--gutter)) 1px no-repeat; }
 .footer__word p { font: 900 clamp(2.6rem, .8rem + 8.4vw, 8.2rem)/.86 var(--font-display); letter-spacing: .015em; text-transform: uppercase; color: var(--paper); text-wrap: balance; }
 .footer__cols { display: grid; gap: 2rem; padding-block: 2.25rem; }
 .footer__cols h2 { margin-bottom: .5rem; font-size: 1.15rem; letter-spacing: .1em; color: var(--ochre); }
@@ -492,7 +496,7 @@ section[id] { scroll-margin-top: 70px; }
 .footer__cols .icon { color: var(--sage-300); }
 .site-footer a { color: var(--paper); text-decoration: none; display: inline-flex; align-items: center; min-height: 44px; }
 .site-footer a:hover { text-decoration: underline; text-underline-offset: 3px; }
-.footer__bottom { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; padding-block: 1.25rem 1.6rem; border-top: 1px solid var(--line-dark); font-size: .85rem; }
+.footer__bottom { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; padding-block: 1.25rem 1.6rem; background: linear-gradient(var(--line-dark), var(--line-dark)) center top / calc(100% - 2 * var(--gutter)) 1px no-repeat; font-size: .85rem; }
 .sample-ribbon {
   display: inline-flex; align-items: center; gap: .45rem; padding: .3rem 1.3rem .3rem .75rem;
   background: var(--kraft); color: var(--pine-900); font: 500 .68rem/1.4 var(--font-mono); letter-spacing: .1em; text-transform: uppercase;
@@ -540,7 +544,7 @@ section[id] { scroll-margin-top: 70px; }
 
   .year__head { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: end; gap: 3rem; }
   .almanac { padding: .5rem 1.75rem 1.25rem; }
-  .cal-months, .cal-row { grid-template-columns: 16.5rem minmax(0, 1fr) 8.75rem; column-gap: 1.5rem; }
+  .cal-months, .cal-row { grid-template-columns: 19.5rem minmax(0, 1fr) 7.5rem; column-gap: 1.75rem; }
   .cal-months { top: 76px; }
   .cal-months > span:first-child, .cal-months > span:last-child { display: block; }
   .cal-grid { grid-column: 2; }
@@ -551,17 +555,19 @@ section[id] { scroll-margin-top: 70px; }
   .cal-row__price { grid-column: 3; grid-row: 1 / span 2; }
   .cal-row__when { display: none; }
 
-  .snow__grid { grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); gap: 4.5rem; align-items: start; }
-  .tickets { padding-top: 1rem; }
+  .snow__top { grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: 4rem; align-items: center; }
+  .rules { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0 2.25rem; margin-top: 5rem; }
+  .rules li { grid-template-columns: 1fr; gap: .6rem; padding-block: 1.4rem 0; border-bottom: 0; }
+  .rules__num { font-size: 3.2rem; }
   .ticket:nth-child(1) { transform: rotate(-1.2deg); }
   .ticket:nth-child(2) { transform: rotate(1deg) translateY(1.5rem); }
 
-  .crew__grid { grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: 3.5rem; align-items: center; }
-  .truck { width: 112%; }
+  .crew__grid { grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: 4.5rem; align-items: start; margin-top: 4rem; }
+  .spec { margin-top: .4rem; }
 
   .reviews__grid { grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: 4rem; align-items: start; }
 
-  .area__grid { grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: 4rem; align-items: center; }
+  .area__grid { grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: 4rem; align-items: start; }
   .map { order: -1; }
 
   .quote__grid { grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: 4.5rem; align-items: start; }
@@ -658,6 +664,7 @@ section[id] { scroll-margin-top: 70px; }
           <path id="walk" d="M704 580H736C744 630 760 680 782 720H658C680 680 696 630 704 580Z"/>
           <clipPath id="c-front"><use href="#h-front"/></clipPath>
           <pattern id="dots" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(30)"><circle cx="4.5" cy="4.5" r="1.6" class="f-pine"/></pattern>
+          <pattern id="dots-w" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(30)"><circle cx="4.5" cy="4.5" r="1.6" class="f-slate"/></pattern>
           <g id="oak">
             <path class="f-pine9" d="M-7 0-5-74H5L7 0Z"/>
             <path class="f-pine7" d="M-60-72C-72-114-40-156 0-156C42-156 72-116 60-74C52-50-52-48-60-72Z"/>
@@ -739,6 +746,16 @@ section[id] { scroll-margin-top: 70px; }
             <circle cx="24" cy="44" r="8.5" class="f-ink"/><circle cx="24" cy="44" r="3.5" class="f-frost"/>
             <circle cx="80" cy="44" r="8.5" class="f-ink"/><circle cx="80" cy="44" r="3.5" class="f-frost"/>
           </g>
+          <!-- mailbox at the end of the drive + split-rail fence -->
+          <rect x="1244" y="664" width="7" height="44" class="f-mulch"/>
+          <path class="f-pine" d="M1230 672v-12a9 9 0 0 1 9-9h17a9 9 0 0 1 9 9v12z"/>
+          <rect x="1262" y="652" width="4" height="14" class="f-rust"/>
+          <path class="f-snow" d="M1228 653q19-14 39 0q-19-5-39 0z"/>
+          <path class="s-mulch" stroke-width="5" d="M1300 628 1440 616M1300 646 1440 634"/>
+          <path class="f-mulch" d="M1298 614h9v48h-9zM1366 608h9v48h-9zM1434 602h9v48h-9z"/>
+          <path class="s-snow" stroke-width="4" d="M1300 624 1440 612"/>
+          <path class="f-snow" d="M1296 615q6.5-8 13 0zM1364 609q6.5-8 13 0zM1432 603q6.5-8 13 0z"/>
+          <g clip-path="url(#c-front)"><rect x="720" y="668" width="720" height="52" fill="url(#dots-w)" opacity=".3"/></g>
         </g>
 
         <!-- HOUSE (straddles the seasons) -->
@@ -870,63 +887,52 @@ section[id] { scroll-margin-top: 70px; }
 
   <!-- ==================== SNOW SEASON (contract terms; prices are placeholders) ==================== -->
   <section id="snow" class="snow on-dark grain" aria-labelledby="snow-title">
-    <div class="container snow__grid">
-      <div>
-        <h2 id="snow-title">Snow season, in writing</h2>
-        <p class="lede">Every snow customer gets these four rules on paper before December 1.</p>
-        <ol class="rules">
-          <li><span class="rules__num" aria-hidden="true">2"</span><div><h3>We plow at two inches</h3><p>Measured at the shop. Lighter dustings get salted instead, at no charge for contract customers.</p></div></li>
-          <li><span class="rules__num" aria-hidden="true">6:00</span><div><h3>Done before you leave</h3><p>Overnight snow is off your drive by 6 a.m. If it keeps coming, so do we.</p></div></li>
-          <li><span class="rules__num" aria-hidden="true">+1</span><div><h3>We come back for the curb</h3><p>The wall of slush the village plow leaves at the end of your drive is part of the job.</p></div></li>
-          <li><span class="rules__num" aria-hidden="true">Nov</span><div><h3>Stakes go in early</h3><p>Reflective markers along your drive and beds, so the blade never finds your lawn.</p></div></li>
-        </ol>
+    <div class="container">
+      <div class="snow__top">
+        <div>
+          <h2 id="snow-title">Snow season, in writing</h2>
+          <p class="lede">Two ways to sign up. Either way, every snow customer gets the same four rules on paper before December 1.</p>
+          <a class="snow__link" href="#quote">Reserve a contract spot <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
+        </div>
+        <div class="tickets">
+          <article class="ticket" aria-labelledby="t1">
+            <p class="ticket__top mono"><span>Dec 1 – Mar 31</span><span>No. S-01</span></p>
+            <h3 id="t1">Seasonal contract</h3>
+            <p class="ticket__price"><b>$575</b><span>per season</span></p>
+            <ul>
+              <li>Unlimited pushes, every storm</li>
+              <li>Walks &amp; salting included</li>
+              <li>First on the route</li>
+              <li>Curb ridge cleared</li>
+            </ul>
+          </article>
+          <article class="ticket" aria-labelledby="t2">
+            <p class="ticket__top mono"><span>Pay as it falls</span><span>No. P-02</span></p>
+            <h3 id="t2">Per push</h3>
+            <p class="ticket__price"><b>$55</b><span>per plow</span></p>
+            <ul>
+              <li>No commitment, billed monthly</li>
+              <li>Walks &amp; salting +$25</li>
+              <li>After contract homes</li>
+              <li>Curb ridge cleared</li>
+            </ul>
+          </article>
+        </div>
       </div>
-      <div class="tickets">
-        <article class="ticket" aria-labelledby="t1">
-          <p class="ticket__top mono"><span>Dec 1 – Mar 31</span><span>No. S-01</span></p>
-          <h3 id="t1">Seasonal contract</h3>
-          <p class="ticket__price"><b>$575</b><span>per season</span></p>
-          <ul>
-            <li>Unlimited pushes, every storm</li>
-            <li>Walks &amp; salting included</li>
-            <li>First on the route</li>
-            <li>Curb ridge cleared</li>
-          </ul>
-        </article>
-        <article class="ticket" aria-labelledby="t2">
-          <p class="ticket__top mono"><span>Pay as it falls</span><span>No. P-02</span></p>
-          <h3 id="t2">Per push</h3>
-          <p class="ticket__price"><b>$55</b><span>per plow</span></p>
-          <ul>
-            <li>No commitment, billed monthly</li>
-            <li>Walks &amp; salting +$25</li>
-            <li>After contract homes</li>
-            <li>Curb ridge cleared</li>
-          </ul>
-        </article>
-        <a class="snow__link" href="#quote">Reserve a contract spot <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
-      </div>
+      <ol class="rules">
+        <li><span class="rules__num" aria-hidden="true">2"</span><div><h3>We plow at two inches</h3><p>Measured at the shop. Lighter dustings get salted instead, at no charge for contract customers.</p></div></li>
+        <li><span class="rules__num" aria-hidden="true">6:00</span><div><h3>Done before you leave</h3><p>Overnight snow is off your drive by 6 a.m. If it keeps coming, so do we.</p></div></li>
+        <li><span class="rules__num" aria-hidden="true">+1</span><div><h3>We come back for the curb</h3><p>The wall of slush the village plow leaves at the end of your drive is part of the job.</p></div></li>
+        <li><span class="rules__num" aria-hidden="true">Nov</span><div><h3>Stakes go in early</h3><p>Reflective markers along your drive and beds, so the blade never finds your lawn.</p></div></li>
+      </ol>
     </div>
   </section>
 
   <!-- ==================== THE CREW (about) ==================== -->
   <section id="crew" class="crew" aria-labelledby="crew-title">
-    <div class="container crew__grid">
-      <div class="crew__copy">
-        <h2 id="crew-title">Sixteen seasons from one Glenview shop</h2>
-        <p class="lede"><span data-biz="name">Northshore Green Co.</span> started in 2009 with six lawns on one street, a used push mower and a borrowed pickup. Today there are nine of us and three plow trucks, and every route stays within about six miles of the shop. That's how a 3 a.m. snowfall is gone before your alarm.</p>
-        <p>You'll see the same crew lead every week. They learn which gate sticks, where the sprinkler heads hide, and that your dog is friendly.</p>
-        <dl class="spec">
-          <dt class="mono">Established</dt><dd>2009, Glenview</dd>
-          <dt class="mono">Crew</dt><dd>9, with 3 crew leads</dd>
-          <dt class="mono">Trucks</dt><dd>3, all plow-equipped</dd>
-          <dt class="mono">Insurance</dt><dd>$2M general liability</dd>
-          <dt class="mono">Route radius</dt><dd>About 6 miles</dd>
-        </dl>
-      </div>
-
+    <div class="container">
       <figure class="truck">
-        <svg viewBox="0 0 960 320" role="img" aria-labelledby="truck-title">
+        <svg viewBox="0 92 960 218" role="img" aria-labelledby="truck-title">
           <title id="truck-title">Illustration of the company's green plow truck towing a white enclosed trailer lettered with the business name and phone number.</title>
           <rect x="30" y="292" width="920" height="10" rx="5" class="f-pine" opacity=".16"/>
           <!-- plow blade + mount -->
@@ -966,7 +972,6 @@ section[id] { scroll-margin-top: 70px; }
           <text class="tl-name" x="612" y="156" textLength="306" lengthAdjust="spacingAndGlyphs" data-biz="name">Northshore Green Co.</text>
           <text class="tl-line" x="613" y="180">LAWN · BEDS · LEAVES · SNOW</text>
           <text class="tl-phone" x="612" y="208" data-biz="phone">(847) 555-0142</text>
-          <path class="s-frost" stroke-width="2.5" d="M912 108V212"/>
           <rect x="934" y="112" width="6" height="12" rx="2" class="f-ochre"/><rect x="934" y="240" width="6" height="12" rx="2" class="f-rust"/>
           <path class="s-slate" stroke-width="5" d="M604 264V294M596 294H612"/>
           <circle cx="770" cy="268" r="30" class="f-pine9"/><circle cx="836" cy="268" r="30" class="f-pine9"/>
@@ -976,6 +981,20 @@ section[id] { scroll-margin-top: 70px; }
         </svg>
         <figcaption class="mono">Truck No. 2 and the mowing trailer. Tuesdays on the Glenview route.</figcaption>
       </figure>
+      <div class="crew__grid">
+        <div class="crew__copy">
+        <h2 id="crew-title">Sixteen seasons from one Glenview shop</h2>
+        <p class="lede"><span data-biz="name">Northshore Green Co.</span> started in 2009 with six lawns on one street, a used push mower and a borrowed pickup. Today there are nine of us and three plow trucks, and every route stays within about six miles of the shop. That's how a 3 a.m. snowfall is gone before your alarm.</p>
+        <p>You'll see the same crew lead every week. They learn which gate sticks, where the sprinkler heads hide, and that your dog is friendly.</p>
+        </div>
+        <dl class="spec">
+          <dt class="mono">Established</dt><dd>2009, Glenview</dd>
+          <dt class="mono">Crew</dt><dd>9, with 3 crew leads</dd>
+          <dt class="mono">Trucks</dt><dd>3, all plow-equipped</dd>
+          <dt class="mono">Insurance</dt><dd>$2M general liability</dd>
+          <dt class="mono">Route radius</dt><dd>About 6 miles</dd>
+        </dl>
+      </div>
     </div>
   </section>
 
@@ -1037,26 +1056,26 @@ section[id] { scroll-margin-top: 70px; }
           <desc id="map-desc">Stylized map of the six-mile route loop around the Glenview shop, covering Northbrook, Northfield, Winnetka, Wilmette, Golf, Skokie and Morton Grove, with Lake Michigan to the east.</desc>
           <defs>
             <pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse"><path d="M0 4h8" class="m-hatch"/></pattern>
-            <path id="loop-arc" d="M40 175A135 135 0 0 1 175 40"/>
           </defs>
           <rect width="400" height="340" class="m-land"/>
           <path class="m-preserve" d="M128 0C120 40 134 70 126 110C118 150 132 190 124 230C118 270 128 300 122 340H104C110 300 100 270 106 230C114 190 100 150 108 110C116 70 102 40 110 0Z"/>
-          <path class="m-road" d="M58 0C70 90 74 200 62 340M0 196C120 204 230 192 320 190M196 0C206 110 214 220 236 340"/>
+          <path class="m-road" d="M58 0C70 90 74 200 62 340M0 248C120 256 230 244 318 240"/>
           <path class="m-lake" d="M302 0C298 60 308 120 320 170C330 220 336 280 340 340H400V0Z"/>
           <path d="M302 0C298 60 308 120 320 170C330 220 336 280 340 340H400V0Z" fill="url(#hatch)"/>
           <text class="m-lake-label" transform="translate(372 170) rotate(90)" text-anchor="middle">LAKE MICHIGAN</text>
-          <circle class="m-loop" cx="170" cy="175" r="135"/>
-          <text class="m-loop-text"><textPath href="#loop-arc" startOffset="8%">6-MILE ROUTE LOOP</textPath></text>
-          <circle class="m-dot" cx="100" cy="82" r="5"/><text class="m-town" x="109" y="87">Northbrook</text>
-          <circle class="m-dot" cx="196" cy="104" r="5"/><text class="m-town" x="205" y="109">Northfield</text>
-          <circle class="m-dot" cx="252" cy="70" r="5"/><text class="m-town" x="243" y="58" text-anchor="middle">Winnetka</text>
-          <circle class="m-dot" cx="286" cy="150" r="5"/><text class="m-town" x="277" y="155" text-anchor="end">Wilmette</text>
-          <circle class="m-dot" cx="208" cy="226" r="5"/><text class="m-town" x="217" y="231">Golf</text>
-          <circle class="m-dot" cx="276" cy="250" r="5"/><text class="m-town" x="267" y="270" text-anchor="middle">Skokie</text>
-          <circle class="m-dot" cx="150" cy="278" r="5"/><text class="m-town" x="159" y="283">Morton Grove</text>
-          <use href="#logo" x="146" y="151" width="48" height="48"/>
-          <text class="m-home" x="170" y="222" text-anchor="middle">GLENVIEW</text>
-          <g transform="translate(30 312)"><path class="m-dot" d="M0-18 6 0 0-4-6 0z"/><text class="m-town" x="12" y="-2">N</text></g>
+          <circle class="m-loop" cx="160" cy="170" r="140"/>
+          <circle class="m-dot" cx="98" cy="86" r="4.5"/><text class="m-town" x="107" y="91">Northbrook</text>
+          <circle class="m-dot" cx="186" cy="112" r="4.5"/><text class="m-town" x="195" y="117">Northfield</text>
+          <circle class="m-dot" cx="240" cy="86" r="4.5"/><text class="m-town" x="240" y="74" text-anchor="middle">Winnetka</text>
+          <circle class="m-dot" cx="288" cy="150" r="4.5"/><text class="m-town" x="279" y="155" text-anchor="end">Wilmette</text>
+          <circle class="m-dot" cx="226" cy="206" r="4.5"/><text class="m-town" x="235" y="211">Golf</text>
+          <circle class="m-dot" cx="262" cy="262" r="4.5"/><text class="m-town" x="253" y="267" text-anchor="end">Skokie</text>
+          <circle class="m-dot" cx="138" cy="286" r="4.5"/><text class="m-town" x="147" y="291">Morton Grove</text>
+          <use href="#logo" x="136" y="146" width="48" height="48"/>
+          <text class="m-home" x="160" y="216" text-anchor="middle">GLENVIEW</text>
+          <g transform="translate(26 40)"><path class="m-dot" d="M0-18 6 0 0-4-6 0z"/><text class="m-town" x="0" y="15" text-anchor="middle">N</text></g>
+          <rect x="12" y="306" width="150" height="24" rx="5" class="m-land"/>
+          <path class="m-loop" d="M20 318h28"/><text class="m-legend" x="56" y="322">6-MILE ROUTE LOOP</text>
         </svg>
         <figcaption class="mono">Not to scale. Route days are typical, not promised.</figcaption>
       </figure>
