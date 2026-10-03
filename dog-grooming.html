@@ -260,7 +260,7 @@
   }
   .laundromat__row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem .9rem; align-items: end; padding-top: 2.25rem; }
   .open-sign {
-    grid-column: 1 / -1; justify-self: start; position: relative; margin-bottom: .5rem;
+    grid-column: 1 / -1; justify-self: start; flex: none; position: relative; margin-bottom: .5rem;
     padding: .5rem 1rem .6rem; background: var(--butter); border: 3px solid var(--ink); border-radius: 14px;
     box-shadow: 0 4px 0 var(--ink); text-align: center;
   }
@@ -269,7 +269,7 @@
     border: 2px solid var(--ink); border-bottom: 0; border-radius: 12px 12px 0 0;
   }
   .open-sign__word { display: block; font-family: var(--font-sign); font-size: 1.85rem; line-height: 1; color: var(--signal); }
-  .open-sign__hours { display: block; margin-top: .2rem; font: 700 .7rem/1.35 var(--font-mono); text-transform: uppercase; letter-spacing: .04em; }
+  .open-sign__hours { display: block; margin-top: .2rem; font: 700 .7rem/1.35 var(--font-mono); text-transform: uppercase; letter-spacing: .04em; white-space: pre; }
   .machine {
     --m: var(--mint);
     position: relative; justify-self: center; width: clamp(138px, 40vw, 204px); margin-bottom: 9px;
@@ -368,8 +368,9 @@
   .cycle__list li { position: relative; padding-left: 1.5rem; }
   .cycle__list li::before { content: ""; position: absolute; left: .3rem; top: .2em; width: .42rem; height: .78rem; border: solid var(--ink); border-width: 0 2.5px 2.5px 0; transform: rotate(45deg); }
   .cycle .btn { margin-top: auto; }
-  .price-table { width: 100%; margin: 0 0 2rem; border-collapse: collapse; background: var(--white); border: 2px solid var(--ink); }
-  .price-table th, .price-table td { padding: .55rem .6rem; border: 1px solid var(--line); text-align: center; }
+  .table-wrap { overflow-x: auto; margin: 0 0 2rem; }
+  .price-table { width: 100%; margin: 0; font-size: .9rem; border-collapse: collapse; background: var(--white); border: 2px solid var(--ink); }
+  .price-table th, .price-table td { padding: .5rem .4rem; border: 1px solid var(--line); text-align: center; }
   .price-table thead th { background: var(--mint); }
 
   /* ---------- Add-ons menu board ---------- */
@@ -529,17 +530,17 @@
   .ticket { position: relative; background: var(--butter-soft); border: 2px solid var(--ink); border-radius: 18px; }
   .ticket:focus { outline: none; }
   .ticket:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
-  .ticket__stub { position: relative; display: flex; justify-content: space-between; align-items: flex-end; gap: 1rem; padding: 1rem 1.25rem; border-bottom: 2px dashed var(--ink); }
+  .ticket__stub { position: relative; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: .25rem 1rem; padding: 1rem 1.25rem; border-bottom: 2px dashed var(--ink); }
   .ticket__stub::before, .ticket__stub::after {
     content: ""; position: absolute; bottom: -13px; width: 24px; height: 24px; border-radius: 50%; background: var(--white); border: 2px solid var(--ink);
   }
   .ticket__stub::before { left: -13px; clip-path: inset(0 0 0 50%); }
   .ticket__stub::after { right: -13px; clip-path: inset(0 50% 0 0); }
-  .ticket__no { margin: 0; font: 400 2.1rem/1 var(--font-sign); color: var(--signal); }
+  .ticket__no { margin: 0; font: 400 2.1rem/1 var(--font-sign); color: var(--signal); white-space: nowrap; }
   .ticket__body { padding: 1.3rem 1.25rem 1.4rem; }
   .ticket h3 { margin: 0 0 1rem; font: 400 clamp(1.5rem, 1.2rem + 1.2vw, 2rem)/1.05 var(--font-sign); font-synthesis: none; }
   .ticket dl { margin: 0 0 1rem; }
-  .ticket dl div { display: grid; grid-template-columns: 5.5rem 1fr; gap: .75rem; padding: .45rem 0; border-bottom: 2px dotted color-mix(in srgb, var(--ink) 35%, transparent); }
+  .ticket dl div { display: grid; grid-template-columns: 4.9rem 1fr; gap: .75rem; padding: .45rem 0; border-bottom: 2px dotted color-mix(in srgb, var(--ink) 35%, transparent); }
   .ticket dt { padding-top: .2rem; font: 700 .68rem var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); }
   .ticket dd { margin: 0; font-weight: 700; }
   .ticket p { color: var(--ink-soft); }
@@ -592,8 +593,6 @@
   }
   @media (min-width: 1000px) {
     .header-inner { min-height: 72px; gap: 1.75rem; }
-    .site-nav { order: 2; }
-    .header-cta { order: 3; }
     .nav-toggle, .js .nav-toggle { display: none; }
     html:not(.js) .site-nav { flex-basis: auto; }
     html:not(.js) .site-header { position: sticky; }
@@ -689,7 +688,6 @@
       <svg aria-hidden="true" viewBox="0 0 40 40"><use href="#logo"/></svg>
       <span data-biz="name">Wag &amp; Wash Studio</span>
     </a>
-    <a class="btn btn--primary btn--sm header-cta" href="#book">Book a wash</a>
     <nav class="site-nav" aria-label="Main">
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-menu">
         <span class="sr-only">Menu</span><span class="nav-toggle__bars" aria-hidden="true"></span>
@@ -703,6 +701,7 @@
         <li class="menu-cta"><a class="btn btn--primary" href="#book">Book a wash</a></li>
       </ul>
     </nav>
+    <a class="btn btn--primary btn--sm header-cta" href="#book">Book a wash</a>
   </div>
 </header>
 
@@ -809,7 +808,7 @@ Sun &amp; Mon closed</span></div>
 
     <!-- No-JS fallback: keep these numbers in sync with PRICES in the <head> script -->
     <noscript>
-      <table class="price-table">
+      <div class="table-wrap"><table class="price-table">
         <caption class="sr-only">Cycle prices by dog size</caption>
         <thead><tr><th scope="col">Load size</th><th scope="col">Quick Rinse</th><th scope="col">Wash &amp; Fluff</th><th scope="col">Delicate</th><th scope="col">Spa</th></tr></thead>
         <tbody>
@@ -818,7 +817,7 @@ Sun &amp; Mon closed</span></div>
           <tr><th scope="row">Large<br><small>50–80 lb</small></th><td>$70</td><td>$110</td><td>$120</td><td>$140</td></tr>
           <tr><th scope="row">X-Large<br><small>80 lb +</small></th><td>$85</td><td>$135</td><td>$145</td><td>$165</td></tr>
         </tbody>
-      </table>
+      </table></div>
     </noscript>
 
     <div class="cycles">
@@ -1044,7 +1043,6 @@ Sun &amp; Mon closed</span></div>
               <circle cx="80" cy="86" r="46"/><circle cx="126" cy="86" r="18"/><circle cx="117" cy="112" r="18"/><circle cx="94" cy="128" r="18"/><circle cx="66" cy="128" r="18"/><circle cx="43" cy="112" r="18"/><circle cx="34" cy="86" r="18"/><circle cx="43" cy="60" r="18"/><circle cx="66" cy="44" r="18"/><circle cx="94" cy="44" r="18"/><circle cx="117" cy="60" r="18"/>
             </g>
             <g class="f-orange"><circle cx="80" cy="86" r="46"/><circle cx="126" cy="86" r="18"/><circle cx="117" cy="112" r="18"/><circle cx="94" cy="128" r="18"/><circle cx="66" cy="128" r="18"/><circle cx="43" cy="112" r="18"/><circle cx="34" cy="86" r="18"/><circle cx="43" cy="60" r="18"/><circle cx="66" cy="44" r="18"/><circle cx="94" cy="44" r="18"/><circle cx="117" cy="60" r="18"/></g>
-            <g class="f-fur-dark s-ink" style="stroke-width:3"><path d="M58 70l2-22 16 14z"/><path d="M102 70l-2-22-16 14z"/></g>
             <circle class="f-fur s-ink" style="stroke-width:3" cx="80" cy="90" r="29"/>
             <circle class="f-ink" cx="70" cy="86" r="5"/><circle class="f-ink" cx="90" cy="86" r="5"/>
             <circle class="f-white" cx="71.8" cy="84.2" r="1.8"/><circle class="f-white" cx="91.8" cy="84.2" r="1.8"/>
