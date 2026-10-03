@@ -134,6 +134,7 @@
   --header-bg: rgba(250, 245, 234, .95);
   --ring: rgba(78, 122, 58, .28);
   --moss-ring: rgba(78, 122, 58, .22);
+  --moss-wash: rgba(78, 122, 58, .1);
   --focus: #B5562D;
   --shadow-xs: 0 1px 2px rgba(21, 41, 29, .06);
   --shadow-sm: 0 1px 2px rgba(21, 41, 29, .05), 0 8px 20px -10px rgba(21, 41, 29, .16);
@@ -188,7 +189,7 @@
   --radius-md: 18px;
   --radius-lg: 26px;
   --radius-xl: 34px;
-  --scene-h: clamp(250px, 40vw, 450px);
+  --scene-h: clamp(270px, 40vw, 450px);
 }
 
 /* ---------- Base ---------- */
@@ -217,6 +218,7 @@ h1, h2, h3, h4 {
 }
 p { margin: 0; }
 a { color: inherit; }
+a[href^="tel:"] { white-space: nowrap; }
 button, input, select, textarea { font: inherit; }
 :focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; border-radius: 6px; }
 .on-dark { --focus: var(--sand-300); }
@@ -407,7 +409,7 @@ section[id] { scroll-margin-top: 76px; }
 }
 
 /* ---------- Trust strip ---------- */
-.trust { position: relative; z-index: 2; margin-top: -3rem; }
+.trust { position: relative; z-index: 2; margin-top: -2rem; }
 .trust__card {
   list-style: none; margin: 0; padding: 1.25rem;
   display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem 1rem;
@@ -503,13 +505,13 @@ h2 { font-size: var(--step-4); }
 }
 .service-card__icon .icon { width: 30px; height: 30px; stroke-width: 1.6; }
 .service-card h4 { font-size: 1.375rem; margin-bottom: .55rem; }
-.service-card p { color: var(--ink-muted); }
+.service-card p { margin-bottom: 1.15rem; color: var(--ink-muted); }
 .checks {
   list-style: none; display: grid; gap: .45rem;
   margin: auto 0 0; padding: 1.1rem 0 0;
+  border-top: 1px dashed var(--line-strong);
   font-size: .9375rem; color: var(--ink);
 }
-.service-card p + .checks { margin-top: 1.15rem; border-top: 1px dashed var(--line-strong); }
 .checks li { display: flex; gap: .55rem; align-items: flex-start; }
 .checks .icon { width: 1.05em; height: 1.05em; margin-top: .22em; stroke-width: 2.6; color: var(--season-ink, var(--moss-600)); }
 
@@ -531,15 +533,17 @@ h2 { font-size: var(--step-4); }
 .plan-banner h3 { font-size: var(--step-3); color: var(--cream-50); }
 .plan-banner p { margin-top: .6rem; max-width: 40rem; color: var(--ink-on-dark-muted); }
 .plan-banner__art {
-  position: absolute; right: -36px; bottom: -48px; z-index: -1;
-  width: 230px; height: 230px; color: var(--sage-400); opacity: .14;
+  position: absolute; right: -30px; bottom: -70px; z-index: -1;
+  width: 260px; height: 260px; opacity: .13; transform: rotate(8deg);
 }
+.pb-leaf { fill: var(--sage-400); }
+.pb-vein { fill: none; stroke: var(--forest-800); stroke-width: 1.2; stroke-linecap: round; }
 .plan-banner .btn { justify-self: start; }
 
 /* ---------- About ---------- */
 .about { background: var(--cream-200); }
 .about__grid { display: grid; gap: 3rem; grid-template-columns: minmax(0, 1fr); }
-.about__copy p { color: var(--ink-muted); }
+.about__copy p:not(.eyebrow) { color: var(--ink-muted); }
 .about__copy .lead + p { margin-top: 1rem; }
 .stats {
   list-style: none; margin: 2rem 0 0; padding: 0;
@@ -608,7 +612,7 @@ h2 { font-size: var(--step-4); }
 .area__note { margin-top: 1.5rem; color: var(--ink-muted); }
 .area__note a { color: var(--forest-800); font-weight: 600; text-underline-offset: 3px; }
 .map-card {
-  margin: 0; padding: .75rem; border-radius: var(--radius-xl);
+  width: 100%; max-width: 540px; margin: 0; justify-self: center; padding: .75rem; border-radius: var(--radius-xl);
   background: var(--card); border: 1px solid var(--line); box-shadow: var(--shadow-md);
 }
 .area-map { display: block; width: 100%; height: auto; }
@@ -619,7 +623,8 @@ h2 { font-size: var(--step-4); }
 .m-lake { fill: var(--lake); }
 .m-shore { fill: none; stroke: var(--lake-ink); stroke-width: 1; opacity: .35; }
 .m-wave { fill: none; stroke: var(--card); stroke-width: 1.4; stroke-linecap: round; opacity: .7; }
-.m-radius { fill: var(--moss-ring); stroke: var(--moss-600); stroke-width: 1.5; stroke-dasharray: 5 6; }
+.m-radius { fill: var(--moss-wash); stroke: var(--moss-600); stroke-width: 1.5; stroke-dasharray: 5 6; }
+.m-halo { fill: var(--moss-ring); stroke: var(--moss-600); stroke-width: 1.5; }
 .m-dot { fill: var(--forest-800); stroke: var(--card); stroke-width: 2; }
 .m-label { font: 500 12px var(--font-body); fill: var(--ink); }
 .m-home { font: 650 16px var(--font-display); fill: var(--forest-800); }
@@ -772,7 +777,8 @@ a.contact-line:hover span { text-decoration: underline; text-underline-offset: 3
 .footer__bottom {
   display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem;
   margin-top: 3rem; padding-block: 1.5rem 1.75rem;
-  border-top: 1px solid var(--line-dark); font-size: .875rem;
+  background: linear-gradient(var(--line-dark), var(--line-dark)) center top / calc(100% - 2 * var(--gutter)) 1px no-repeat;
+  font-size: .875rem;
 }
 .sample-ribbon {
   display: inline-flex; align-items: center; gap: .45rem;
@@ -789,6 +795,7 @@ a.contact-line:hover span { text-decoration: underline; text-underline-offset: 3
    ==================================================================== */
 @media (min-width: 600px) {
   .hero__actions .btn { flex: 0 0 auto; }
+  .trust__card li { flex-direction: row; align-items: center; gap: .85rem; }
   .form-grid { grid-template-columns: 1fr 1fr; }
   .field--full { grid-column: 1 / -1; }
   .season-tab { flex-direction: row; min-height: 54px; gap: .5rem; font-size: .9375rem; }
@@ -801,6 +808,7 @@ a.contact-line:hover span { text-decoration: underline; text-underline-offset: 3
   .footer__grid { grid-template-columns: 1fr 1fr; }
 }
 @media (min-width: 860px) {
+  .trust { margin-top: -3rem; }
   .trust__card { grid-template-columns: repeat(4, minmax(0, 1fr)); padding: 1.4rem 1.6rem; gap: 1.5rem; }
   .trust__card li { flex-direction: row; align-items: center; gap: .85rem; }
   .reviews__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; }
@@ -830,8 +838,8 @@ a.contact-line:hover span { text-decoration: underline; text-underline-offset: 3
     display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 2rem; align-items: start;
   }
   .hero-card {
-    display: flex; gap: .9rem; align-items: flex-start; justify-self: end;
-    margin-top: 5.5rem; padding: 1.15rem 1.2rem 1rem;
+    display: flex; gap: .9rem; align-items: flex-start; justify-self: end; align-self: center;
+    margin-top: 2rem; padding: 1.15rem 1.2rem 1rem;
     background: var(--card); border: 1px solid var(--line);
     border-radius: var(--radius-lg); box-shadow: var(--shadow-md);
   }
@@ -981,6 +989,8 @@ a.contact-line:hover span { text-decoration: underline; text-underline-offset: 3
         <path id="p-mid" d="M0 356C170 318 330 326 500 344C680 364 820 330 980 318C1140 306 1290 344 1440 326V560H0Z"/>
         <path id="p-front" d="M0 448C230 404 470 398 720 424C960 450 1210 424 1440 404V560H0Z"/>
         <clipPath id="c-front"><use href="#p-front"/></clipPath>
+        <path id="p-mid-crest" d="M0 356C170 318 330 326 500 344C680 364 820 330 980 318C1140 306 1290 344 1440 326"/>
+        <path id="p-front-crest" d="M0 448C230 404 470 398 720 424C960 450 1210 424 1440 404"/>
 
         <g id="tree">
           <path class="f-bark" d="M-5 0-3.5-62h7L5 0z"/>
@@ -1017,7 +1027,7 @@ a.contact-line:hover span { text-decoration: underline; text-underline-offset: 3
 
       <!-- mid hills -->
       <use href="#p-mid" class="f-hill-mid"/>
-      <g mask="url(#m-winter)"><use href="#p-mid" class="f-snow-2"/></g>
+      <g mask="url(#m-winter)"><use href="#p-mid" class="f-snow-2"/><use href="#p-mid-crest" class="s-snow-shadow" stroke-width="2"/></g>
 
       <!-- trees -->
       <use href="#tree" transform="translate(95 366) scale(.95)"/>
@@ -1074,7 +1084,7 @@ a.contact-line:hover span { text-decoration: underline; text-underline-offset: 3
       <g clip-path="url(#c-front)">
         <path class="f-stripe" d="M-60 400h64l-110 160h-64zM68 400h64L22 560h-64zM196 400h64L150 560H86zM324 400h64L278 560h-64zM452 400h64L406 560h-64zM580 400h64L534 560h-64zM708 400h64L662 560h-64zM836 400h64L790 560h-64zM964 400h64L918 560h-64z"/>
       </g>
-      <g mask="url(#m-winter)"><use href="#p-front" fill="url(#g-snow)"/></g>
+      <g mask="url(#m-winter)"><use href="#p-front" fill="url(#g-snow)"/><use href="#p-front-crest" class="s-snow-shadow" stroke-width="2.5"/></g>
 
       <!-- walkway (summer side) and freshly plowed driveway (winter side) -->
       <path class="f-path" d="M685 393h20c7 48-5 108-37 167h-72c44-59 80-119 89-167z"/>
@@ -1361,7 +1371,7 @@ a.contact-line:hover span { text-decoration: underline; text-underline-offset: 3
       </div>
 
       <div class="plan-banner on-dark">
-        <svg class="icon plan-banner__art" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-leaf"/></svg>
+        <svg class="plan-banner__art" viewBox="8 8 26 26" aria-hidden="true" focusable="false"><path class="pb-leaf" d="M10.5 29.5c0-10.5 6.6-17.6 19.5-18.5 0 12.8-7.2 19.5-18.6 19.5z"/><path class="pb-vein" d="M11.8 28.6c3.6-5.2 8-9.2 13.4-12.4"/></svg>
         <div>
           <p class="plan-banner__kicker">Most popular</p>
           <h3>The Year-Round Plan</h3>
@@ -1459,7 +1469,7 @@ a.contact-line:hover span { text-decoration: underline; text-underline-offset: 3
             <circle class="m-radius" cx="118" cy="148" r="146"/>
             <path class="m-lake" d="M266 0c-8 58 4 108 14 158 8 42 12 82 14 122h46V0z"/>
             <path class="m-shore" d="M266 0c-8 58 4 108 14 158 8 42 12 82 14 122"/>
-            <path class="m-wave" d="M296 48q5-4 10 0t10 0M304 92q5-4 10 0t10 0M300 200q5-4 10 0t10 0M310 238q5-4 10 0t10 0"/>
+            <path class="m-wave" d="M274 34q5-4 10 0t10 0M282 104q5-4 10 0t10 0M291 194q5-4 10 0t10 0M299 254q5-4 10 0t10 0"/>
             <text class="m-lake-label" transform="translate(318 150) rotate(82)" text-anchor="middle">LAKE MICHIGAN</text>
 
             <circle class="m-dot" cx="76" cy="58" r="5"/><text class="m-label" x="85" y="62">Northbrook</text>
@@ -1471,7 +1481,7 @@ a.contact-line:hover span { text-decoration: underline; text-underline-offset: 3
             <circle class="m-dot" cx="106" cy="236" r="5"/><text class="m-label" x="115" y="240">Morton Grove</text>
 
             <g transform="translate(118 148)">
-              <circle r="16" class="m-radius" style="stroke-dasharray:none"/>
+              <circle r="16" class="m-halo"/>
               <path class="m-pin" d="M0 0C-2-6-11-11-11-20a11 11 0 0 1 22 0C11-11 2-6 0 0z"/>
               <circle class="m-pin-dot" cy="-20" r="4.2"/>
             </g>
