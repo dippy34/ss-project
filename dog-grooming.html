@@ -396,7 +396,8 @@
     display: grid; grid-template-columns: repeat(4, 1fr); gap: .3rem; padding: .4rem;
     background: var(--white); border-radius: 36px; box-shadow: var(--shadow), 0 0 0 2px var(--lavender);
   }
-  html:not(.js) .size-switch { display: none; }
+  html:not(.js) .size-switch, html:not(.js) .size-now { display: none; }
+  html:not(.js) .site-header { position: relative; }
   .size-now { text-align: center; color: var(--ink-soft); font-size: .95rem; margin: 1rem 0 0; }
   .size-now strong { color: var(--ink); }
 
@@ -595,6 +596,7 @@
   .form-note { margin: .9rem 0 0; text-align: center; font-size: .9rem; color: var(--ink-soft); }
 
   .confirm { position: relative; overflow: hidden; padding: 2.25rem .5rem 1.5rem; text-align: center; border-radius: var(--radius); }
+  .confirm > :not(.deco) { position: relative; z-index: 1; }
   .confirm:focus { outline: none; }
   .confirm:focus-visible { outline: 3px solid var(--focus); }
   .confirm__emoji {
@@ -643,6 +645,7 @@
     .chip-grid--4 { grid-template-columns: repeat(4, 1fr); }
   }
   @media (min-width: 640px) {
+    .brand__name { max-width: none; }
     .hero__trust { font-size: .9rem; }
     .hero__trust li { padding: .35rem .85rem; }
     .services { grid-template-columns: 1fr 1fr; gap: 1.25rem; }
@@ -924,7 +927,7 @@
     <header class="section-head">
       <p class="eyebrow"><svg aria-hidden="true" viewBox="0 0 64 64"><use href="#paw"/></svg>Packages &amp; pricing</p>
       <h2 id="packages-title">Pick a size, pick your <span class="hl">pamper</span></h2>
-      <p class="lead">Simple, honest pricing based on your pup’s size. Tap a size to update the prices below.</p>
+      <p class="lead">Simple, honest pricing based on your pup’s size. Every package includes cuddles, treats and a fresh bandana or bow.</p>
     </header>
 
     <fieldset class="size-switch">
@@ -944,10 +947,10 @@
         <caption class="sr-only">Package prices by dog size</caption>
         <thead><tr><th scope="col">Size</th><th scope="col">Splash</th><th scope="col">Fluff</th><th scope="col">Spa Day</th></tr></thead>
         <tbody>
-          <tr><th scope="row">Small (under 20 lb)</th><td>$45</td><td>$70</td><td>$95</td></tr>
-          <tr><th scope="row">Medium (20–50 lb)</th><td>$55</td><td>$85</td><td>$115</td></tr>
-          <tr><th scope="row">Large (50–80 lb)</th><td>$65</td><td>$100</td><td>$135</td></tr>
-          <tr><th scope="row">X-Large (80+ lb)</th><td>$80</td><td>$120</td><td>$160</td></tr>
+          <tr><th scope="row">Small<br><small>under 20 lb</small></th><td>$45</td><td>$70</td><td>$95</td></tr>
+          <tr><th scope="row">Medium<br><small>20–50 lb</small></th><td>$55</td><td>$85</td><td>$115</td></tr>
+          <tr><th scope="row">Large<br><small>50–80 lb</small></th><td>$65</td><td>$100</td><td>$135</td></tr>
+          <tr><th scope="row">X-Large<br><small>80+ lb</small></th><td>$80</td><td>$120</td><td>$160</td></tr>
         </tbody>
       </table>
     </noscript>
@@ -1056,9 +1059,9 @@
           <path class="s-mud" d="M168 92l-14-30"/>
           <ellipse class="f-leaf" cx="150" cy="58" rx="10" ry="5.5" transform="rotate(-60 150 58)"/>
           <ellipse class="f-leaf" cx="164" cy="70" rx="7" ry="4" transform="rotate(20 164 70)"/>
-          <path class="f-none s-soft" d="M126 54c-8-22-36-20-34-2" style="stroke-dasharray:3 7"/>
-          <g class="s-ink" style="stroke-width:2.5"><ellipse class="f-white" cx="90" cy="40" rx="7" ry="5" transform="rotate(-20 90 40)"/><ellipse class="f-white" cx="102" cy="40" rx="7" ry="5" transform="rotate(20 102 40)"/></g>
-          <circle class="f-ink" cx="96" cy="48" r="5"/>
+          <path class="f-none s-soft" d="M106 92c-26 8-34-22-12-26" style="stroke-dasharray:3 7"/>
+          <g class="s-ink" style="stroke-width:2.5"><ellipse class="f-white" cx="116" cy="62" rx="7" ry="5" transform="rotate(-20 116 62)"/><ellipse class="f-white" cx="128" cy="62" rx="7" ry="5" transform="rotate(20 128 62)"/></g>
+          <circle class="f-ink" cx="122" cy="70" r="5"/>
         </svg>
         <span class="ba__tag ba__tag--before">Before</span>
       </div>
