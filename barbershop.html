@@ -5,36 +5,39 @@
 <!--
   ====================================================================
   === CUSTOMIZE ME ===
-  Sample barbershop website. Everything you need to swap is up here.
+  Sample barbershop website. Concept: the shopfront and sign-painter
+  tradition (gold-leaf window, showcards, felt letterboard, door decal).
   --------------------------------------------------------------------
-  1. BUSINESS DETAILS: edit the BUSINESS object in the first <script>
-     below. Every element with data-biz="name|phone|email|address|hours"
-     is filled from it when the page loads. Links marked data-biz="phone"
-     or data-biz-href="phone" also get a tel: link, and "email" gets a
-     mailto: link. The same text is typed into the HTML as a no-JS
-     fallback, so find-and-replace the old values too if you like.
-  2. COLORS & FONTS: edit the :root block at the very top of <style>.
-     If you change a font family, update the Google Fonts <link> too.
-  3. TITLE & DESCRIPTION: edit <title> and <meta name="description">.
-  4. CONTENT: services, price menu, team, hours table and testimonials
-     are plain HTML. Search for "SECTION:" to jump between them.
-     The "G&B" monogram lives in the #i-crest symbol and the hero crest.
-  5. BOOKING: see the "BOOKING INTEGRATION" comments to connect Square
-     Appointments, Booksy, Formspree or similar.
+  1. BUSINESS DETAILS: edit the BUSINESS object in the first <script>.
+     Elements with data-biz="name|shortName|phone|email|address|hours"
+     are filled from it on page load. Links marked data-biz="phone" or
+     data-biz-href="phone" get a tel: link; "email" gets a mailto: link.
+     shortName is the name lettered on the window, door and logo.
+     The same text is also typed into the HTML as a no-JS fallback.
+  2. COLORS & FONTS: edit the :root block at the top of <style>. If you
+     change a font family, update the Google Fonts <link> as well.
+  3. HOURS: edit the door-decal table (search "SECTION: Hours"). Each
+     row's data-days / data-open / data-close drive the live OPEN/CLOSED
+     sign, the "today" marker and the booking-form time checks.
+  4. CONTENT: showcards, letterboard prices, house rules, barbers and
+     reviews are plain HTML. Search "SECTION:" to jump between them.
+  5. BOOKING: see the "BOOKING INTEGRATION" comments (Square
+     Appointments, Booksy, Formspree, etc.).
   6. Remove the SAMPLE RIBBON block in the footer before going live.
 
-  Every name, phone number (555-01XX), email (@example.com), address,
-  review and team member on this page is fictional placeholder content.
+  Every name, number (555-01XX), email (@example.com), address, review
+  and barber on this page is a fictional placeholder.
   ====================================================================
 -->
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Glen &amp; Blade Barbers | Classic Cuts &amp; Hot Towel Shaves in Glenview, IL</title>
-<meta name="description" content="A neighborhood barbershop in Glenview, Illinois. Classic cuts, skin fades, beard work and hot towel straight-razor shaves. Walk-ins welcome, or book your chair online.">
+<title>Glen &amp; Blade Barbers · Haircuts &amp; Hot Towel Shaves in Glenview, IL</title>
+<meta name="description" content="Four-chair barbershop on Sample Street in Glenview, IL. Classic cuts, skin fades, hot towel straight-razor shaves and kids' cuts. Walk in Tuesday to Saturday or book a chair online.">
 
 <script>
   /* === BUSINESS INFO: EDIT HERE === */
   const BUSINESS = {
     name: "Glen & Blade Barbers",
+    shortName: "Glen & Blade",
     phone: "(847) 555-0167",
     email: "chair@example.com",
     address: "123 Sample Street, Glenview, IL 60025",
@@ -76,1079 +79,993 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600&amp;family=Barlow:wght@400;500&amp;family=Playfair+Display:ital,wght@0,700;0,900;1,400&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@400;600;700&amp;family=Bodoni+Moda:ital,opsz,wght@0,6..96,700;0,6..96,900;1,6..96,700&amp;family=Yellowtail&amp;display=swap">
 
 <style>
 :root {
   /* === BRAND COLORS & FONTS: EDIT HERE === */
-  --ink: #0e0c0a;            /* page background, near-black */
-  --charcoal: #17130f;       /* alternate section background */
-  --espresso: #211812;       /* framed panels */
-  --espresso-2: #2d2119;     /* raised panel highlight */
-  --cream: #f2eadc;          /* primary text, warm off-white */
-  --cream-muted: #b8ab96;    /* secondary text */
-  --brass: #c9a45c;          /* primary accent, antique gold */
-  --brass-light: #ecd292;    /* gold highlight */
-  --brass-deep: #8a6731;     /* gold shadow */
-  --oxblood: #6d1f24;        /* rare secondary accent */
-  --oxblood-bright: #b1434a; /* error states on dark */
-  --line: #3a2f23;           /* hairline rules */
-  --line-strong: #5a4730;    /* frames, input borders */
+  --ink: #0d0b09;            /* page background */
+  --soot: #16110e;           /* header, sill, footer */
+  --wall: #1e1611;           /* shop wall */
+  --wall-2: #2b2018;         /* wood trim, door */
+  --cream: #f1e8d6;          /* main text */
+  --cream-dim: #b9ac97;      /* secondary text */
+  --gold: #d5ab5a;           /* small gold text */
+  --leaf-hi: #fff1bd;        /* gold leaf: highlight */
+  --leaf: #e3b65c;           /* gold leaf: body */
+  --leaf-lo: #9b6b23;        /* gold leaf: burnish */
+  --leaf-shade: #3b2408;     /* sign-painter drop shade */
+  --oxblood: #6f1d23;        /* leather, awning, accents */
+  --oxblood-deep: #3e1014;
+  --ticket-red: #b0252c;     /* ticket numbers, prices on cards */
+  --paper: #f3e8cd;          /* showcards, tickets, appointment book */
+  --paper-2: #e2d1ab;
+  --paper-ink: #1e1813;
+  --paper-ink-dim: #5b4b3a;
+  --enamel: #f4efe2;         /* house rules sign */
+  --felt: #181818;           /* letterboard */
+  --felt-groove: #0a0a0a;
+  --plastic: #f4f1ea;        /* letterboard + door decal letters */
+  --oak: #8a5f37;
+  --oak-dark: #4d321b;
+  --chrome-hi: #f1f3f4;
+  --chrome: #a6acaf;
+  --chrome-lo: #4c5255;
+  --mirror: #2b3336;
+  --glass: #0b1011;
+  --lamp: #f2aa4c;           /* warm light inside the shop */
+  --awning: #ddd0b2;         /* sun-faded awning stripe */
+  --tile: #c9bc9f;           /* checkerboard floor */
+  --line: #3a2e24;
   --shadow: #000000;
 
-  --font-display: "Playfair Display", Didot, "Bodoni 72", Georgia, "Times New Roman", serif;
-  --font-label: "Barlow Condensed", "Oswald", "Arial Narrow", "Roboto Condensed", "Liberation Sans Narrow", Arial, sans-serif;
-  --font-body: "Barlow", "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif;
+  --font-display: "Bodoni Moda", "Bodoni 72", Didot, "Didot LT STD", Georgia, serif;
+  --font-script: "Yellowtail", "Brush Script MT", "Segoe Script", cursive;
+  --font-body: "Archivo Narrow", "Arial Narrow", "Roboto Condensed", "Helvetica Neue", Arial, sans-serif;
 
-  /* Derived tints & gradients (built from the colors above) */
-  --brass-a08: color-mix(in srgb, var(--brass) 8%, transparent);
-  --brass-a15: color-mix(in srgb, var(--brass) 15%, transparent);
-  --brass-a30: color-mix(in srgb, var(--brass) 30%, transparent);
-  --oxblood-a40: color-mix(in srgb, var(--oxblood) 40%, transparent);
-  --ink-a94: color-mix(in srgb, var(--ink) 94%, transparent);
-  --shadow-a60: color-mix(in srgb, var(--shadow) 60%, transparent);
-  --gold-gradient: linear-gradient(100deg, var(--brass) 0%, var(--brass-light) 38%, var(--brass) 68%, var(--brass-deep) 100%);
-  --gold-button: linear-gradient(180deg, var(--brass-light) 0%, var(--brass) 50%, var(--brass-light) 100%);
-  --gold-rule: linear-gradient(90deg, transparent, var(--brass) 18%, var(--brass-light) 50%, var(--brass) 82%, transparent);
-  --pole: repeating-linear-gradient(135deg, var(--oxblood) 0 9px, var(--cream) 9px 14.14px, var(--ink) 14.14px 23.14px, var(--cream) 23.14px 28.28px);
+  /* Derived tints (built from the colors above) */
+  --glare: color-mix(in srgb, var(--cream) 7%, transparent);
+  --glare-soft: color-mix(in srgb, var(--cream) 3%, transparent);
+  --glare-strong: color-mix(in srgb, var(--cream) 45%, transparent);
+  --lamp-a: color-mix(in srgb, var(--lamp) 28%, transparent);
+  --lamp-b: color-mix(in srgb, var(--lamp) 9%, transparent);
+  --shadow-a: color-mix(in srgb, var(--shadow) 60%, transparent);
+  --shadow-b: color-mix(in srgb, var(--shadow) 30%, transparent);
+  --ink-a95: color-mix(in srgb, var(--ink) 95%, transparent);
+  --plastic-a: color-mix(in srgb, var(--plastic) 30%, transparent);
+  --red-a: color-mix(in srgb, var(--ticket-red) 55%, transparent);
+  --highlight: color-mix(in srgb, var(--leaf) 28%, var(--paper));
+  --gold-leaf: linear-gradient(180deg, var(--leaf-hi) 0%, var(--leaf) 30%, var(--leaf-lo) 52%, var(--leaf) 64%, var(--leaf-hi) 84%, var(--leaf) 100%);
+  --brass: linear-gradient(180deg, var(--leaf-hi), var(--leaf) 45%, var(--leaf-lo));
+  --chrome-bar: linear-gradient(90deg, var(--chrome-lo), var(--chrome-hi) 40%, var(--chrome) 70%, var(--chrome-lo));
+  --pole: repeating-linear-gradient(135deg, var(--oxblood) 0 9px, var(--cream) 9px 14.14px, var(--oxblood) 14.14px 23.14px, var(--cream) 23.14px 28.28px);
   --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 
-  /* Type & spacing scale */
-  --fs-display: clamp(2.75rem, 1.55rem + 5.4vw, 5.5rem);
-  --fs-h2: clamp(2.125rem, 1.45rem + 3.2vw, 4rem);
-  --fs-h3: clamp(1.375rem, 1.2rem + .7vw, 1.75rem);
-  --fs-lede: clamp(1.0625rem, 1rem + .35vw, 1.25rem);
-  --fs-label: .8125rem;
+  --h2: clamp(2.25rem, 1.4rem + 3.6vw, 4.25rem);
   --gutter: clamp(1.25rem, 4vw, 2.5rem);
-  --section: clamp(4.5rem, 3rem + 7vw, 8.5rem);
+  --section: clamp(4rem, 2.5rem + 6vw, 7.5rem);
 }
 
 /* ---------- Base ---------- */
 *, *::before, *::after { box-sizing: border-box; }
-html { color-scheme: dark; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-padding-top: 5.5rem; }
+html { color-scheme: dark; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-padding-top: 4.5rem; }
 @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
-body {
-  margin: 0;
-  background: var(--ink);
-  color: var(--cream);
-  font-family: var(--font-body);
-  font-size: 1.0625rem;
-  line-height: 1.65;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-body::after { /* film grain */
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 200;
-  pointer-events: none;
-  background-image: var(--grain);
-  background-size: 180px;
-  opacity: .055;
-}
+body { margin: 0; background: var(--ink); color: var(--cream); font-family: var(--font-body); font-size: 1.125rem; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+body::after { content: ""; position: fixed; inset: 0; z-index: 200; pointer-events: none; background-image: var(--grain); background-size: 180px; opacity: .06; }
 svg { display: block; }
 a { color: inherit; }
 p { margin: 0 0 1em; }
-:focus-visible { outline: 2px solid var(--brass-light); outline-offset: 3px; }
-::selection { background: var(--brass); color: var(--ink); }
-.sr-only { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
-.skip-link {
-  position: absolute; left: 1rem; top: -5rem; z-index: 300;
-  padding: .8rem 1.1rem; background: var(--brass); color: var(--ink);
-  font: 600 .875rem/1 var(--font-label); letter-spacing: .14em; text-transform: uppercase; text-decoration: none;
-}
+:focus-visible { outline: 2px solid var(--leaf); outline-offset: 3px; }
+::selection { background: var(--leaf); color: var(--ink); }
+.sr-only { position: absolute !important; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.nowrap { white-space: nowrap; }
+.skip-link { position: absolute; left: 1rem; top: -5rem; z-index: 300; padding: .8rem 1rem; background: var(--paper); color: var(--paper-ink); font-weight: 700; text-decoration: none; }
 .skip-link:focus { top: 1rem; }
 .wrap { width: min(100% - 2 * var(--gutter), 76rem); margin-inline: auto; }
+.h2 { margin: 0 0 1.25rem; font: 900 var(--h2)/1 var(--font-display); letter-spacing: -.015em; text-wrap: balance; }
+.lede { font-size: clamp(1.125rem, 1.05rem + .3vw, 1.3125rem); color: var(--cream-dim); max-width: 34rem; }
+.text-link { color: var(--gold); text-decoration-thickness: 1px; text-underline-offset: .2em; }
+.text-link:hover { color: var(--leaf-hi); }
 
-h1, h2, h3 { margin: 0; font-family: var(--font-display); font-weight: 700; line-height: 1.08; letter-spacing: -.01em; text-wrap: balance; }
-.title { font-size: var(--fs-h2); font-weight: 900; line-height: 1.02; letter-spacing: -.02em; margin-bottom: 1.25rem; }
-.title em, .hero-title em, .accent {
-  font-style: italic; font-weight: 400; letter-spacing: -.01em; color: var(--brass-light); padding-right: .06em;
-}
+/* Gold leaf lettering in HTML */
+.leaf-text { color: var(--leaf); }
 @supports (-webkit-background-clip: text) {
-  .title em, .hero-title em, .accent, .gold-text {
-    background: var(--gold-gradient);
-    -webkit-background-clip: text; background-clip: text;
+  .leaf-text {
+    background: var(--gold-leaf); -webkit-background-clip: text; background-clip: text;
     -webkit-text-fill-color: transparent; color: transparent;
+    filter: drop-shadow(1px 1px 0 var(--ink)) drop-shadow(2px 3px 0 var(--leaf-shade));
   }
 }
 
-/* Labels */
-.kicker {
-  display: flex; align-items: center; gap: .85rem; margin: 0 0 1.25rem;
-  font-family: var(--font-label); font-weight: 600; font-size: var(--fs-label);
-  letter-spacing: .24em; text-transform: uppercase; color: var(--brass);
+/* Take-a-number ticket (the Book Now button) */
+.ticket {
+  --notch: .45rem;
+  position: relative; isolation: isolate; display: inline-flex; align-items: center; gap: .65rem;
+  min-height: 2.875rem; padding: .5rem 1.4rem;
+  font: 700 .9375rem/1 var(--font-body); letter-spacing: .14em; text-transform: uppercase;
+  color: var(--paper-ink); text-decoration: none; border: 0; background: none; cursor: pointer;
+  transition: transform .2s ease;
 }
-.kicker::after { content: ""; flex: 0 1 4.5rem; height: 1px; background: var(--brass); opacity: .7; }
-.kicker { white-space: nowrap; }
-.kicker-no { font-family: var(--font-display); font-style: italic; font-weight: 400; font-size: 1rem; letter-spacing: 0; text-transform: none; color: var(--cream-muted); }
-.kicker-center { justify-content: center; }
-.kicker-center::before { content: ""; flex: 0 1 4.5rem; height: 1px; background: var(--brass); opacity: .7; }
-.kicker-center::before, .kicker-center::after { min-width: .75rem; }
-.lede { font-size: var(--fs-lede); color: var(--cream-muted); max-width: 36rem; }
-.muted { color: var(--cream-muted); }
-.nowrap { white-space: nowrap; }
-
-/* Buttons */
-.btn {
-  display: inline-flex; align-items: center; justify-content: center; gap: .65rem;
-  min-height: 3.125rem; padding: .85rem 1.6rem;
-  font-family: var(--font-label); font-weight: 600; font-size: .9375rem; line-height: 1;
-  letter-spacing: .18em; text-transform: uppercase; text-decoration: none;
-  border: 1px solid transparent; border-radius: 0; cursor: pointer;
-  transition: background-position .4s ease, color .2s ease, border-color .2s ease, background-color .2s ease, transform .2s ease;
+.ticket::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: linear-gradient(180deg, var(--paper), var(--paper-2));
+  -webkit-mask: radial-gradient(circle at 0 50%, transparent var(--notch), #000 calc(var(--notch) + .5px)) left / 51% 100% no-repeat,
+                radial-gradient(circle at 100% 50%, transparent var(--notch), #000 calc(var(--notch) + .5px)) right / 51% 100% no-repeat;
+          mask: radial-gradient(circle at 0 50%, transparent var(--notch), #000 calc(var(--notch) + .5px)) left / 51% 100% no-repeat,
+                radial-gradient(circle at 100% 50%, transparent var(--notch), #000 calc(var(--notch) + .5px)) right / 51% 100% no-repeat;
 }
-.btn svg { width: 1.1rem; height: 1.1rem; flex: none; }
-.btn-gold {
-  color: var(--ink); background: var(--gold-button); background-size: 100% 200%; background-position: 0 0;
-  border-color: var(--brass-light); outline: 1px solid var(--brass-a30); outline-offset: 3px;
-}
-.btn-gold:hover { background-position: 0 100%; transform: translateY(-1px); }
-.btn-gold:focus-visible { outline: 2px solid var(--brass-light); outline-offset: 4px; }
-.btn-ghost { color: var(--cream); background: transparent; border-color: var(--line-strong); }
-.btn-ghost svg { color: var(--brass); }
-.btn-ghost:hover { border-color: var(--brass); background-color: var(--brass-a08); }
-.btn-sm { min-height: 2.75rem; padding: .7rem 1.2rem; font-size: .875rem; }
-.text-link {
-  display: inline-flex; align-items: center; gap: .5rem; min-height: 44px;
-  font-family: var(--font-label); font-weight: 600; font-size: .875rem; letter-spacing: .2em; text-transform: uppercase;
-  color: var(--brass-light); text-decoration: none; border-bottom: 1px solid transparent;
-}
-.text-link svg { width: 1rem; height: 1rem; transition: transform .25s ease; }
-.text-link:hover svg { transform: translateX(4px); }
-
-/* Ornaments */
-.corners::before {
-  content: ""; position: absolute; inset: .5rem; pointer-events: none;
-  background:
-    linear-gradient(var(--brass), var(--brass)) top left / var(--corner, 1.5rem) 2px,
-    linear-gradient(var(--brass), var(--brass)) top left / 2px var(--corner, 1.5rem),
-    linear-gradient(var(--brass), var(--brass)) top right / var(--corner, 1.5rem) 2px,
-    linear-gradient(var(--brass), var(--brass)) top right / 2px var(--corner, 1.5rem),
-    linear-gradient(var(--brass), var(--brass)) bottom left / var(--corner, 1.5rem) 2px,
-    linear-gradient(var(--brass), var(--brass)) bottom left / 2px var(--corner, 1.5rem),
-    linear-gradient(var(--brass), var(--brass)) bottom right / var(--corner, 1.5rem) 2px,
-    linear-gradient(var(--brass), var(--brass)) bottom right / 2px var(--corner, 1.5rem);
-  background-repeat: no-repeat;
-}
-.frame-inner::after { content: ""; position: absolute; inset: .5rem; border: 1px solid var(--line); pointer-events: none; }
-.ornament { display: flex; align-items: center; justify-content: center; gap: 1rem; color: var(--brass); margin: 1.25rem auto; max-width: 22rem; }
-.ornament::before, .ornament::after { content: ""; flex: 1; height: 1px; background: var(--gold-rule); }
-.ornament svg { width: 1.75rem; height: 1.75rem; }
-.pole-stripe { height: 5px; background: var(--pole); background-size: 40px 40px; }
+.ticket:hover { transform: rotate(-1.5deg) translateY(-1px); }
+.ticket-no { padding-right: .65rem; border-right: 1.5px dashed var(--paper-ink-dim); font: 900 1rem/1 var(--font-display); letter-spacing: 0; text-transform: none; color: var(--ticket-red); }
+.ticket-lg { --notch: .7rem; gap: 0; min-height: 5rem; padding: 0; }
+.ticket-lg .ticket-stub { display: grid; place-items: center; align-self: stretch; padding: 0 1.1rem 0 1.6rem; border-right: 2px dashed var(--paper-ink-dim); color: var(--ticket-red); font: 900 2.25rem/1 var(--font-display); letter-spacing: 0; }
+.ticket-lg .ticket-stub small { display: block; font: 700 .6875rem/1 var(--font-body); letter-spacing: .2em; }
+.ticket-lg .ticket-body { display: grid; gap: .4rem; padding: 0 1.9rem 0 1.25rem; }
+.ticket-lg strong { font: 900 1.625rem/1 var(--font-display); letter-spacing: 0; text-transform: none; }
+.ticket-lg .ticket-body small { font: 600 .75rem/1 var(--font-body); letter-spacing: .14em; color: var(--paper-ink-dim); }
+.ticket-red { color: var(--paper); }
+.ticket-red::before { background: var(--ticket-red); }
 
 /* ---------- Header ---------- */
-.site-header { position: sticky; top: 0; z-index: 50; background: var(--ink-a94); border-bottom: 1px solid var(--line); }
-.site-header::before { content: ""; display: block; height: 4px; background: var(--pole); background-size: 40px 40px; }
-.header-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: .75rem 1rem; min-height: 4.25rem; }
-.brand { display: flex; align-items: center; gap: .75rem; min-height: 44px; color: var(--cream); text-decoration: none; }
-.brand-crest { width: 2.625rem; height: 2.625rem; flex: none; font-family: var(--font-display); }
-.brand-name { display: block; font-family: var(--font-display); font-weight: 700; font-size: 1.125rem; line-height: 1.1; }
-.brand-sub { display: block; margin-top: .25rem; font-family: var(--font-label); font-weight: 500; font-size: .75rem; line-height: 1; letter-spacing: .3em; text-transform: uppercase; color: var(--brass); }
-
+.site-header { position: sticky; top: 0; z-index: 50; background: var(--ink-a95); border-bottom: 1px solid var(--line); }
+.header-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .5rem 1rem; min-height: 4rem; }
+.brand { display: flex; align-items: center; gap: .8rem; min-height: 44px; color: var(--cream); text-decoration: none; }
+.mini-pole { position: relative; width: .5rem; height: 1.75rem; background: var(--pole); background-size: 40px 40px; box-shadow: 0 -4px 0 -1px var(--chrome), 0 4px 0 -1px var(--chrome); }
+.brand-name { display: block; font: 900 1.3125rem/1 var(--font-display); letter-spacing: -.01em; }
+.brand-sub { display: block; margin-top: .3rem; font: 600 .75rem/1 var(--font-body); letter-spacing: .2em; text-transform: uppercase; color: var(--gold); }
 .nav-toggle {
-  display: inline-flex; align-items: center; justify-content: center; width: 3rem; height: 3rem;
-  padding: 0; color: var(--cream); background: transparent; border: 1px solid var(--line-strong); border-radius: 0; cursor: pointer;
+  display: inline-flex; align-items: center; gap: .6rem; min-height: 2.75rem; padding: 0 .9rem;
+  font: 700 .875rem/1 var(--font-body); letter-spacing: .16em; text-transform: uppercase;
+  color: var(--cream); background: none; border: 1px solid var(--line); cursor: pointer;
 }
-.nav-toggle:hover { border-color: var(--brass); }
-.nav-toggle-bars, .nav-toggle-bars::before, .nav-toggle-bars::after {
-  display: block; width: 1.375rem; height: 1.5px; background: currentColor; transition: transform .25s ease, opacity .2s ease;
-}
-.nav-toggle-bars { position: relative; }
-.nav-toggle-bars::before, .nav-toggle-bars::after { content: ""; position: absolute; left: 0; }
-.nav-toggle-bars::before { top: -7px; }
-.nav-toggle-bars::after { top: 7px; width: .9rem; }
-.nav-toggle[aria-expanded="true"] .nav-toggle-bars { background: transparent; }
-.nav-toggle[aria-expanded="true"] .nav-toggle-bars::before { transform: translateY(7px) rotate(45deg); }
-.nav-toggle[aria-expanded="true"] .nav-toggle-bars::after { width: 1.375rem; transform: translateY(-7px) rotate(-45deg); }
+.nav-toggle i { position: relative; display: block; width: 1.1rem; height: 1.5px; background: currentColor; transition: transform .2s ease; }
+.nav-toggle i::after { content: ""; position: absolute; left: 0; top: 5px; width: 70%; height: 1.5px; background: currentColor; transition: transform .2s ease, width .2s ease, top .2s ease; }
+.nav-toggle i { transform: translateY(-2.5px); }
+.nav-toggle[aria-expanded="true"] i { transform: rotate(45deg); }
+.nav-toggle[aria-expanded="true"] i::after { top: 0; width: 100%; transform: rotate(-90deg); }
 html:not(.js) .nav-toggle { display: none; }
-
 .site-nav { width: 100%; padding-bottom: 1rem; }
-html.js .site-nav {
-  display: none; position: absolute; top: 100%; left: 0; right: 0; width: auto;
-  max-height: calc(100vh - 4.5rem); overflow-y: auto;
-  padding: .5rem var(--gutter) 1.75rem; background: var(--ink); border-bottom: 1px solid var(--line-strong);
-  box-shadow: 0 30px 40px -20px var(--shadow-a60);
-}
+html.js .site-nav { display: none; position: absolute; top: 100%; left: 0; right: 0; width: auto; padding: .25rem var(--gutter) 1.5rem; background: var(--soot); border-bottom: 1px solid var(--line); box-shadow: 0 30px 40px -20px var(--shadow-a); }
 html.js .site-nav.is-open { display: block; }
-.nav-list { list-style: none; margin: 0; padding: 0; }
-.nav-list a {
-  display: flex; align-items: center; justify-content: space-between; min-height: 3.5rem;
-  font-family: var(--font-display); font-weight: 700; font-size: 1.5rem; color: var(--cream); text-decoration: none;
-  border-bottom: 1px solid var(--line);
-}
-.nav-list a::after { content: "\2192"; font-family: var(--font-body); font-size: 1rem; color: var(--brass); }
-.nav-cta { width: 100%; margin-top: 1.5rem; }
+.nav-list { list-style: none; margin: 0 0 1.25rem; padding: 0; }
+.nav-list a { display: flex; align-items: center; min-height: 3.25rem; border-bottom: 1px solid var(--line); font: 700 1.5rem/1 var(--font-display); color: var(--cream); text-decoration: none; }
+.nav-list a:hover { color: var(--leaf); }
 
-/* ---------- Hero ---------- */
-.hero {
-  position: relative; overflow: hidden;
-  padding: clamp(2.75rem, 1.75rem + 3.5vw, 4.75rem) 0 clamp(3.5rem, 2rem + 6vw, 7rem);
+/* ---------- Storefront (hero) ---------- */
+.storefront { background: var(--soot); }
+.awning {
+  --stripe: 2rem;
+  position: relative; height: clamp(2.75rem, 2rem + 2.4vw, 4.25rem);
   background:
-    radial-gradient(48rem 32rem at 92% -8%, var(--brass-a15), transparent 65%),
-    radial-gradient(40rem 28rem at -12% 112%, var(--oxblood-a40), transparent 70%);
-  border-bottom: 1px solid var(--line);
+    linear-gradient(180deg, var(--shadow-a) 0, transparent 35%, transparent 70%, var(--shadow-b)),
+    repeating-linear-gradient(90deg, var(--oxblood) 0 var(--stripe), var(--awning) 0 calc(var(--stripe) * 2));
+  -webkit-mask: linear-gradient(#000 0 0) top / 100% calc(100% - var(--stripe) / 2) no-repeat,
+                radial-gradient(circle at 50% 0, #000 calc(var(--stripe) / 2 - .5px), transparent calc(var(--stripe) / 2)) left bottom / var(--stripe) calc(var(--stripe) / 2) repeat-x;
+          mask: linear-gradient(#000 0 0) top / 100% calc(100% - var(--stripe) / 2) no-repeat,
+                radial-gradient(circle at 50% 0, #000 calc(var(--stripe) / 2 - .5px), transparent calc(var(--stripe) / 2)) left bottom / var(--stripe) calc(var(--stripe) / 2) repeat-x;
 }
-.hero-grid { display: grid; gap: 3.5rem; }
-.eyebrow { flex-wrap: wrap; row-gap: .25rem; }
-.eyebrow::after { display: none; }
-.eyebrow .rule { width: 2.5rem; height: 1px; background: var(--brass); opacity: .7; }
-.hero-title { font-size: var(--fs-display); font-weight: 900; line-height: .98; letter-spacing: -.025em; margin: 0 0 1.5rem; }
-.hero-title .line { display: block; }
-.hero-title em { display: block; margin-top: .08em; line-height: 1.02; }
-.hero-lede { font-size: var(--fs-lede); color: var(--cream-muted); max-width: 33rem; margin-bottom: 2rem; }
-.hero-actions { display: flex; flex-wrap: wrap; gap: 1rem; }
-.hero-actions .btn { flex: 1 1 14rem; }
-.hero-notes {
-  list-style: none; display: flex; flex-wrap: wrap; gap: .6rem 1.75rem; margin: 2.5rem 0 0; padding: 1.5rem 0 0;
-  border-top: 1px solid var(--line);
-  font-family: var(--font-label); font-weight: 500; font-size: var(--fs-label); letter-spacing: .2em; text-transform: uppercase; color: var(--cream-muted);
+.facade {
+  display: grid; grid-template-columns: minmax(0, 1fr) 1.9rem; gap: .35rem;
+  padding: 1rem calc(var(--gutter) - .5rem) 0 var(--gutter);
+  background: linear-gradient(180deg, var(--shadow-a), transparent 3.5rem);
 }
-.hero-notes li { display: flex; align-items: center; gap: .6rem; }
-.hero-notes svg { width: .6rem; height: .6rem; color: var(--brass); }
-
-.hero-panel {
-  position: relative; margin-left: .5rem; padding: 2.25rem 1.5rem 1.75rem;
-  background: linear-gradient(180deg, var(--espresso), var(--charcoal));
-  border: 1px solid var(--line-strong);
-  box-shadow: 0 40px 80px -40px var(--shadow-a60);
+.window { position: relative; padding: clamp(.5rem, 1.2vw, .875rem); background: linear-gradient(180deg, var(--wall-2), var(--soot)); box-shadow: 0 0 0 1px var(--shadow), inset 0 1px 0 var(--line); }
+.window::after { content: ""; position: absolute; inset: .25rem; border: 1px solid var(--gold); opacity: .35; pointer-events: none; }
+.glass {
+  position: relative; isolation: isolate; overflow: hidden; text-align: center;
+  padding: clamp(1.75rem, 1rem + 3vw, 2.75rem) clamp(.75rem, 3.5vw, 3rem) clamp(1.75rem, 1rem + 3vw, 3rem);
+  background: linear-gradient(180deg, var(--glass), var(--ink));
+  box-shadow: inset 0 0 0 1px var(--shadow), inset 0 1.5rem 2.5rem var(--shadow-b);
 }
-.crest-lg { width: min(100%, 18rem); height: auto; margin: 0 auto; font-family: var(--font-display); }
-.crest-lg .c-ring { font-family: var(--font-label); font-weight: 600; font-size: 14px; letter-spacing: .2em; text-transform: uppercase; fill: var(--brass); }
-.crest-lg .c-mono { font-weight: 900; font-size: 66px; }
-.crest-lg .c-amp { font-style: italic; font-weight: 400; }
-.crest-lg .c-sub { font-family: var(--font-label); font-weight: 600; font-size: 13px; letter-spacing: .4em; text-transform: uppercase; fill: var(--cream); }
-.crest-lg .c-icon { color: var(--brass); }
+.interior { position: absolute; inset: 0; z-index: -1; width: 100%; height: 100%; }
+.interior .g-lamp { stop-color: var(--lamp); stop-opacity: .5; }
+.interior .g-none { stop-color: var(--lamp); stop-opacity: 0; }
+.interior .i-dark { fill: var(--ink); stroke: var(--lamp-a); stroke-width: 1.5; }
+.interior .i-cord { stroke: var(--ink); stroke-width: 2; }
+.interior .i-bulb { fill: var(--leaf-hi); }
+.interior .i-frame { fill: none; stroke: var(--lamp-a); stroke-width: 2; }
+.glare {
+  position: absolute; inset: 0; z-index: 2; pointer-events: none;
+  background:
+    linear-gradient(112deg, transparent 0 13%, var(--glare) 13% 20%, transparent 20% 22.5%, var(--glare-soft) 22.5% 24%, transparent 24%),
+    linear-gradient(112deg, transparent 0 68%, var(--glare-soft) 68% 77%, transparent 77%),
+    linear-gradient(180deg, var(--glare-soft), transparent 35%);
+}
+.sign { margin: 0; }
+.sign-svg { width: min(100%, 42rem); height: auto; margin: 0 auto; overflow: visible; }
+.sign-svg .s-hi { stop-color: var(--leaf-hi); }
+.sign-svg .s-mid { stop-color: var(--leaf); }
+.sign-svg .s-lo { stop-color: var(--leaf-lo); }
+.sign-name { font-family: var(--font-display); font-weight: 900; font-size: 84px; text-transform: uppercase; letter-spacing: .02em; }
+.sign-trade { font-family: var(--font-script); font-size: 124px; }
+.l-shade { fill: var(--leaf-shade); stroke: var(--leaf-shade); stroke-width: 6; stroke-linejoin: round; transform: translate(5px, 6px); }
+.l-key { fill: none; stroke: var(--ink); stroke-width: 5; stroke-linejoin: round; }
+.l-leaf { fill: url(#leaf); stroke: var(--leaf-hi); stroke-width: .6; }
+.l-swash { fill: url(#leaf); }
+.glass-line {
+  max-width: 30rem; margin: .5rem auto 1.1rem;
+  font: 700 clamp(.8125rem, .74rem + .35vw, 1rem)/1.5 var(--font-body); letter-spacing: .24em; text-transform: uppercase;
+  color: var(--leaf); text-shadow: -1px -1px 0 var(--ink), 1px -1px 0 var(--ink), -1px 1px 0 var(--ink), 2px 2px 0 var(--leaf-shade);
+}
+.glass-ribbon { margin: 0 0 1.4rem; }
+.glass-ribbon span {
+  display: inline-block; padding: .55rem 2.25rem .5rem;
+  font: 700 clamp(.8125rem, .76rem + .25vw, .9375rem)/1 var(--font-body); letter-spacing: .22em; text-transform: uppercase;
+  color: var(--paper-ink); background: linear-gradient(180deg, var(--leaf-hi), var(--leaf) 55%, var(--leaf-lo));
+  clip-path: polygon(0 0, 100% 0, calc(100% - .8rem) 50%, 100% 100%, 0 100%, .8rem 50%);
+}
+.glass-foot {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: .35rem 2rem; margin: 0;
+  font: 700 .8125rem/1.3 var(--font-body); letter-spacing: .2em; text-transform: uppercase;
+  color: var(--leaf); text-shadow: 1px 1px 0 var(--leaf-shade);
+}
+.pole-post { position: relative; display: flex; justify-content: center; padding-top: 2.75rem; }
+.pole-post::before { content: ""; position: absolute; top: 3.4rem; left: -.35rem; width: 60%; height: .3rem; background: var(--chrome-bar); }
 .pole {
-  position: absolute; left: -9px; top: 14%; bottom: 14%; width: 16px;
-  background: var(--pole); background-size: 40px 40px;
-  border-inline: 1px solid var(--brass-deep);
+  position: relative; width: .875rem; height: 55%; min-height: 8rem;
+  background: linear-gradient(90deg, var(--shadow-a), transparent 35%, var(--glare-strong) 48%, transparent 62%, var(--shadow-a)), var(--pole);
+  background-size: 100% 100%, 40px 40px;
 }
-.pole::before, .pole::after {
-  content: ""; position: absolute; left: -4px; right: -4px; height: 10px;
-  background: linear-gradient(90deg, var(--brass-deep), var(--brass-light) 45%, var(--brass) 70%, var(--brass-deep));
-}
-.pole::before { top: -10px; }
-.pole::after { bottom: -10px; }
+.pole::before, .pole::after { content: ""; position: absolute; left: -.2rem; right: -.2rem; background: var(--chrome-bar); }
+.pole::before { top: -.9rem; height: .9rem; border-radius: 999px 999px 2px 2px; }
+.pole::after { bottom: -.6rem; height: .6rem; border-radius: 2px 2px 999px 999px; }
 @media (prefers-reduced-motion: no-preference) {
-  .pole { animation: pole-spin 3s linear infinite; }
-  @keyframes pole-spin { to { background-position: 0 -40px; } }
+  .pole { animation: pole-spin 3.5s linear infinite; }
+  @keyframes pole-spin { to { background-position: 0 0, 0 -40px; } }
 }
-.panel-facts { display: grid; grid-template-columns: 1fr 1fr; margin: 1.75rem 0 0; border-top: 1px solid var(--line); text-align: center; }
-.panel-facts div { padding: 1rem .5rem 0; }
-.panel-facts div + div { border-left: 1px solid var(--line); }
-.panel-facts dt { font-family: var(--font-label); font-weight: 600; font-size: .75rem; letter-spacing: .26em; text-transform: uppercase; color: var(--brass); }
-.panel-facts dd { margin: .3rem 0 0; font-family: var(--font-display); font-style: italic; font-size: clamp(1rem, .9rem + .4vw, 1.125rem); color: var(--cream); }
+.sill { padding: 0 0 clamp(2.5rem, 2rem + 2vw, 3.5rem); }
+.sill::before { content: ""; display: block; height: .7rem; margin: 0 calc(var(--gutter) - .5rem) 0 calc(var(--gutter) - .5rem); background: linear-gradient(180deg, var(--line), var(--wall-2)); box-shadow: 0 8px 12px -8px var(--shadow); }
+.sill-inner { display: grid; gap: 1.75rem; padding-top: 2rem; }
+.sill-copy { margin: 0; max-width: 38rem; font-size: clamp(1.125rem, 1.02rem + .45vw, 1.375rem); line-height: 1.5; }
+.sill-cta { display: grid; justify-items: start; gap: 1rem; }
+.sill-call { margin: 0; color: var(--cream-dim); }
 
-/* Ticker */
-.ticker { overflow: hidden; background: var(--charcoal); border-bottom: 1px solid var(--line); padding: 1.1rem 0; }
-.ticker-track { display: flex; width: max-content; }
-.ticker-item {
-  display: inline-flex; align-items: center; gap: 2.25rem; padding-right: 2.25rem; white-space: nowrap;
-  font-family: var(--font-display); font-style: italic; font-size: clamp(1.25rem, 1rem + 1.1vw, 1.875rem); color: var(--cream);
-}
-.ticker-item svg { width: .8rem; height: .8rem; color: var(--brass); }
-@media (prefers-reduced-motion: no-preference) {
-  .ticker-track { animation: ticker 50s linear infinite; }
-  .ticker:hover .ticker-track { animation-play-state: paused; }
-  @keyframes ticker { to { transform: translateX(-50%); } }
-}
+/* ---------- Showcards (services) ---------- */
+.wall { position: relative; background: radial-gradient(ellipse 70% 40% at 50% 0, var(--lamp-b), transparent 70%), var(--wall); padding-block: var(--section) clamp(3.5rem, 2.5rem + 4vw, 5.5rem); border-top: 1px solid var(--line); }
+.wall-head { display: grid; gap: .25rem; margin-bottom: clamp(2.5rem, 2rem + 3vw, 4rem); }
+.wall-head .lede { margin: 0; }
+.cards { display: grid; gap: 2.25rem; }
+.card { position: relative; padding: 2.4rem 1.5rem 1.6rem; color: var(--paper-ink); background: linear-gradient(175deg, var(--paper) 55%, var(--paper-2)); box-shadow: 0 2px 0 var(--shadow-b), 0 24px 30px -18px var(--shadow-a); transform: rotate(var(--tilt, 0deg)); }
+.card::before { content: ""; position: absolute; z-index: 1; top: .7rem; left: 50%; width: .8rem; height: .8rem; margin-left: -.4rem; border-radius: 50%; background: radial-gradient(circle at 35% 30%, var(--leaf-hi), var(--leaf) 40%, var(--leaf-lo) 75%); box-shadow: 1px 2px 2px var(--shadow-a); }
+.card h3 { margin: 0 0 1rem; font-weight: 400; line-height: 1; }
+.c-script { display: block; font: 400 2.25rem/1 var(--font-script); color: var(--oxblood); }
+.c-roman { display: block; font: 900 clamp(3rem, 2.6rem + 1.5vw, 3.75rem)/.9 var(--font-display); text-transform: uppercase; letter-spacing: -.01em; }
+.c-gothic { display: block; font: 700 2.5rem/.95 var(--font-body); text-transform: uppercase; letter-spacing: .01em; }
+.c-outline { color: var(--paper); -webkit-text-stroke: 1.5px var(--paper-ink); paint-order: stroke fill; text-shadow: 3px 3px 0 var(--ticket-red); }
+.c-meta { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin: 0 0 .9rem; padding: .35rem 0; border-block: 1.5px solid var(--paper-ink); font: 700 .8125rem/1 var(--font-body); letter-spacing: .18em; text-transform: uppercase; }
+.c-price { font: 900 2.25rem/1 var(--font-display); letter-spacing: 0; color: var(--ticket-red); }
+.c-price span { font-size: .55em; vertical-align: .55em; }
+.c-body { margin: 0; font-size: 1rem; line-height: 1.5; }
+.c-band { margin: -2.4rem -1.5rem 1rem; padding: 2.4rem 1.5rem .9rem; background: var(--oxblood); color: var(--paper); }
+.c-band .c-gothic { font-size: 2.75rem; }
+.c-band .c-script { color: var(--leaf); font-size: 1.75rem; margin-top: .2rem; }
+.c-steps { margin: 0; font-size: 1rem; line-height: 1.6; }
+.c-steps b { font-weight: 700; color: var(--oxblood); }
+.card--classic { --tilt: -1.2deg; }
+.card--fade { --tilt: .9deg; }
+.card--shave { --tilt: .4deg; }
+.card--beard { --tilt: -1.4deg; }
+.card--kids { --tilt: 1.6deg; }
+.card--kids .c-script { font-size: 3.5rem; color: var(--ticket-red); }
 
-/* ---------- Sections ---------- */
-.section { padding-block: var(--section); }
-.section-alt { background: var(--charcoal); border-block: 1px solid var(--line); }
-.section-head { margin-bottom: 2.75rem; }
-.section-head .lede { margin-bottom: 1.25rem; }
+/* ---------- Letterboard (prices) ---------- */
+.board-wrap { background: var(--wall); padding-bottom: clamp(3rem, 2rem + 4vw, 5rem); }
+.board-grid { display: grid; gap: 2.5rem; }
+.letterboard {
+  padding: clamp(.7rem, 1.4vw, 1.1rem);
+  background: repeating-linear-gradient(90deg, transparent 0 6px, var(--shadow-b) 6px 7px, transparent 7px 15px), linear-gradient(180deg, var(--oak), var(--oak-dark));
+  box-shadow: 0 30px 50px -25px var(--shadow-a), inset 0 0 0 1px var(--oak-dark), inset 0 1px 0 var(--glare-strong);
+}
+.felt {
+  --groove: .875rem;
+  padding: calc(var(--groove) * 2) clamp(1rem, 4vw, 3rem);
+  background: repeating-linear-gradient(180deg, var(--felt) 0 calc(var(--groove) - 2px), var(--felt-groove) calc(var(--groove) - 2px) var(--groove));
+  box-shadow: inset 0 4px 10px var(--shadow-a);
+  font-family: var(--font-body); font-weight: 600; text-transform: uppercase; letter-spacing: .12em;
+  color: var(--plastic); text-shadow: 0 1px 0 var(--shadow), 1px 2px 2px var(--shadow-a);
+}
+.lb-title { margin: 0 0 calc(var(--groove) * 2); text-align: center; font: 700 clamp(1.75rem, 1.4rem + 1.5vw, 2.5rem)/calc(var(--groove) * 4) var(--font-body); letter-spacing: .38em; padding-left: .38em; }
+.lb-cols { display: grid; gap: calc(var(--groove) * 2) 3rem; }
+.lb-cat { margin: 0; text-align: center; font-weight: 600; font-size: .9375rem; line-height: calc(var(--groove) * 2); letter-spacing: .2em; }
+.lb-list { list-style: none; margin: 0; padding: 0; }
+.lb-list li { display: flex; justify-content: space-between; gap: 1rem; font-size: clamp(1rem, .95rem + .3vw, 1.1875rem); line-height: calc(var(--groove) * 2); white-space: nowrap; }
+.lb-list li:nth-child(3n+2) { transform: translateX(2px) rotate(-.25deg); }
+.lb-list li:nth-child(4n+3) { transform: translateX(-1px); }
+.lb-foot { margin: calc(var(--groove) * 2) 0 0; text-align: center; font-size: .875rem; line-height: calc(var(--groove) * 2); letter-spacing: .2em; }
+.wonk { display: inline-block; transform: rotate(-5deg) translateY(1px); }
+.wonk2 { display: inline-block; transform: rotate(4deg); }
+.lift { display: inline-block; transform: translateY(-2px); }
+.fine { max-width: 24rem; }
+.fine h3 { margin: 0 0 1rem; font: 700 1.75rem/1.1 var(--font-display); }
+.fine ul { list-style: none; margin: 0; padding: 0; color: var(--cream-dim); }
+.fine li { padding: .8rem 0; border-top: 1px solid var(--line); }
+.fine li:last-child { border-bottom: 1px solid var(--line); }
 
-/* Services: editorial rows */
-.services-grid { display: grid; gap: 1rem; }
-.feature-list { list-style: none; margin: 0; padding: 0; border-bottom: 1px solid var(--line); }
-.feature {
-  position: relative; display: grid; grid-template-columns: 2.75rem minmax(0, 1fr); column-gap: 1rem; row-gap: .9rem;
-  padding: 1.9rem 0; border-top: 1px solid var(--line);
-}
-.feature::before {
-  content: ""; position: absolute; left: 0; top: -1px; width: 0; height: 1px;
-  background: linear-gradient(90deg, var(--brass-light), var(--brass)); transition: width .6s ease;
-}
-.feature:hover::before { width: 100%; }
-.feature-no { font-family: var(--font-display); font-style: italic; font-size: 2rem; line-height: 1; color: var(--brass); }
-.feature-body h3 { font-size: var(--fs-h3); margin-bottom: .55rem; }
-.feature-body p { margin: 0; color: var(--cream-muted); max-width: 34rem; }
-.feature-meta {
-  grid-column: 2; margin: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: .25rem 1.25rem;
-  font-family: var(--font-label); font-weight: 500; font-size: var(--fs-label); letter-spacing: .2em; text-transform: uppercase; color: var(--cream-muted);
-}
-.feature-price { font-family: var(--font-display); font-weight: 700; font-size: 1.3rem; letter-spacing: 0; text-transform: none; color: var(--brass-light); }
+/* Checkerboard floor */
+.floor { position: relative; height: clamp(4.5rem, 3rem + 6vw, 9rem); overflow: hidden; perspective: 18rem; perspective-origin: 50% 100%; background: var(--ink); border-top: .5rem solid var(--oak-dark); }
+.floor::before { content: ""; position: absolute; left: -60%; right: -60%; bottom: 0; height: 320%; transform-origin: 50% 100%; transform: rotateX(68deg); background: repeating-conic-gradient(var(--tile) 0 25%, var(--ink) 0 50%) 50% 100% / 4.5rem 4.5rem; }
+.floor::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, var(--shadow-a), transparent 45%, var(--ink) 100%), radial-gradient(ellipse 60% 120% at 50% 0, transparent 30%, var(--ink) 90%); }
 
-/* Price menu board */
-.menu-board {
-  position: relative; padding: clamp(2.75rem, 1.75rem + 4vw, 5rem) clamp(1.25rem, .25rem + 4.5vw, 4.5rem);
-  background: radial-gradient(ellipse 70% 50% at 50% 0%, var(--brass-a08), transparent 70%), var(--espresso);
-  border: 1px solid var(--brass-deep);
-  box-shadow: 0 50px 90px -50px var(--shadow-a60);
+/* ---------- About + house rules ---------- */
+.about { padding-block: var(--section); }
+.about-grid { display: grid; gap: 3rem; }
+.about-story p { color: var(--cream-dim); max-width: 36rem; }
+.about-story .big { color: var(--cream); font-size: clamp(1.25rem, 1.1rem + .6vw, 1.5rem); line-height: 1.45; }
+.enamel {
+  position: relative; max-width: 27rem; padding: .6rem .6rem 1.75rem; border-radius: .9rem; color: var(--paper-ink);
+  background: linear-gradient(160deg, var(--enamel) 40%, var(--paper-2));
+  box-shadow: inset 0 0 0 .6rem var(--enamel), inset 0 0 0 .8rem var(--oxblood), 0 24px 40px -24px var(--shadow-a);
 }
-.menu-board::after { content: ""; position: absolute; inset: .5rem; border: 1px solid var(--line-strong); pointer-events: none; }
-.menu-head { text-align: center; }
-.menu-head .title { margin-bottom: 0; font-size: clamp(2.75rem, 1.75rem + 5vw, 5.25rem); }
-.menu-sub { color: var(--cream-muted); max-width: 30rem; margin: 0 auto; }
-.menu-cols { display: grid; gap: 2.75rem; margin-top: 3rem; }
-.menu-cat {
-  display: flex; align-items: center; gap: 1rem; margin-bottom: 1.75rem;
-  font-family: var(--font-label); font-weight: 600; font-size: .875rem; letter-spacing: .32em; text-transform: uppercase; color: var(--brass);
-}
-.menu-cat::before, .menu-cat::after { content: ""; flex: 1; height: 1px; background: var(--line-strong); }
-.menu-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 1.6rem; }
-.menu-line { display: flex; align-items: baseline; align-items: last baseline; gap: .6rem; }
-.menu-name { flex: 0 1 auto; font-family: var(--font-display); font-weight: 700; font-size: clamp(1.125rem, 1.05rem + .35vw, 1.3rem); line-height: 1.25; }
-.leader { flex: 1 1 1.5rem; min-width: 1.5rem; border-bottom: 2px dotted var(--brass-deep); transform: translateY(-.28em); }
-.menu-price { flex: none; font-family: var(--font-display); font-weight: 700; font-size: clamp(1.2rem, 1.1rem + .4vw, 1.4rem); color: var(--brass-light); font-variant-numeric: lining-nums; }
-.menu-desc { margin: .3rem 0 0; font-size: .9375rem; line-height: 1.5; color: var(--cream-muted); }
-.tag {
-  display: inline-block; margin-right: .5rem; padding: .25rem .5rem; vertical-align: .1em;
-  font-family: var(--font-label); font-weight: 600; font-size: .6875rem; line-height: 1; letter-spacing: .18em; text-transform: uppercase;
-  color: var(--cream); background: var(--oxblood); border: 1px solid var(--oxblood-bright);
-}
-.menu-foot {
-  margin: 3rem 0 0; padding-top: 1.5rem; border-top: 1px solid var(--line); text-align: center;
-  font-family: var(--font-label); font-weight: 500; font-size: var(--fs-label); letter-spacing: .18em; text-transform: uppercase; color: var(--cream-muted);
-}
-
-/* About */
-.about-grid { display: grid; gap: 3.5rem; }
-.about-copy p { color: var(--cream-muted); max-width: 37rem; }
-.about-copy .dropcap { color: var(--cream); font-size: var(--fs-lede); }
-.dropcap::first-letter {
-  float: left; margin: .08em .14em 0 0; font-family: var(--font-display); font-weight: 900; font-size: 4.25em; line-height: .78; color: var(--brass);
-}
-.signoff { display: flex; align-items: center; gap: 1rem; margin-top: 2rem; font-family: var(--font-display); font-style: italic; font-size: 1.375rem; color: var(--cream); }
-.signoff::before { content: ""; width: 2.5rem; height: 1px; background: var(--brass); }
-.about-aside { position: relative; }
-.stamp { width: 9rem; height: 9rem; margin: 0 0 -1.5rem auto; transform: rotate(-12deg); position: relative; z-index: 1; font-family: var(--font-label); }
-.stamp .s-text { font-weight: 600; font-size: 14px; letter-spacing: .2em; text-transform: uppercase; fill: var(--brass-light); }
-.stamp .s-icon { color: var(--brass); }
-.stats { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
-.stats li { display: grid; grid-template-columns: 4.75rem minmax(0, 1fr); align-items: center; gap: 1.25rem; padding: 1.4rem 0; border-bottom: 1px solid var(--line); }
-.stat-num { font-family: var(--font-display); font-weight: 900; font-size: 3.25rem; line-height: 1; color: var(--brass-light); text-align: right; }
-.stat-label { color: var(--cream-muted); line-height: 1.45; }
-.stat-label strong { display: block; color: var(--cream); font-family: var(--font-label); font-weight: 600; font-size: .9375rem; letter-spacing: .18em; text-transform: uppercase; }
-
-/* Team */
-.head-split { display: grid; gap: 0 4rem; margin-bottom: 3rem; }
-.head-split .lede { margin: 0; }
-.team-list { list-style: none; margin: 0; padding: 0; display: grid; border-bottom: 1px solid var(--line); }
-.barber { display: grid; grid-template-columns: 6.5rem minmax(0, 1fr); gap: 1.25rem; align-items: start; padding: 1.5rem 0; border-top: 1px solid var(--line); }
-.portrait {
-  position: relative; aspect-ratio: 4 / 5; display: grid; place-items: center; overflow: hidden;
-  container-type: inline-size;
+.enamel::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
   background:
-    repeating-conic-gradient(from 0deg at 50% 115%, var(--brass-a08) 0deg 1.5deg, transparent 1.5deg 7deg),
-    radial-gradient(circle at 50% 40%, var(--espresso-2), var(--ink) 75%);
-  border: 1px solid var(--line-strong);
+    radial-gradient(circle at 1.05rem 1.05rem, var(--chrome-hi) 0 .14rem, var(--chrome-lo) .2rem .3rem, transparent .34rem),
+    radial-gradient(circle at calc(100% - 1.05rem) 1.05rem, var(--chrome-hi) 0 .14rem, var(--chrome-lo) .2rem .3rem, transparent .34rem),
+    radial-gradient(circle at 1.05rem calc(100% - 1.05rem), var(--chrome-hi) 0 .14rem, var(--chrome-lo) .2rem .3rem, transparent .34rem),
+    radial-gradient(circle at calc(100% - 1.05rem) calc(100% - 1.05rem), var(--chrome-hi) 0 .14rem, var(--chrome-lo) .2rem .3rem, transparent .34rem),
+    radial-gradient(ellipse .7rem .4rem at 88% 100%, var(--paper-ink) 50%, transparent 60%),
+    radial-gradient(ellipse .35rem .5rem at 0 62%, var(--paper-ink) 50%, transparent 60%),
+    linear-gradient(125deg, transparent 0 55%, var(--glare-strong) 55% 58%, transparent 58%);
+  opacity: .9;
 }
-.portrait::before { inset: .375rem; --corner: .75rem; }
-.portrait-initials {
-  font-family: var(--font-display); font-style: italic; font-weight: 400; line-height: 1; letter-spacing: -.02em;
-  font-size: 2.5rem; font-size: 40cqi; padding-right: .06em; color: var(--brass-light); margin-top: -8%;
-}
-.portrait-icon { position: absolute; left: 50%; bottom: 11%; width: 1.25rem; height: 1.25rem; width: 16cqi; height: 16cqi; transform: translateX(-50%); color: var(--brass); }
-.barber-name { font-size: 1.5rem; margin-bottom: .35rem; }
-.barber-role { margin: 0 0 .7rem; font-family: var(--font-label); font-weight: 600; font-size: .8125rem; letter-spacing: .22em; text-transform: uppercase; color: var(--brass); }
-.barber-spec { margin: 0 0 .9rem; color: var(--cream-muted); font-size: 1rem; line-height: 1.5; }
-.barber-years {
-  display: flex; align-items: center; gap: .75rem; margin: 0; padding-top: .85rem; border-top: 1px solid var(--line);
-  font-family: var(--font-label); font-weight: 500; font-size: .75rem; line-height: 1.25; letter-spacing: .18em; text-transform: uppercase; color: var(--cream-muted);
-}
-.years-num { font-family: var(--font-display); font-weight: 900; font-size: 2.25rem; line-height: 1; letter-spacing: 0; color: var(--brass-light); }
+.enamel h3 { margin: .2rem .2rem 1.25rem; padding: 1.4rem 1rem 1.1rem; border-radius: .45rem .45rem 0 0; background: var(--oxblood); color: var(--enamel); text-align: center; font: 900 clamp(1.75rem, 1.5rem + 1vw, 2.25rem)/1 var(--font-display); text-transform: uppercase; letter-spacing: .05em; }
+.enamel ul { list-style: none; margin: 0; padding: 0 1.6rem; }
+.enamel li { position: relative; padding: .6rem 0 .6rem 1.4rem; border-bottom: 1px solid var(--paper-2); font-size: 1.0625rem; line-height: 1.4; }
+.enamel li:last-child { border-bottom: 0; }
+.enamel li::before { content: ""; position: absolute; left: 0; top: 1.05rem; width: .5rem; height: .5rem; background: var(--oxblood); transform: rotate(45deg); }
 
-/* Hours */
-.hours-grid { display: grid; gap: 3.5rem; }
-.hours-panel { position: relative; padding: clamp(2.25rem, 1.5rem + 3vw, 3.5rem) clamp(1.25rem, .5rem + 3.5vw, 3.25rem); background: var(--espresso); border: 1px solid var(--line-strong); }
-.hours-table { width: 100%; border-collapse: collapse; margin-top: 1.5rem; }
-.hours-table th, .hours-table td { padding: 1rem .75rem; border-bottom: 1px solid var(--line); text-align: left; vertical-align: middle; }
-.hours-table tr:first-child th, .hours-table tr:first-child td { border-top: 1px solid var(--line); }
-.hours-table th { font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; }
-.hours-table td { text-align: right; white-space: nowrap; font-family: var(--font-label); font-weight: 500; font-size: 1.0625rem; letter-spacing: .1em; text-transform: uppercase; }
-.hours-table .is-closed th, .hours-table .is-closed td { color: var(--cream-muted); }
-.hours-table .is-closed td { font-style: italic; }
-.hours-table .is-today { background: linear-gradient(90deg, var(--brass-a15), transparent 85%); }
-.hours-table .is-today th { box-shadow: inset 2px 0 0 var(--brass); }
-.hours-table .is-today th, .hours-table .is-today td { color: var(--brass-light); }
-.today-tag {
-  display: inline-block; margin-left: .6rem; padding: .25rem .45rem; vertical-align: .2em;
-  font-family: var(--font-label); font-weight: 600; font-size: .6875rem; line-height: 1; letter-spacing: .2em; text-transform: uppercase;
-  color: var(--ink); background: var(--brass);
-}
-.hours-note { margin: 1.5rem 0 0; font-size: .9375rem; color: var(--cream-muted); }
-.visit h3 { font-size: clamp(1.75rem, 1.4rem + 1.5vw, 2.5rem); margin-bottom: 1.5rem; }
-.visit address { font-style: normal; font-family: var(--font-display); font-size: 1.3rem; line-height: 1.4; margin-bottom: 1.75rem; max-width: 18rem; }
-.contact-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
-.contact-list li { display: grid; grid-template-columns: 6.5rem minmax(0, 1fr); gap: 1rem; align-items: center; padding: .7rem 0; border-bottom: 1px solid var(--line); color: var(--cream-muted); }
-.contact-list .label { font-family: var(--font-label); font-weight: 600; font-size: .75rem; letter-spacing: .24em; text-transform: uppercase; color: var(--brass); }
-.contact-list a { display: inline-flex; align-items: center; min-height: 44px; font-family: var(--font-display); font-size: 1.125rem; color: var(--cream); text-decoration: none; overflow-wrap: anywhere; }
-.contact-list a:hover { color: var(--brass-light); }
+/* ---------- Team ---------- */
+.team { padding-block: var(--section); background: var(--soot); border-block: 1px solid var(--line); }
+.team-head { margin-bottom: clamp(2.5rem, 2rem + 2vw, 3.5rem); }
+.team-head .lede { margin: 0; }
+.team-grid { display: grid; gap: 3rem; }
+.mirror { position: relative; aspect-ratio: 3 / 4; padding: .5rem; border-radius: var(--mr); background: linear-gradient(135deg, var(--chrome-hi), var(--chrome-lo) 28%, var(--chrome) 48%, var(--chrome-lo) 72%, var(--chrome-hi)); box-shadow: 0 20px 30px -20px var(--shadow-a); }
+.mirror-glass { position: relative; display: grid; place-items: center; height: 100%; overflow: hidden; border-radius: var(--mr); background: linear-gradient(115deg, transparent 0 30%, var(--glare) 30% 36%, transparent 36% 40%, var(--glare-soft) 40% 42%, transparent 42%), linear-gradient(165deg, var(--mirror), var(--ink) 75%); box-shadow: inset 0 0 0 1px var(--shadow), inset 0 0 2rem var(--shadow-b); }
+.mirror--arch { --mr: 999px 999px .3rem .3rem; width: min(100%, 17rem); }
+.mirror--oval { --mr: 50%; width: 100%; padding: .35rem; }
+.mirror-name { font: 400 3.75rem/1 var(--font-script); padding: 0 .1em .15em; transform: rotate(-6deg); }
+.mirror--oval .mirror-name { font-size: 1.6rem; }
+.chair-no { position: absolute; bottom: 9%; left: 0; right: 0; text-align: center; font: 700 .75rem/1 var(--font-body); letter-spacing: .26em; text-transform: uppercase; color: var(--cream-dim); }
+.lead { display: grid; gap: 1.75rem; justify-items: start; }
+.barber h3 { margin: 0 0 .4rem; font: 700 clamp(1.5rem, 1.3rem + .8vw, 2.125rem)/1.1 var(--font-display); }
+.barber-meta { margin: 0 0 .9rem; font: 700 .8125rem/1.3 var(--font-body); letter-spacing: .16em; text-transform: uppercase; color: var(--gold); }
+.barber-known { margin: 0 0 .6rem; color: var(--cream); }
+.barber-known b { font-weight: 700; color: var(--gold); }
+.barber p:last-child { margin: 0; color: var(--cream-dim); }
+.lead p:last-child { font-size: 1.1875rem; }
+.crew { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.crew .barber { display: grid; grid-template-columns: 5rem minmax(0, 1fr); gap: 1.25rem; align-items: start; padding: 1.6rem 0; border-bottom: 1px solid var(--line); }
 
-/* Testimonials */
-.reviews { background: radial-gradient(70rem 40rem at 8% 0%, var(--oxblood-a40), transparent 62%), var(--charcoal); border-block: 1px solid var(--line); }
-.quotes { display: grid; gap: 3rem; }
-.quote { margin: 0; position: relative; }
-.quote blockquote { margin: 0; }
-.quote blockquote p { margin: 0; font-family: var(--font-display); font-style: italic; font-weight: 400; font-size: clamp(1.3rem, 1.15rem + .6vw, 1.6rem); line-height: 1.4; color: var(--cream); }
-.quote-lg blockquote p { font-size: clamp(1.75rem, 1.15rem + 2.8vw, 3.1rem); line-height: 1.18; letter-spacing: -.01em; }
-.quote-lg::before { content: "\201C"; display: block; height: .5em; margin-bottom: .1em; font-family: var(--font-display); font-weight: 900; font-size: clamp(6rem, 4rem + 8vw, 10rem); line-height: .85; color: var(--brass); }
-.quote-sm { padding-top: 2.25rem; border-top: 1px solid var(--line); }
-.quote-sm::before { content: "\201C"; position: absolute; top: .75rem; left: 0; font-family: var(--font-display); font-weight: 900; font-size: 3rem; line-height: 1; color: var(--brass); }
-.quote-sm blockquote { padding-left: 2.25rem; }
-.quote-sm figcaption { margin-left: 2.25rem; }
-.quote figcaption {
-  display: flex; flex-wrap: wrap; align-items: center; gap: .4rem .9rem; margin-top: 1.5rem;
-  font-family: var(--font-label); font-size: var(--fs-label); letter-spacing: .2em; text-transform: uppercase;
+/* ---------- Testimonials on tufted leather ---------- */
+.leather {
+  --t: 3.5rem;
+  --puff: color-mix(in srgb, var(--cream) 7%, transparent);
+  --crease: color-mix(in srgb, var(--shadow) 40%, transparent);
+  --btn: color-mix(in srgb, var(--oxblood) 70%, var(--cream));
+  position: relative; padding-block: var(--section);
+  background:
+    radial-gradient(ellipse 80% 70% at 50% 45%, transparent 35%, var(--shadow-a)),
+    radial-gradient(circle, var(--btn) 0 .1rem, var(--oxblood-deep) .17rem .28rem, transparent .33rem) 0 0 / var(--t) var(--t),
+    radial-gradient(circle, var(--btn) 0 .1rem, var(--oxblood-deep) .17rem .28rem, transparent .33rem) calc(var(--t) / 2) calc(var(--t) / 2) / var(--t) var(--t),
+    linear-gradient(45deg, transparent calc(50% - 1px), var(--crease) 50%, transparent calc(50% + 1px)) 0 0 / var(--t) var(--t),
+    linear-gradient(-45deg, transparent calc(50% - 1px), var(--crease) 50%, transparent calc(50% + 1px)) 0 0 / var(--t) var(--t),
+    radial-gradient(circle, var(--puff), transparent 60%) calc(var(--t) / 2) 0 / var(--t) var(--t),
+    radial-gradient(circle, var(--puff), transparent 60%) 0 calc(var(--t) / 2) / var(--t) var(--t),
+    var(--oxblood);
 }
-.quote figcaption::before { content: ""; width: 2rem; height: 1px; background: var(--brass); }
-.quote-name { font-weight: 600; color: var(--cream); }
-.quote-meta { font-weight: 500; color: var(--cream-muted); }
+.leather::before, .leather::after { content: ""; position: absolute; left: 0; right: 0; border-top: 2px dashed var(--leaf-lo); opacity: .8; }
+.leather::before { top: .8rem; }
+.leather::after { bottom: .8rem; }
+.plate {
+  display: inline-block; margin: 0 0 clamp(2.5rem, 2rem + 2vw, 3.5rem); padding: .7rem 2.6rem .65rem;
+  font: 700 .875rem/1 var(--font-body); letter-spacing: .3em; text-transform: uppercase;
+  color: var(--leaf-shade); text-shadow: 0 1px 0 var(--leaf-hi);
+  background:
+    radial-gradient(circle at 1rem 50%, var(--leaf-lo) 0 .16rem, transparent .24rem),
+    radial-gradient(circle at calc(100% - 1rem) 50%, var(--leaf-lo) 0 .16rem, transparent .24rem),
+    var(--brass);
+  box-shadow: 0 3px 0 var(--shadow-a), inset 0 0 0 1px var(--leaf-lo);
+}
+.quotes { display: grid; gap: 2.75rem; }
+.q { margin: 0; text-shadow: 0 2px 10px var(--shadow-a); }
+.q blockquote { margin: 0; }
+.q blockquote p { margin: 0; font-size: 1.25rem; line-height: 1.45; color: var(--cream); }
+.q--big blockquote p { font: italic 700 clamp(1.6rem, 1.1rem + 2.4vw, 2.875rem)/1.15 var(--font-display); letter-spacing: -.01em; }
+.q figcaption { margin-top: 1rem; font: 700 .8125rem/1.4 var(--font-body); letter-spacing: .16em; text-transform: uppercase; color: var(--leaf); }
+.q figcaption span { color: var(--cream-dim); font-weight: 600; }
 
-/* Booking */
-.book-grid { display: grid; gap: 3rem; }
-.book-notes { list-style: none; margin: 2rem 0 0; padding: 0; border-top: 1px solid var(--line); }
-.book-notes li { padding: 1rem 0; border-bottom: 1px solid var(--line); color: var(--cream-muted); }
-.book-notes strong { display: block; margin-bottom: .15rem; font-family: var(--font-label); font-weight: 600; font-size: .8125rem; letter-spacing: .2em; text-transform: uppercase; color: var(--brass); }
-.book-notes a { display: inline-flex; align-items: center; min-height: 44px; font-family: var(--font-display); font-size: 1.375rem; color: var(--cream); text-decoration: none; }
-.book-notes a:hover { color: var(--brass-light); }
-.book-panel { position: relative; padding: clamp(1.75rem, 1rem + 3.5vw, 3.25rem) clamp(1.25rem, .5rem + 3.5vw, 3.25rem); background: var(--espresso); border: 1px solid var(--line-strong); }
-.form-title { font-size: clamp(1.5rem, 1.3rem + 1vw, 2rem); margin-bottom: .35rem; }
-.form-hint { margin: 0 0 1.75rem; font-size: .9375rem; color: var(--cream-muted); }
+/* ---------- Door (hours) ---------- */
+.visit { padding-block: var(--section); }
+.visit-grid { display: grid; gap: 3.5rem; }
+.door { position: relative; width: min(100%, 25rem); margin-inline: auto; padding: 1rem 1rem 4.75rem; background: linear-gradient(90deg, var(--wall-2), var(--soot) 50%, var(--wall-2)); box-shadow: inset 0 0 0 1px var(--line), 0 30px 60px -30px var(--shadow-a); }
+.door::after { content: ""; position: absolute; left: 1rem; right: 1rem; bottom: 1rem; height: 2.5rem; background: var(--brass); box-shadow: inset 0 0 0 1px var(--leaf-lo); opacity: .85; }
+.door-handle { position: absolute; right: .3rem; top: 46%; width: .45rem; height: 6.5rem; border-radius: .25rem; background: var(--chrome-bar); background: linear-gradient(90deg, var(--leaf-lo), var(--leaf-hi) 45%, var(--leaf) 70%, var(--leaf-lo)); }
+.door-glass { position: relative; overflow: hidden; padding: 6rem 1.5rem 1.75rem; background: linear-gradient(115deg, transparent 0 60%, var(--glare) 60% 67%, transparent 67%), linear-gradient(180deg, var(--glass), var(--ink)); box-shadow: inset 0 0 0 1px var(--shadow), inset 0 0 0 .35rem var(--soot); }
+.hang {
+  position: absolute; top: 1.5rem; left: 50%; min-width: 9.5rem; padding: .45rem .9rem .5rem; text-align: center;
+  background: var(--paper); color: var(--ticket-red); border: 2px solid var(--ticket-red);
+  transform: translateX(-50%) rotate(-2deg); box-shadow: 0 8px 12px -6px var(--shadow-a);
+}
+.hang::before {
+  content: ""; position: absolute; bottom: 100%; left: 20%; right: 20%; height: 1rem;
+  background:
+    linear-gradient(to top right, transparent calc(50% - .75px), var(--chrome) 50%, transparent calc(50% + .75px)) left / 50% 100% no-repeat,
+    linear-gradient(to top left, transparent calc(50% - .75px), var(--chrome) 50%, transparent calc(50% + .75px)) right / 50% 100% no-repeat;
+}
+.hang::after { content: ""; position: absolute; bottom: calc(100% + .8rem); left: 50%; width: .7rem; height: .7rem; margin-left: -.35rem; border-radius: 50%; background: var(--chrome-bar); }
+.hang-state { display: block; font: 900 1.5rem/1 var(--font-display); text-transform: uppercase; letter-spacing: .06em; }
+.hang-sub { display: block; margin-top: .25rem; font: 700 .6875rem/1.2 var(--font-body); letter-spacing: .14em; text-transform: uppercase; color: var(--paper-ink); }
+.hang.is-open { background: var(--ticket-red); color: var(--paper); border-color: var(--paper); }
+.hang.is-open .hang-sub { color: var(--paper); }
+.decal { color: var(--plastic); text-align: center; }
+.decal-name { margin: 0 0 .5rem; font: 700 1.375rem/1 var(--font-display); }
+.decal-title { margin: 0 0 1rem; padding: .55rem 0 .5rem .5em; border-block: 1px solid var(--plastic-a); font: 600 .875rem/1 var(--font-body); letter-spacing: .5em; text-transform: uppercase; }
+.decal table { width: 100%; border-collapse: collapse; }
+.decal th, .decal td { padding: .75rem .1rem; border-bottom: 1px solid var(--plastic-a); font: 600 1rem/1.2 var(--font-body); letter-spacing: .12em; text-transform: uppercase; }
+.decal th { text-align: left; }
+.decal td { text-align: right; white-space: nowrap; }
+.decal .is-today th, .decal .is-today td { color: var(--leaf); }
+.today-tag { display: inline-block; margin-left: .5rem; padding: .2rem .35rem; vertical-align: .1em; font-size: .625rem; letter-spacing: .16em; color: var(--ink); background: var(--leaf); }
+.decal-note { margin: 1rem 0 0; font: 600 .75rem/1.4 var(--font-body); letter-spacing: .16em; text-transform: uppercase; }
+.find h3 { margin: 0 0 1.25rem; font: 900 clamp(2rem, 1.5rem + 2vw, 3rem)/1.05 var(--font-display); }
+.find address { margin: 0 0 1rem; font: 700 1.375rem/1.35 var(--font-display); font-style: normal; max-width: 20rem; }
+.find > p { color: var(--cream-dim); max-width: 32rem; }
+.find dl { margin: 1.75rem 0 0; border-top: 1px solid var(--line); }
+.find dl div { display: grid; grid-template-columns: 5.5rem minmax(0, 1fr); gap: 1rem; padding: .55rem 0; border-bottom: 1px solid var(--line); }
+.find dt { padding-top: .7rem; font: 700 .75rem/1.2 var(--font-body); letter-spacing: .2em; text-transform: uppercase; color: var(--gold); }
+.find dd { margin: 0; padding: .5rem 0; color: var(--cream-dim); }
+.find dd a { display: inline-flex; align-items: center; min-height: 44px; margin: -.5rem 0; font: 700 1.1875rem/1.2 var(--font-display); color: var(--cream); text-decoration: none; overflow-wrap: anywhere; }
+.find dd a:hover { color: var(--leaf); }
+
+/* ---------- Booking: the appointment book ---------- */
+.book { padding-block: var(--section); background: var(--soot); border-top: 1px solid var(--line); }
+.book-grid { display: grid; gap: 2.75rem; }
+.book-notes { list-style: none; margin: 1.75rem 0 0; padding: 0; color: var(--cream-dim); }
+.book-notes li { padding: .7rem 0; border-top: 1px solid var(--line); }
+.book-notes b { color: var(--cream); font-weight: 700; }
+.ledger {
+  position: relative; color-scheme: light; color: var(--paper-ink);
+  padding: 1.75rem 1.25rem 2rem 2.75rem;
+  background:
+    linear-gradient(90deg, transparent 1.75rem, var(--red-a) 1.75rem calc(1.75rem + 1px), transparent calc(1.75rem + 1px) calc(1.75rem + 4px), var(--red-a) calc(1.75rem + 4px) calc(1.75rem + 5px), transparent 0),
+    linear-gradient(180deg, var(--paper), var(--paper-2));
+  box-shadow: 0 30px 60px -30px var(--shadow-a), 0 3px 0 var(--paper-2), 0 6px 0 -1px var(--paper);
+}
+.ledger-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: .25rem 1rem; margin: 0 0 1.5rem; padding-bottom: .75rem; border-bottom: 2px solid var(--paper-ink); }
+.ledger-head h3 { margin: 0; font: italic 700 clamp(1.5rem, 1.3rem + .8vw, 2rem)/1.1 var(--font-display); }
+.ledger-head p { margin: 0; font: 700 .8125rem/1.3 var(--font-body); letter-spacing: .14em; text-transform: uppercase; color: var(--paper-ink-dim); }
 .form-grid { display: grid; gap: 1.25rem; }
-.field label {
-  display: block; margin-bottom: .5rem;
-  font-family: var(--font-label); font-weight: 600; font-size: .8125rem; letter-spacing: .2em; text-transform: uppercase; color: var(--cream);
-}
-.field .req { color: var(--brass-light); margin-left: .15rem; }
-.field .opt { font-weight: 500; letter-spacing: .08em; text-transform: none; color: var(--cream-muted); margin-left: .25rem; }
+.field label { display: block; margin-bottom: .1rem; font: 700 .8125rem/1.3 var(--font-body); letter-spacing: .14em; text-transform: uppercase; color: var(--paper-ink-dim); }
+.field .req { color: var(--ticket-red); }
+.field .opt { letter-spacing: .04em; text-transform: none; font-weight: 600; }
 .book-form input, .book-form select, .book-form textarea {
-  display: block; width: 100%; min-height: 3.125rem; margin: 0; padding: .75rem .95rem;
-  font-family: var(--font-body); font-size: 1rem; line-height: 1.4; color: var(--cream);
-  background: var(--ink); border: 1px solid var(--line-strong); border-radius: 0;
-  -webkit-appearance: none; appearance: none;
-  transition: border-color .2s ease, box-shadow .2s ease;
+  display: block; width: 100%; min-height: 2.875rem; margin: 0; padding: .45rem .35rem;
+  font: 400 1.125rem/1.35 var(--font-body); color: var(--paper-ink);
+  background: transparent; border: 0; border-bottom: 1.5px solid var(--paper-ink); border-radius: 0;
+  -webkit-appearance: none; appearance: none; transition: background-color .2s ease, box-shadow .2s ease;
 }
-.book-form textarea { min-height: 7.5rem; resize: vertical; }
-.book-form ::placeholder { color: var(--cream-muted); opacity: .75; }
-.book-form input { word-spacing: .1em; }
-.book-form input:hover, .book-form select:hover, .book-form textarea:hover { border-color: var(--brass-deep); }
-.book-form input:focus-visible, .book-form select:focus-visible, .book-form textarea:focus-visible {
-  outline: 2px solid transparent; border-color: var(--brass); box-shadow: 0 0 0 3px var(--brass-a30);
-}
-.book-form input:user-invalid, .book-form select:user-invalid { border-color: var(--oxblood-bright); }
+.book-form textarea { min-height: 6rem; resize: vertical; background: repeating-linear-gradient(180deg, transparent 0 calc(1.52rem - 1px), var(--paper-2) calc(1.52rem - 1px) 1.52rem); background-position: 0 .45rem; }
+.book-form ::placeholder { color: var(--paper-ink-dim); opacity: .8; }
+.book-form input:focus-visible, .book-form select:focus-visible, .book-form textarea:focus-visible { outline: 2px solid transparent; background-color: var(--highlight); box-shadow: 0 2px 0 var(--ticket-red); }
+.book-form input:user-invalid, .book-form select:user-invalid { border-bottom-color: var(--ticket-red); }
 .book-form ::-webkit-date-and-time-value { text-align: left; }
-.book-form option { background: var(--ink); color: var(--cream); }
 .select { position: relative; }
-.select select { padding-right: 2.75rem; cursor: pointer; }
-.select::after {
-  content: ""; position: absolute; right: 1.1rem; top: 50%; width: .5rem; height: .5rem; pointer-events: none;
-  border-right: 1.5px solid var(--brass); border-bottom: 1.5px solid var(--brass); transform: translateY(-70%) rotate(45deg);
+.select select { padding-right: 2rem; cursor: pointer; }
+.select::after { content: ""; position: absolute; right: .6rem; top: 50%; width: .5rem; height: .5rem; border-right: 2px solid var(--paper-ink); border-bottom: 2px solid var(--paper-ink); transform: translateY(-70%) rotate(45deg); pointer-events: none; }
+.form-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.5rem; margin-top: .75rem; }
+.form-actions .ticket { --notch: .55rem; min-height: 3.25rem; padding-inline: 1.75rem; font-size: 1rem; }
+.form-actions p { margin: 0; font-size: .9375rem; color: var(--paper-ink-dim); }
+.stub { position: relative; isolation: isolate; max-width: 26rem; margin: .5rem auto; padding: 2rem 1.75rem 1.75rem; text-align: center; transform: rotate(-1.5deg); }
+.stub:focus { outline: none; }
+.stub::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; background: var(--paper);
+  box-shadow: 0 0 0 2px var(--ticket-red) inset;
+  -webkit-mask: radial-gradient(circle at 50% 0, transparent .3rem, #000 calc(.3rem + .5px)) top / 1.1rem 51% repeat-x, radial-gradient(circle at 50% 100%, transparent .3rem, #000 calc(.3rem + .5px)) bottom / 1.1rem 51% repeat-x;
+          mask: radial-gradient(circle at 50% 0, transparent .3rem, #000 calc(.3rem + .5px)) top / 1.1rem 51% repeat-x, radial-gradient(circle at 50% 100%, transparent .3rem, #000 calc(.3rem + .5px)) bottom / 1.1rem 51% repeat-x;
 }
-.form-actions { margin-top: .5rem; }
-.form-actions .btn { width: 100%; }
-.form-fine { margin: 1rem 0 0; font-size: .875rem; color: var(--cream-muted); text-align: center; }
-.form-success { text-align: center; padding: 1.5rem 0 .5rem; }
-.form-success:focus { outline: none; }
-.form-success svg { width: 4.5rem; height: 4.5rem; margin: 0 auto 1.25rem; color: var(--brass); }
-.form-success h3 { font-size: clamp(1.75rem, 1.4rem + 1.5vw, 2.5rem); margin-bottom: 1rem; }
-.form-success p { color: var(--cream-muted); max-width: 30rem; margin-inline: auto; }
-.form-success .success-detail { color: var(--cream); font-size: var(--fs-lede); }
-.form-success .btn { margin-top: .75rem; }
+.stub-top { margin: 0; font: 700 .8125rem/1 var(--font-body); letter-spacing: .3em; text-transform: uppercase; color: var(--ticket-red); }
+.stub-no { margin: .5rem 0 .25rem; font: 900 5rem/1 var(--font-display); color: var(--ticket-red); }
+.stub-no small { font: 700 1rem/1 var(--font-body); letter-spacing: .1em; vertical-align: 2.4em; margin-right: .2rem; }
+.stub h3 { margin: 0 0 .75rem; padding-top: .9rem; border-top: 2px dashed var(--paper-ink-dim); font: 700 1.5rem/1.15 var(--font-display); }
+.stub p { color: var(--paper-ink); }
+.stub .stub-fine { font-size: .9375rem; color: var(--paper-ink-dim); }
+.stub-again { min-height: 44px; padding: 0 .5rem; font: 700 .875rem/1 var(--font-body); letter-spacing: .14em; text-transform: uppercase; color: var(--ticket-red); background: none; border: 0; text-decoration: underline; text-underline-offset: .25em; cursor: pointer; }
 
 /* ---------- Footer ---------- */
-.site-footer { position: relative; background: var(--charcoal); border-top: 1px solid var(--line); padding-top: clamp(3.5rem, 2.5rem + 4vw, 6rem); }
-.site-footer::before { content: ""; position: absolute; top: -1px; left: 0; right: 0; height: 1px; background: var(--gold-rule); }
-.site-footer::after { content: ""; display: block; height: calc(4.375rem + env(safe-area-inset-bottom, 0px)); } /* room for the sticky mobile bar */
-.footer-grid { display: grid; gap: 2.5rem; padding-bottom: 3rem; }
-.footer-brand .brand-crest { width: 3.5rem; height: 3.5rem; margin-bottom: 1.25rem; }
-.footer-name { margin: 0 0 .5rem; font-family: var(--font-display); font-weight: 900; font-size: clamp(1.75rem, 1.4rem + 1.5vw, 2.5rem); line-height: 1.05; }
-.footer-tag { font-family: var(--font-display); font-style: italic; color: var(--cream-muted); margin-bottom: 1.5rem; }
-.footer-h { margin: 0 0 1rem; font-family: var(--font-label); font-weight: 600; font-size: var(--fs-label); letter-spacing: .26em; text-transform: uppercase; color: var(--brass); }
-.footer-col p, .footer-col address { margin: 0; font-style: normal; color: var(--cream-muted); }
-.footer-col a { display: inline-flex; align-items: center; min-height: 44px; font-family: var(--font-display); font-size: 1.125rem; color: var(--cream); text-decoration: none; overflow-wrap: anywhere; }
-.footer-col a:hover { color: var(--brass-light); }
-.footer-bottom {
-  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem 2rem;
-  padding: 1.5rem 0 1.75rem; border-top: 1px solid var(--line); font-size: .875rem; color: var(--cream-muted);
-}
+.site-footer { position: relative; background: var(--ink); border-top: 1px solid var(--line); padding-top: clamp(3rem, 2rem + 4vw, 5rem); }
+.footer-grid { display: grid; gap: 2.25rem; padding-bottom: 2.75rem; }
+.footer-sign p { margin: 0; }
+.footer-name { font: 900 clamp(2.25rem, 1.8rem + 2vw, 3.25rem)/1 var(--font-display); text-transform: uppercase; letter-spacing: .01em; }
+.footer-trade { margin-top: -.1em !important; padding-left: 1.5rem; font: 400 2.25rem/1 var(--font-script); color: var(--gold); }
+.footer-h { margin: 0 0 .75rem; font: 700 .8125rem/1 var(--font-body); letter-spacing: .2em; text-transform: uppercase; color: var(--gold); }
+.footer-col p, .footer-col address { margin: 0; font-style: normal; color: var(--cream-dim); }
+.footer-col a { display: inline-flex; align-items: center; min-height: 44px; font: 700 1.125rem/1.2 var(--font-display); color: var(--cream); text-decoration: none; overflow-wrap: anywhere; }
+.footer-col a:hover { color: var(--leaf); }
+.footer-bottom { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem 2rem; padding: 1.25rem 0 1.5rem; border-top: 1px solid var(--line); font-size: .9375rem; color: var(--cream-dim); }
 .footer-bottom p { margin: 0; }
-.footer-bottom .text-link { font-size: .8125rem; }
-.sample-ribbon {
-  display: inline-flex; align-items: center; gap: .55rem; padding: .4rem .75rem .4rem .45rem;
-  font-family: var(--font-label); font-weight: 600; font-size: .75rem; line-height: 1; letter-spacing: .22em; text-transform: uppercase;
-  color: var(--cream); background: var(--oxblood); border: 1px solid var(--oxblood-bright);
-}
-.sample-ribbon::before { content: ""; width: .5rem; height: 1rem; background: var(--pole); background-size: 40px 40px; border: 1px solid var(--brass-deep); }
+.footer-bottom a { display: inline-flex; align-items: center; min-height: 44px; }
+.sample-ribbon { display: inline-block; padding: .4rem .7rem; font: 700 .75rem/1 var(--font-body); letter-spacing: .2em; text-transform: uppercase; color: var(--ticket-red); background: var(--paper); border: 1px dashed var(--ticket-red); transform: rotate(-2deg); }
+.checker { height: 1.25rem; background: repeating-conic-gradient(var(--tile) 0 25%, var(--ink) 0 50%) 0 0 / 1.25rem 1.25rem; opacity: .85; }
+.site-footer::after { content: ""; display: block; height: calc(4.25rem + env(safe-area-inset-bottom, 0px)); background: var(--ink); }
 
 /* Sticky mobile booking bar */
 .book-bar {
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 60;
-  display: grid; grid-template-columns: auto minmax(0, 1fr); gap: .625rem;
-  padding: .625rem var(--gutter) calc(.625rem + env(safe-area-inset-bottom, 0px));
-  background: var(--ink-a94); border-top: 1px solid var(--line-strong);
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  padding: .55rem var(--gutter) calc(.55rem + env(safe-area-inset-bottom, 0px));
+  background: var(--ink-a95); border-top: 1px solid var(--line);
   transition: transform .3s ease, visibility .3s;
 }
-.book-bar .btn { min-height: 3rem; padding-inline: 1.15rem; }
+.bar-call { display: inline-flex; align-items: center; gap: .5rem; min-height: 44px; font: 700 .875rem/1 var(--font-body); letter-spacing: .14em; text-transform: uppercase; color: var(--cream); text-decoration: none; }
+.bar-call svg { width: 1.1rem; height: 1.1rem; color: var(--gold); }
+.book-bar .ticket { flex: 0 1 15rem; justify-content: center; }
 .book-bar.is-hidden { transform: translateY(110%); visibility: hidden; }
 
 /* ---------- Larger screens ---------- */
 @media (min-width: 600px) {
-  .form-grid { grid-template-columns: 1fr 1fr; gap: 1.5rem 1.25rem; }
+  .form-grid { grid-template-columns: 1fr 1fr; gap: 1.4rem 1.5rem; }
   .field-full { grid-column: 1 / -1; }
-  .form-actions .btn { width: auto; min-width: 16rem; }
-  .form-fine { text-align: left; }
+  .ledger { padding: 2.25rem 2rem 2.5rem 4rem; }
+  .ledger { background:
+    linear-gradient(90deg, transparent 2.75rem, var(--red-a) 2.75rem calc(2.75rem + 1px), transparent calc(2.75rem + 1px) calc(2.75rem + 4px), var(--red-a) calc(2.75rem + 4px) calc(2.75rem + 5px), transparent 0),
+    linear-gradient(180deg, var(--paper), var(--paper-2)); }
 }
 @media (min-width: 640px) {
-  .feature { grid-template-columns: 4.25rem minmax(0, 1fr) auto; column-gap: 1.75rem; padding: 2.25rem 0; }
-  .feature-no { font-size: 2.75rem; }
-  .feature-meta { grid-column: 3; grid-row: 1; flex-direction: column; align-items: flex-end; text-align: right; gap: .35rem; padding-top: .3rem; }
-  .team-list { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 2rem; }
-  .barber { grid-template-columns: 7.5rem minmax(0, 1fr); padding: 1.75rem 0; }
-  .about-aside { display: grid; grid-template-columns: 1fr; }
-  .stamp { width: 10.5rem; height: 10.5rem; }
+  .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 3rem 2rem; }
+  .card--shave { grid-column: 1 / -1; }
+  .shave-inner { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 2rem; align-items: start; }
+  .crew .barber { grid-template-columns: 6.5rem minmax(0, 1fr); gap: 1.75rem; }
 }
 @media (min-width: 720px) {
   .footer-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .footer-brand { grid-column: 1 / -1; }
+  .footer-sign { grid-column: 1 / -1; }
+  .lb-cols { grid-template-columns: 1fr 1fr; }
 }
-@media (min-width: 820px) {
-  .menu-cols { grid-template-columns: 1fr 1fr; gap: 0; }
-  .menu-col { padding-inline: clamp(1.75rem, 3.5vw, 3.5rem); }
-  .menu-col:first-child { padding-left: 0; }
-  .menu-col + .menu-col { padding-right: 0; border-left: 1px solid var(--line); }
+@media (min-width: 768px) {
+  .facade { grid-template-columns: minmax(0, 1fr) 3rem; gap: .5rem; }
+  .pole { width: 1.25rem; min-height: 12rem; }
+  .glass-foot { justify-content: space-between; padding-inline: 1rem; }
+  .awning { --stripe: 2.75rem; }
 }
 @media (min-width: 960px) {
   .site-footer::after { display: none; }
   .book-bar { display: none; }
   .nav-toggle { display: none; }
-  .header-inner { flex-wrap: nowrap; min-height: 5rem; }
-  .brand-crest { width: 3rem; height: 3rem; }
-  .brand-name { font-size: 1.25rem; }
-  .site-nav, html.js .site-nav {
-    display: flex; align-items: center; gap: 2.25rem; position: static; width: auto; max-height: none; overflow: visible;
-    padding: 0; background: none; border: 0; box-shadow: none;
-  }
-  .nav-list { display: flex; gap: 1.75rem; }
-  .nav-list a {
-    position: relative; min-height: 44px; border: 0;
-    font-family: var(--font-label); font-weight: 500; font-size: .875rem; letter-spacing: .2em; text-transform: uppercase; color: var(--cream-muted);
-    transition: color .2s ease;
-  }
-  .nav-list a::after {
-    content: ""; position: absolute; left: 0; right: 0; bottom: .55rem; height: 1px;
-    background: var(--brass); transform: scaleX(0); transform-origin: left; transition: transform .3s ease;
-  }
-  .nav-list a:hover { color: var(--cream); }
-  .nav-list a:hover::after { transform: scaleX(1); }
-  .nav-cta { width: auto; margin: 0; }
+  .header-inner { flex-wrap: nowrap; min-height: 4.5rem; }
+  .site-nav, html.js .site-nav { display: flex; align-items: center; gap: 2rem; position: static; width: auto; padding: 0; background: none; border: 0; box-shadow: none; }
+  .nav-list { display: flex; gap: 1.75rem; margin: 0; }
+  .nav-list a { min-height: 44px; border: 0; font: 600 .9375rem/1 var(--font-body); letter-spacing: .14em; text-transform: uppercase; color: var(--cream-dim); }
+  .nav-list a:hover { color: var(--cream); text-decoration: underline; text-decoration-color: var(--gold); text-underline-offset: .4em; }
 
-  .hero-grid { grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr); align-items: center; gap: 4.5rem; }
-  .hero-actions .btn { flex: 0 0 auto; }
-  .hero-panel { padding: 3rem 2.25rem 2rem; margin-left: 0; }
-  .crest-lg { width: min(100%, 19.5rem); }
+  .sill-inner { grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 4rem; }
+  .sill-cta { justify-items: end; text-align: right; margin-top: -4.25rem; }
 
-  .services-grid { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 5rem; align-items: start; }
-  .services-grid .section-head { position: sticky; top: 8rem; margin: 0; }
+  .wall-head { grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); align-items: end; gap: 4rem; }
+  .board-grid { grid-template-columns: minmax(0, 8.5fr) minmax(0, 3.5fr); align-items: end; gap: 3.5rem; }
 
-  .about-grid { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 6rem; align-items: center; }
-  .head-split { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); align-items: end; }
-  .head-split .title { margin-bottom: 0; }
+  .about-grid { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 5rem; align-items: center; }
+  .enamel { justify-self: end; transform: rotate(1deg); }
 
-  .hours-grid { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 5rem; align-items: center; }
+  .team-grid { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 5rem; align-items: start; }
+  .mirror--arch { width: min(100%, 21rem); }
+  .crew { margin-top: 4rem; }
 
-  .quotes { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); grid-template-rows: auto auto; gap: 0 4.5rem; }
-  .quote-lg { grid-row: 1 / span 2; padding-right: 4.5rem; border-right: 1px solid var(--line); }
-  .quote-sm { padding-block: 2.5rem; }
-  .quote-sm + .quote-sm { padding-bottom: 0; }
-  .quote-sm:first-of-type { border-top: 0; }
+  .quotes { grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 3.5rem 2.5rem; }
+  .q--big { grid-column: 1 / span 9; }
+  .q:nth-child(2) { grid-column: 1 / span 5; }
+  .q:nth-child(3) { grid-column: 7 / span 6; margin-top: 2.5rem; }
 
-  .book-grid { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 5rem; align-items: start; }
-  .book-intro { position: sticky; top: 8rem; }
+  .visit-grid { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 5rem; align-items: center; }
+  .book-grid { grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: 4.5rem; align-items: start; }
+  .book-intro { position: sticky; top: 7rem; }
 }
 @media (min-width: 1024px) {
-  .team-list { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2.25rem; border: 0; }
-  .barber { grid-template-columns: 1fr; gap: 1.5rem; padding: 0; border: 0; }
-  .portrait::before { --corner: 1.25rem; }
-  .footer-grid { grid-template-columns: minmax(0, 1.5fr) repeat(3, minmax(0, 1fr)); gap: 3rem; }
-  .footer-brand { grid-column: auto; }
+  .cards { grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 3.5rem 2.25rem; align-items: start; }
+  .card--classic { grid-column: 1 / span 4; }
+  .card--fade { grid-column: 5 / span 4; margin-top: 2.75rem; }
+  .card--kids { grid-column: 9 / span 4; grid-row: 1; justify-self: center; width: min(100%, 17rem); margin-top: .75rem; }
+  .card--shave { grid-column: 1 / span 7; }
+  .card--beard { grid-column: 8 / span 5; width: min(100%, 23rem); justify-self: center; margin-top: 1.5rem; }
+  .footer-grid { grid-template-columns: minmax(0, 1.6fr) repeat(3, minmax(0, 1fr)); gap: 3rem; }
+  .footer-sign { grid-column: auto; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition-duration: .01ms !important; animation: none !important; }
-}
-@media (forced-colors: active) {
-  .btn, .book-form input, .book-form select, .book-form textarea { border: 1px solid CanvasText; }
 }
 </style>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 
-<!-- Icon sprite + gold gradient (decorative) -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
-  <defs>
-    <linearGradient id="g-gold" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" style="stop-color: var(--brass)"/>
-      <stop offset=".5" style="stop-color: var(--brass-light)"/>
-      <stop offset="1" style="stop-color: var(--brass)"/>
-    </linearGradient>
-  </defs>
-  <symbol id="i-crest" viewBox="0 0 64 64">
-    <circle cx="32" cy="32" r="30.5" fill="none" stroke="url(#g-gold)" stroke-width="1.5"/>
-    <circle cx="32" cy="32" r="26.5" fill="none" stroke="url(#g-gold)" stroke-width=".9" stroke-dasharray=".1 2.6" stroke-linecap="round"/>
-    <text x="32" y="39.5" text-anchor="middle" font-size="19" font-weight="900" fill="url(#g-gold)">G<tspan font-style="italic" font-weight="400">&amp;</tspan>B</text>
-  </symbol>
-  <symbol id="i-scissors" viewBox="0 0 64 64">
-    <g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round">
-      <circle cx="21" cy="50" r="7"/><circle cx="43" cy="50" r="7"/>
-      <path d="M25.5 44.5 44 6M38.5 44.5 20 6"/>
-    </g>
-    <circle cx="32" cy="31" r="2.2" fill="currentColor"/>
-  </symbol>
-  <symbol id="i-razor" viewBox="0 0 64 64">
-    <path d="M4 42.5Q18 36 33 34.5v4Q19 39.5 5.5 46z" fill="currentColor"/>
-    <path d="M31 30.5 56 26q5-.6 5 4v3q-.4 4-5 4H33z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/>
-    <path d="M37 33.5h19" stroke="currentColor" stroke-width="1"/>
-    <circle cx="33" cy="36.5" r="2.2" fill="currentColor"/>
-  </symbol>
-  <symbol id="i-comb" viewBox="0 0 64 64">
-    <rect x="8" y="20" width="48" height="9" fill="currentColor"/>
-    <path d="M12 29v15M17 29v15M22 29v15M27 29v15M32 29v15M37 29v15M42 29v15M47 29v15M52 29v15" stroke="currentColor" stroke-width="2.2"/>
-  </symbol>
-  <symbol id="i-brush" viewBox="0 0 64 64">
-    <path d="M21 31c-2.5-13 4.5-23 11-23s13.5 10 11 23z" fill="currentColor"/>
-    <rect x="23" y="33" width="18" height="4" fill="currentColor"/>
-    <path d="M25.5 39.5h13l-2.5 17h-8z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/>
-  </symbol>
-  <symbol id="i-star" viewBox="0 0 12 12"><path d="M6 0l1.3 4.7L12 6 7.3 7.3 6 12 4.7 7.3 0 6l4.7-1.3z" fill="currentColor"/></symbol>
-  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M3 12h17m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="square"/></symbol>
   <symbol id="i-phone" viewBox="0 0 24 24"><path d="M6.6 3h3l1.6 4.6-2.1 1.5a12 12 0 0 0 5.8 5.8l1.5-2.1 4.6 1.6v3a2 2 0 0 1-2.2 2A17 17 0 0 1 4.6 5.2 2 2 0 0 1 6.6 3z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
-  <symbol id="i-check" viewBox="0 0 64 64">
-    <circle cx="32" cy="32" r="30" fill="none" stroke="currentColor" stroke-width="1.5"/>
-    <circle cx="32" cy="32" r="25.5" fill="none" stroke="currentColor" stroke-width=".75"/>
-    <path d="M21 33l7.5 7.5L44 25" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square"/>
-  </symbol>
 </svg>
 
 <!-- SECTION: Header -->
 <header class="site-header" id="top">
   <div class="wrap header-inner">
     <a class="brand" href="#top">
-      <svg class="brand-crest" aria-hidden="true" focusable="false"><use href="#i-crest"/></svg>
+      <span class="mini-pole" aria-hidden="true"></span>
       <span>
-        <span class="brand-name" data-biz="name">Glen &amp; Blade Barbers</span>
-        <span class="brand-sub">Glenview &middot; Illinois</span>
+        <span class="brand-name" data-biz="shortName">Glen &amp; Blade</span>
+        <span class="brand-sub">Barbers &middot; Glenview</span>
       </span>
     </a>
-    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
-      <span class="sr-only">Menu</span>
-      <span class="nav-toggle-bars" aria-hidden="true"></span>
-    </button>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav"><i aria-hidden="true"></i><span class="nav-toggle-label">Menu</span></button>
     <nav class="site-nav" id="site-nav" aria-label="Primary">
       <ul class="nav-list">
         <li><a href="#services">Services</a></li>
         <li><a href="#prices">Prices</a></li>
         <li><a href="#team">Barbers</a></li>
         <li><a href="#hours">Hours</a></li>
-        <li><a href="#reviews">Reviews</a></li>
       </ul>
-      <a class="btn btn-gold btn-sm nav-cta" href="#book">Book Now</a>
+      <a class="ticket" href="#book"><span class="ticket-no">No.</span>Book Now</a>
     </nav>
   </div>
 </header>
 
 <main id="main">
 
-  <!-- SECTION: Hero -->
-  <section class="hero" aria-labelledby="hero-title">
-    <div class="wrap hero-grid">
-      <div class="hero-copy">
-        <p class="kicker eyebrow"><span>Glenview, Illinois</span><span class="rule" aria-hidden="true"></span><span>North Shore</span></p>
-        <h1 class="hero-title" id="hero-title">
-          <span class="line">Sharp cuts.</span>
-          <span class="line">Hot towels.</span>
-          <em>No small talk required.</em>
-        </h1>
-        <p class="hero-lede">A proper neighborhood barbershop on the North Shore. Classic cuts, clean fades and straight-razor shaves, done with patience and a steady hand.</p>
-        <div class="hero-actions">
-          <a class="btn btn-gold" href="#book">Book Now <svg aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
-          <a class="btn btn-ghost" href="tel:+18475550167" data-biz-href="phone"><svg aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span>Call <span data-biz="phone">(847) 555-0167</span></span></a>
+  <!-- SECTION: Storefront (hero). The shop name on the glass comes from BUSINESS.shortName. -->
+  <section class="storefront" aria-labelledby="shop-name">
+    <div class="awning" aria-hidden="true"></div>
+    <div class="facade">
+      <div class="window">
+        <div class="glass">
+          <svg class="interior" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+            <defs>
+              <radialGradient id="lamp-glow"><stop offset="0" class="g-lamp"/><stop offset="1" class="g-none"/></radialGradient>
+              <g id="chair">
+                <rect x="50" y="0" width="40" height="16" rx="6"/>
+                <rect x="67" y="15" width="6" height="16"/>
+                <path d="M38 30h64a8 8 0 0 1 8 8v64H30V38a8 8 0 0 1 8-8z"/>
+                <rect x="10" y="88" width="38" height="10" rx="4"/>
+                <rect x="92" y="88" width="38" height="10" rx="4"/>
+                <rect x="22" y="100" width="96" height="22" rx="6"/>
+                <path d="M40 122h60l-8 16H48z"/>
+                <rect x="64" y="136" width="12" height="46"/>
+                <path d="M70 128l-34 34h-6v6h40z"/>
+                <ellipse cx="70" cy="188" rx="46" ry="8"/>
+              </g>
+            </defs>
+            <ellipse cx="220" cy="110" rx="270" ry="210" fill="url(#lamp-glow)"/>
+            <ellipse cx="590" cy="110" rx="270" ry="210" fill="url(#lamp-glow)" opacity=".8"/>
+            <rect x="300" y="150" width="200" height="140" class="i-frame"/>
+            <path d="M220 0v62M590 0v62" class="i-cord"/>
+            <path d="M194 84l12-24h28l12 24z" class="i-dark"/>
+            <path d="M564 84l12-24h28l12 24z" class="i-dark"/>
+            <circle cx="220" cy="88" r="6" class="i-bulb"/>
+            <circle cx="590" cy="88" r="6" class="i-bulb"/>
+            <use href="#chair" class="i-dark" transform="translate(70 285) scale(1.05)"/>
+            <use href="#chair" class="i-dark" transform="translate(600 300) scale(.95)"/>
+          </svg>
+
+          <div class="lettering">
+            <h1 class="sign" id="shop-name">
+              <span class="sr-only" data-biz="name">Glen &amp; Blade Barbers</span>
+              <svg class="sign-svg" viewBox="0 52 720 300" aria-hidden="true" focusable="false">
+                <defs>
+                  <linearGradient id="leaf" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" class="s-hi"/><stop offset=".3" class="s-mid"/><stop offset=".52" class="s-lo"/>
+                    <stop offset=".62" class="s-mid"/><stop offset=".84" class="s-hi"/><stop offset="1" class="s-mid"/>
+                  </linearGradient>
+                  <path id="sign-arc" d="M60 205Q360 55 660 205"/>
+                  <text id="sign-name" class="sign-name" text-anchor="middle"><textPath href="#sign-arc" startOffset="50%" textLength="600" lengthAdjust="spacingAndGlyphs" data-biz="shortName">Glen &amp; Blade</textPath></text>
+                  <text id="sign-trade" class="sign-trade" x="360" y="296" text-anchor="middle">Barbers</text>
+                  <path id="sign-swash" d="M205 318c95 22 220 24 330-14-100 30-232 30-330 14z"/>
+                </defs>
+                <use href="#sign-name" class="l-shade"/>
+                <use href="#sign-name" class="l-key"/>
+                <use href="#sign-name" class="l-leaf"/>
+                <use href="#sign-trade" class="l-shade"/>
+                <use href="#sign-trade" class="l-key"/>
+                <use href="#sign-trade" class="l-leaf"/>
+                <use href="#sign-swash" class="l-shade"/>
+                <use href="#sign-swash" class="l-swash"/>
+              </svg>
+            </h1>
+            <p class="glass-line">Haircuts &middot; Hot Towel Shaves &middot; Beard Work</p>
+            <p class="glass-ribbon"><span>Walk-ins Welcome</span></p>
+            <p class="glass-foot"><span>Est. 2009</span><span>Tues &ndash; Sat</span><span data-biz="phone">(847) 555-0167</span></p>
+          </div>
+          <div class="glare" aria-hidden="true"></div>
         </div>
-        <ul class="hero-notes">
-          <li><svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>Walk-ins welcome</li>
-          <li><svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>Hot towel with every cut</li>
-          <li><svg aria-hidden="true" focusable="false"><use href="#i-star"/></svg>Kids &amp; seniors</li>
+      </div>
+      <div class="pole-post" aria-hidden="true"><span class="pole"></span></div>
+    </div>
+    <div class="sill">
+      <div class="wrap sill-inner">
+        <p class="sill-copy">Four chairs on Sample Street, two blocks from the Metra. Haircuts from $40, hot towel shaves, beard work, and a booster seat for the little ones. Walk in Tuesday through Saturday, or hold a chair online.</p>
+        <div class="sill-cta">
+          <a class="ticket ticket-lg" href="#book">
+            <span class="ticket-stub"><small>No.</small>48</span>
+            <span class="ticket-body"><strong>Book Now</strong><small>Hold a chair online</small></span>
+          </a>
+          <p class="sill-call">Or call <a class="text-link" href="tel:+18475550167" data-biz="phone">(847) 555-0167</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION: Services, as hand-lettered showcards on the wall -->
+  <section class="wall" id="services" aria-labelledby="services-title">
+    <div class="wrap">
+      <div class="wall-head">
+        <h2 class="h2" id="services-title">Every cut comes with a hot towel.</h2>
+        <p class="lede">The showcards on the wall were lettered by hand the week we opened. The prices have moved a little since. The routine hasn&rsquo;t.</p>
+      </div>
+      <div class="cards">
+        <article class="card card--classic">
+          <h3><span class="c-script">The Classic</span><span class="c-roman">Cut</span></h3>
+          <p class="c-meta"><span>30 min</span><span class="c-price"><span>$</span>40</span></p>
+          <p class="c-body">Consult, scissor-and-clipper cut, hot towel, straight-razor neckline, tonic and a comb-through. Same way since day one.</p>
+        </article>
+        <article class="card card--fade">
+          <h3 class="c-band"><span class="c-gothic">Skin Fade</span><span class="c-script">bald to blended</span></h3>
+          <p class="c-meta"><span>45 min</span><span class="c-price"><span>$</span>45</span></p>
+          <p class="c-body">Foil-smooth at the bottom, blended by hand under the lamp. Line-up and neck shave included. Low, mid or high, your call.</p>
+        </article>
+        <article class="card card--shave">
+          <div class="shave-inner">
+            <div>
+              <h3><span class="c-script">Hot Towel</span><span class="c-roman">Shave</span></h3>
+              <p class="c-meta"><span>40 min</span><span class="c-price"><span>$</span>45</span></p>
+            </div>
+            <p class="c-steps"><b>Pre-shave oil</b>, then <b>three hot towels</b>, warm lather and <b>two passes</b> with a straight razor: with the grain, then across. <b>Cold towel</b> to close, balm to finish. Phones go face down. Naps are allowed.</p>
+          </div>
+        </article>
+        <article class="card card--beard">
+          <h3><span class="c-gothic c-outline">Beard</span><span class="c-script">trim &amp; line-up</span></h3>
+          <p class="c-meta"><span>25 min</span><span class="c-price"><span>$</span>25</span></p>
+          <p class="c-body">Shape, trim, hot towel, razor-sharp edges, oil and balm. Grown out or grown in, it&rsquo;ll look like you meant it.</p>
+        </article>
+        <article class="card card--kids">
+          <h3><span class="c-script">Kids&rsquo;</span><span class="c-gothic">12 &amp; under</span></h3>
+          <p class="c-meta"><span>20 min</span><span class="c-price"><span>$</span>28</span></p>
+          <p class="c-body">Booster seat, a lollipop, and a first-haircut certificate for the fridge when it&rsquo;s the first.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION: Price list on a felt letterboard (prices are placeholders) -->
+  <section class="board-wrap" id="prices" aria-labelledby="prices-title">
+    <div class="wrap board-grid">
+      <div class="letterboard">
+        <div class="felt">
+          <h2 class="lb-title" id="prices-title">Prices</h2>
+          <div class="lb-cols">
+            <div>
+              <h3 class="lb-cat">&mdash; Cuts &mdash;</h3>
+              <ul class="lb-list">
+                <li><span>Classic Cut</span><span>$40</span></li>
+                <li><span>S<span class="wonk">K</span>in Fade</span><span>$45</span></li>
+                <li><span>Long Scissor Cut</span><span>$50</span></li>
+                <li><span>Kids 12 &amp; Under</span><span>$28</span></li>
+                <li><span>Seniors 65+</span><span>$<span class="lift">3</span>0</span></li>
+              </ul>
+            </div>
+            <div>
+              <h3 class="lb-cat">&mdash; Shaves &amp; Beards &mdash;</h3>
+              <ul class="lb-list">
+                <li><span>Hot Towel Shave</span><span>$45</span></li>
+                <li><span>Beard &amp; Line-<span class="wonk2">U</span>p</span><span>$25</span></li>
+                <li><span>Cut + Beard</span><span>$60</span></li>
+                <li><span>Head Shave</span><span>$40</span></li>
+                <li><span>Gray Blending</span><span>+$30</span></li>
+              </ul>
+            </div>
+          </div>
+          <p class="lb-foot">Cash &middot; Card &middot; Tap</p>
+        </div>
+      </div>
+      <div class="fine">
+        <h3>The small print</h3>
+        <ul>
+          <li>The hot towel is included. It always has been.</li>
+          <li>Last chair 6:30 on weekdays, 3:30 on Saturdays.</li>
+          <li>Senior pricing Tuesday to Friday, any time.</li>
+          <li>Tips go in the jar by the register or on the card reader.</li>
         </ul>
       </div>
-
-      <div class="hero-panel corners">
-        <span class="pole" aria-hidden="true"></span>
-        <svg class="crest-lg" viewBox="0 0 320 320" aria-hidden="true" focusable="false">
-          <defs><path id="ring-path" d="M160 160m-113 0a113 113 0 1 1 226 0a113 113 0 1 1-226 0"/></defs>
-          <circle cx="160" cy="160" r="152" fill="none" stroke="url(#g-gold)" stroke-width="1.6"/>
-          <circle cx="160" cy="160" r="145" fill="none" stroke="url(#g-gold)" stroke-width=".7"/>
-          <circle cx="160" cy="160" r="97" fill="none" stroke="url(#g-gold)" stroke-width=".7"/>
-          <circle cx="160" cy="160" r="91" fill="none" stroke="url(#g-gold)" stroke-width="1.2" stroke-dasharray=".1 4.5" stroke-linecap="round"/>
-          <text class="c-ring"><textPath href="#ring-path" textLength="700" lengthAdjust="spacing">Fine cuts &#8226; Hot towel shaves &#8226; Beard work &#8226; Glenview, Illinois &#8226;</textPath></text>
-          <use href="#i-scissors" class="c-icon" x="139" y="76" width="42" height="42"/>
-          <text class="c-mono" x="160" y="191" text-anchor="middle" fill="url(#g-gold)">G<tspan class="c-amp">&amp;</tspan>B</text>
-          <path d="M100 210h22M198 210h22" stroke="url(#g-gold)" stroke-width="1"/>
-          <text class="c-sub" x="162" y="215" text-anchor="middle">Barbers</text>
-          <use href="#i-star" class="c-icon" x="154" y="232" width="12" height="12"/>
-        </svg>
-        <dl class="panel-facts">
-          <div><dt>Walk-ins</dt><dd>Always welcome</dd></div>
-          <div><dt>Open</dt><dd>Tue &ndash; Sat</dd></div>
-        </dl>
-      </div>
     </div>
   </section>
+  <div class="floor" aria-hidden="true"></div>
 
-  <!-- Decorative ticker -->
-  <div class="ticker" aria-hidden="true">
-    <div class="ticker-track">
-      <span class="ticker-item">Classic cuts <svg><use href="#i-star"/></svg> Skin fades <svg><use href="#i-star"/></svg> Hot towel shaves <svg><use href="#i-star"/></svg> Beard work <svg><use href="#i-star"/></svg> Gray blending <svg><use href="#i-star"/></svg> Kids&rsquo; cuts <svg><use href="#i-star"/></svg> Walk-ins welcome <svg><use href="#i-star"/></svg></span>
-      <span class="ticker-item">Classic cuts <svg><use href="#i-star"/></svg> Skin fades <svg><use href="#i-star"/></svg> Hot towel shaves <svg><use href="#i-star"/></svg> Beard work <svg><use href="#i-star"/></svg> Gray blending <svg><use href="#i-star"/></svg> Kids&rsquo; cuts <svg><use href="#i-star"/></svg> Walk-ins welcome <svg><use href="#i-star"/></svg></span>
-    </div>
-  </div>
-
-  <!-- SECTION: Services -->
-  <section class="section" id="services" aria-labelledby="services-title">
-    <div class="wrap services-grid">
-      <header class="section-head">
-        <p class="kicker"><span class="kicker-no">No. 01</span>Services</p>
-        <h2 class="title" id="services-title">The work, <em>done properly.</em></h2>
-        <p class="lede">Five things we do every day, and do well. No gimmicks, no forty-item menu, no upsell at the register.</p>
-        <a class="text-link" href="#prices">See the price menu <svg aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
-      </header>
-      <ol class="feature-list">
-        <li class="feature">
-          <span class="feature-no" aria-hidden="true">01</span>
-          <div class="feature-body">
-            <h3>The Classic Cut</h3>
-            <p>Consultation, scissor-and-clipper cut, hot towel and a straight-razor neckline. The haircut your grandfather would approve of, updated for this decade.</p>
-          </div>
-          <p class="feature-meta"><span>45 min</span><span class="feature-price">from $40</span></p>
-        </li>
-        <li class="feature">
-          <span class="feature-no" aria-hidden="true">02</span>
-          <div class="feature-body">
-            <h3>Fades &amp; Tapers</h3>
-            <p>Skin, low, mid or high. Blended until there&rsquo;s no line left to find. You&rsquo;ll be checking it in every shop window on the way home.</p>
-          </div>
-          <p class="feature-meta"><span>45 min</span><span class="feature-price">from $45</span></p>
-        </li>
-        <li class="feature">
-          <span class="feature-no" aria-hidden="true">03</span>
-          <div class="feature-body">
-            <h3>Beard Work</h3>
-            <p>Shape, trim and a razor-sharp line-up, finished with a hot towel, oil and balm. Grown out or grown in, we&rsquo;ll make it look intentional.</p>
-          </div>
-          <p class="feature-meta"><span>30 min</span><span class="feature-price">from $25</span></p>
-        </li>
-        <li class="feature">
-          <span class="feature-no" aria-hidden="true">04</span>
-          <div class="feature-body">
-            <h3>The Hot Towel Shave</h3>
-            <p>Warm lather, two passes with a straight razor, cold towel to close. Twenty-five quiet minutes. Your phone can wait.</p>
-          </div>
-          <p class="feature-meta"><span>40 min</span><span class="feature-price">$45</span></p>
-        </li>
-        <li class="feature">
-          <span class="feature-no" aria-hidden="true">05</span>
-          <div class="feature-body">
-            <h3>Gray Blending</h3>
-            <p>A subtle tone-down, not a dye job. Nobody needs to know. Not even you, eventually.</p>
-          </div>
-          <p class="feature-meta"><span>20 min</span><span class="feature-price">add $30</span></p>
-        </li>
-      </ol>
-    </div>
-  </section>
-
-  <!-- SECTION: Price menu (all prices are placeholders) -->
-  <section class="section section-alt" id="prices" aria-labelledby="prices-title">
-    <div class="wrap">
-      <div class="menu-board corners">
-        <header class="menu-head">
-          <p class="kicker kicker-center"><span class="kicker-no">No. 02</span>Price Menu</p>
-          <h2 class="title" id="prices-title">The <em>Menu</em></h2>
-          <div class="ornament" aria-hidden="true"><svg><use href="#i-scissors"/></svg></div>
-          <p class="menu-sub">Every haircut finishes with a hot towel and a straight-razor neckline. No exceptions, no extra charge.</p>
-        </header>
-        <div class="menu-cols">
-          <section class="menu-col" aria-labelledby="menu-cuts">
-            <h3 class="menu-cat" id="menu-cuts">Haircuts</h3>
-            <ul class="menu-list">
-              <li>
-                <div class="menu-line"><span class="menu-name">Classic Cut</span><span class="leader" aria-hidden="true"></span><span class="menu-price">$40</span></div>
-                <p class="menu-desc">Scissor and clipper work, hot towel, neck shave.</p>
-              </li>
-              <li>
-                <div class="menu-line"><span class="menu-name">Skin Fade</span><span class="leader" aria-hidden="true"></span><span class="menu-price">$45</span></div>
-                <p class="menu-desc">Shaved to skin, blended by hand. Any height.</p>
-              </li>
-              <li>
-                <div class="menu-line"><span class="menu-name">Long Scissor Cut</span><span class="leader" aria-hidden="true"></span><span class="menu-price">$50</span></div>
-                <p class="menu-desc">For hair past the collar. All scissors, no shortcuts.</p>
-              </li>
-              <li>
-                <div class="menu-line"><span class="menu-name">Kids&rsquo; Cut (12 &amp; under)</span><span class="leader" aria-hidden="true"></span><span class="menu-price">$28</span></div>
-                <p class="menu-desc">Patience included. Booster seat available.</p>
-              </li>
-              <li>
-                <div class="menu-line"><span class="menu-name">Senior Cut (65+)</span><span class="leader" aria-hidden="true"></span><span class="menu-price">$30</span></div>
-                <p class="menu-desc">The full classic service, Tuesday through Friday.</p>
-              </li>
-            </ul>
-          </section>
-          <section class="menu-col" aria-labelledby="menu-shaves">
-            <h3 class="menu-cat" id="menu-shaves">Shaves &amp; Beard</h3>
-            <ul class="menu-list">
-              <li>
-                <div class="menu-line"><span class="menu-name">Beard Trim &amp; Line-up</span><span class="leader" aria-hidden="true"></span><span class="menu-price">$25</span></div>
-                <p class="menu-desc">Shape, trim, razor edges, oil and balm.</p>
-              </li>
-              <li>
-                <div class="menu-line"><span class="menu-name">Hot Towel Straight-Razor Shave</span><span class="leader" aria-hidden="true"></span><span class="menu-price">$45</span></div>
-                <p class="menu-desc">Warm lather, two passes, cold towel finish.</p>
-              </li>
-              <li>
-                <div class="menu-line"><span class="menu-name">Cut + Beard Combo</span><span class="leader" aria-hidden="true"></span><span class="menu-price">$60</span></div>
-                <p class="menu-desc"><span class="tag">House favorite</span>Classic cut and full beard service in one sitting.</p>
-              </li>
-              <li>
-                <div class="menu-line"><span class="menu-name">Head Shave</span><span class="leader" aria-hidden="true"></span><span class="menu-price">$40</span></div>
-                <p class="menu-desc">Hot towel, straight razor, cooling balm.</p>
-              </li>
-              <li>
-                <div class="menu-line"><span class="menu-name">Gray Blending</span><span class="leader" aria-hidden="true"></span><span class="menu-price">+$30</span></div>
-                <p class="menu-desc">Add to any cut or beard service.</p>
-              </li>
-            </ul>
-          </section>
-        </div>
-        <p class="menu-foot">Cash, card &amp; tap accepted &middot; Tips appreciated &middot; Small talk optional</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- SECTION: About -->
-  <section class="section" id="about" aria-labelledby="about-title">
+  <!-- SECTION: About + house rules -->
+  <section class="about" id="about" aria-labelledby="about-title">
     <div class="wrap about-grid">
-      <div class="about-copy">
-        <p class="kicker"><span class="kicker-no">No. 03</span>The Shop</p>
-        <h2 class="title" id="about-title">A neighborhood shop with <em>old habits.</em></h2>
-        <p class="dropcap"><span data-biz="name">Glen &amp; Blade Barbers</span> is a four-chair shop on Sample Street where the clippers are sharp, the towels are hot and the radio stays low. We cut North Shore regulars, their kids, and the occasional groom who left it until the morning of.</p>
-        <p>We take our time, we remember how you like it, and we keep our opinions about your fantasy team to ourselves. The coffee&rsquo;s on, the game is on mute, and walk-ins are always welcome. Booking ahead just guarantees the chair.</p>
-        <p class="signoff">See you in the chair.</p>
+      <div class="about-story">
+        <h2 class="h2" id="about-title">On Sample Street since 2009.</h2>
+        <p class="big">Marco opened the shop in an old shoe-repair storefront, kept the tin ceiling, and spent that first winter rebuilding four cast-iron chairs in his garage. They&rsquo;re still the only chairs we use.</p>
+        <p>The radio stays on the ballgame with the volume low. The coffee is free and stronger than it needs to be. We cut North Shore regulars, their kids, and the occasional groom who left it until the morning of.</p>
+        <p>Come in, take a number, sit down. Nobody here is going to try to sell you a pomade.</p>
       </div>
-      <aside class="about-aside" aria-label="The shop at a glance">
-        <svg class="stamp" viewBox="0 0 200 200" aria-hidden="true" focusable="false">
-          <defs><path id="stamp-path" d="M100 100m-72 0a72 72 0 1 1 144 0a72 72 0 1 1-144 0"/></defs>
-          <circle cx="100" cy="100" r="96" fill="none" stroke="url(#g-gold)" stroke-width="1.5"/>
-          <circle cx="100" cy="100" r="90" fill="none" stroke="url(#g-gold)" stroke-width=".6"/>
-          <circle cx="100" cy="100" r="57" fill="none" stroke="url(#g-gold)" stroke-width=".6"/>
-          <text class="s-text"><textPath href="#stamp-path" textLength="448" lengthAdjust="spacing">Walk-ins welcome &#8226; Walk-ins welcome &#8226;</textPath></text>
-          <use href="#i-razor" class="s-icon" x="66" y="66" width="68" height="68"/>
-        </svg>
-        <ul class="stats">
-          <li><span class="stat-num">4</span><span class="stat-label"><strong>Chairs</strong>Cast iron, and older than most of our regulars.</span></li>
-          <li><span class="stat-num">25</span><span class="stat-label"><strong>Minutes</strong>For a proper straight-razor shave. We don&rsquo;t rush it.</span></li>
-          <li><span class="stat-num">0</span><span class="stat-label"><strong>Small talk required</strong>Chat if you like. Nap if you&rsquo;d rather.</span></li>
+      <aside class="enamel" aria-labelledby="rules-title">
+        <h3 id="rules-title">House Rules</h3>
+        <ul>
+          <li>Walk-ins welcome. Booked appointments keep their chair.</li>
+          <li>Last chair 30 minutes before close.</li>
+          <li>Kids 12 &amp; under: the booster seat is on us.</li>
+          <li>Conversation optional. Naps permitted.</li>
+          <li>Running late? Call. We hold the chair ten minutes.</li>
+          <li>Cash, card or tap.</li>
         </ul>
       </aside>
     </div>
   </section>
 
   <!-- SECTION: Team (fictional barbers) -->
-  <section class="section section-alt" id="team" aria-labelledby="team-title">
+  <section class="team" id="team" aria-labelledby="team-title">
     <div class="wrap">
-      <header class="head-split">
-        <div>
-          <p class="kicker"><span class="kicker-no">No. 04</span>The Barbers</p>
-          <h2 class="title" id="team-title">Four chairs. <em>Steady hands.</em></h2>
-        </div>
-        <p class="lede">Ask for someone by name or take the next open chair. Everyone here can do everything on the menu; these are just the things they&rsquo;re known for.</p>
-      </header>
-      <ul class="team-list">
-        <li class="barber">
-          <div class="portrait corners" role="img" aria-label="Monogram portrait of Marco Vitale">
-            <span class="portrait-initials gold-text" aria-hidden="true">MV</span>
-            <svg class="portrait-icon" aria-hidden="true" focusable="false"><use href="#i-scissors"/></svg>
-          </div>
-          <div class="barber-info">
-            <h3 class="barber-name">Marco Vitale</h3>
-            <p class="barber-role">Owner &middot; Master Barber</p>
-            <p class="barber-spec">Scissor-over-comb and the classic cut, done the long way.</p>
-            <p class="barber-years"><span class="years-num">18</span><span class="years-label">years behind<br>the chair</span></p>
-          </div>
-        </li>
-        <li class="barber">
-          <div class="portrait corners" role="img" aria-label="Monogram portrait of Dez Okafor">
-            <span class="portrait-initials gold-text" aria-hidden="true">DO</span>
-            <svg class="portrait-icon" aria-hidden="true" focusable="false"><use href="#i-comb"/></svg>
-          </div>
-          <div class="barber-info">
-            <h3 class="barber-name">Dez Okafor</h3>
-            <p class="barber-role">Senior Barber</p>
-            <p class="barber-spec">Skin fades, tapers and line-ups you could set a level by.</p>
-            <p class="barber-years"><span class="years-num">11</span><span class="years-label">years behind<br>the chair</span></p>
-          </div>
-        </li>
-        <li class="barber">
-          <div class="portrait corners" role="img" aria-label="Monogram portrait of Hank Lindqvist">
-            <span class="portrait-initials gold-text" aria-hidden="true">HL</span>
-            <svg class="portrait-icon" aria-hidden="true" focusable="false"><use href="#i-razor"/></svg>
-          </div>
-          <div class="barber-info">
-            <h3 class="barber-name">Hank Lindqvist</h3>
-            <p class="barber-role">Barber</p>
-            <p class="barber-spec">Hot towel shaves and beard sculpting. Very calm. Suspiciously calm.</p>
-            <p class="barber-years"><span class="years-num">9</span><span class="years-label">years behind<br>the chair</span></p>
-          </div>
-        </li>
-        <li class="barber">
-          <div class="portrait corners" role="img" aria-label="Monogram portrait of Ruby Calloway">
-            <span class="portrait-initials gold-text" aria-hidden="true">RC</span>
-            <svg class="portrait-icon" aria-hidden="true" focusable="false"><use href="#i-brush"/></svg>
-          </div>
-          <div class="barber-info">
-            <h3 class="barber-name">Ruby Calloway</h3>
-            <p class="barber-role">Barber</p>
-            <p class="barber-spec">Kids&rsquo; cuts, gray blending, and a first-haircut certificate for the fridge.</p>
-            <p class="barber-years"><span class="years-num">6</span><span class="years-label">years behind<br>the chair</span></p>
-          </div>
-        </li>
-      </ul>
-    </div>
-  </section>
-
-  <!-- SECTION: Hours & location (edit the table rows directly; data-day: 0 = Sunday ... 6 = Saturday) -->
-  <section class="section" id="hours" aria-labelledby="hours-title">
-    <div class="wrap hours-grid">
-      <div class="hours-panel corners">
-        <p class="kicker"><span class="kicker-no">No. 05</span>Hours</p>
-        <h2 class="title" id="hours-title">When the chair <em>is open.</em></h2>
-        <table class="hours-table">
-          <caption class="sr-only">Weekly opening hours</caption>
-          <tbody>
-            <tr data-day="1" class="is-closed"><th scope="row">Monday</th><td>Closed</td></tr>
-            <tr data-day="2"><th scope="row">Tuesday</th><td>9 am &ndash; 7 pm</td></tr>
-            <tr data-day="3"><th scope="row">Wednesday</th><td>9 am &ndash; 7 pm</td></tr>
-            <tr data-day="4"><th scope="row">Thursday</th><td>9 am &ndash; 7 pm</td></tr>
-            <tr data-day="5"><th scope="row">Friday</th><td>9 am &ndash; 7 pm</td></tr>
-            <tr data-day="6"><th scope="row">Saturday</th><td>8 am &ndash; 4 pm</td></tr>
-            <tr data-day="0" class="is-closed"><th scope="row">Sunday</th><td>Closed</td></tr>
-          </tbody>
-        </table>
-        <p class="hours-note">Last walk-in thirty minutes before close. Holiday hours posted on the door.</p>
+      <div class="team-head">
+        <h2 class="h2" id="team-title">Pick a chair.</h2>
+        <p class="lede">Four barbers, four chairs. Ask for someone by name or take whoever&rsquo;s free. Everyone here can do everything on the cards.</p>
       </div>
-      <div class="visit">
-        <p class="kicker">Find us</p>
-        <h3>Look for the <span class="accent">striped pole.</span></h3>
-        <address><span data-biz="address">123 Sample Street, Glenview, IL 60025</span></address>
-        <ul class="contact-list">
-          <li><span class="label">Phone</span><a href="tel:+18475550167" data-biz="phone">(847) 555-0167</a></li>
-          <li><span class="label">Email</span><a href="mailto:chair@example.com" data-biz="email">chair@example.com</a></li>
-          <li><span class="label">Parking</span><span>Free lot behind the shop, plus street parking.</span></li>
-          <li><span class="label">Payment</span><span>Cash, card and tap.</span></li>
+      <div class="team-grid">
+        <article class="barber lead">
+          <div class="mirror mirror--arch" aria-hidden="true"><div class="mirror-glass"><span class="mirror-name leaf-text">Marco</span><span class="chair-no">Chair 1</span></div></div>
+          <div>
+            <h3>Marco Vitale</h3>
+            <p class="barber-meta">Owner &middot; Chair 1 &middot; 17 years behind the chair</p>
+            <p class="barber-known"><b>Known for:</b> the scissor-over-comb taper, done the slow way.</p>
+            <p>Rebuilt every chair in the shop, starting with his own. Learned the trade sweeping up in his uncle&rsquo;s two-chair shop on the West Side. Ask him about it and clear your afternoon.</p>
+          </div>
+        </article>
+        <ul class="crew">
+          <li class="barber">
+            <div class="mirror mirror--oval" aria-hidden="true"><div class="mirror-glass"><span class="mirror-name leaf-text">Dez</span></div></div>
+            <div>
+              <h3>Dez Okafor</h3>
+              <p class="barber-meta">Chair 2 &middot; 11 years</p>
+              <p class="barber-known"><b>Known for:</b> skin fades with no line left to find.</p>
+              <p>Runs the record player. Thursdays are jazz; Saturdays are whatever Dez says. Will talk football, but only if you start it.</p>
+            </div>
+          </li>
+          <li class="barber">
+            <div class="mirror mirror--oval" aria-hidden="true"><div class="mirror-glass"><span class="mirror-name leaf-text">Hank</span></div></div>
+            <div>
+              <h3>Hank Lindqvist</h3>
+              <p class="barber-meta">Chair 3 &middot; 9 years</p>
+              <p class="barber-known"><b>Known for:</b> the hot towel shave and beard sculpting.</p>
+              <p>Former line cook. Hones his razors every morning before the lights come on, says about ten words a shave, and means all of them.</p>
+            </div>
+          </li>
+          <li class="barber">
+            <div class="mirror mirror--oval" aria-hidden="true"><div class="mirror-glass"><span class="mirror-name leaf-text">Ruby</span></div></div>
+            <div>
+              <h3>Ruby Calloway</h3>
+              <p class="barber-meta">Chair 4 &middot; 6 years</p>
+              <p class="barber-known"><b>Known for:</b> first haircuts, gray blending, longer scissor work.</p>
+              <p>Keeps the booster seat, the lollipop jar and the first-haircut certificates. Undefeated in staring contests with four-year-olds.</p>
+            </div>
+          </li>
         </ul>
       </div>
     </div>
   </section>
 
-  <!-- SECTION: Testimonials (invented) -->
-  <section class="section reviews" id="reviews" aria-labelledby="reviews-title">
+  <!-- SECTION: Testimonials (invented) on tufted chair leather -->
+  <section class="leather" id="reviews" aria-labelledby="reviews-title">
     <div class="wrap">
-      <header class="section-head">
-        <p class="kicker"><span class="kicker-no">No. 06</span>Word of Mouth</p>
-        <h2 class="title" id="reviews-title">Overheard <em>in the chair.</em></h2>
-      </header>
+      <h2 class="plate" id="reviews-title">From the regulars</h2>
       <div class="quotes">
-        <figure class="quote quote-lg">
-          <blockquote><p>Best fade I&rsquo;ve had on the North Shore, and nobody asked about my weekend. I&rsquo;ve already booked the next four.</p></blockquote>
-          <figcaption><span class="quote-name">Daniel R.</span><span class="quote-meta">Skin fade regular</span></figcaption>
+        <figure class="q q--big">
+          <blockquote><p>Dez took me from four months of grown-out mess to a mid skin fade in forty minutes, and didn&rsquo;t say one word about how long it had been.</p></blockquote>
+          <figcaption>Andre P. <span>&middot; Mid skin fade, Chair 2</span></figcaption>
         </figure>
-        <figure class="quote quote-sm">
-          <blockquote><p>The hot towel shave is the quietest twenty-five minutes of my month. I&rsquo;d pay double. Please don&rsquo;t tell them.</p></blockquote>
-          <figcaption><span class="quote-name">Marcus T.</span><span class="quote-meta">Hot towel shave</span></figcaption>
+        <figure class="q">
+          <blockquote><p>Hank&rsquo;s hot towel shave is the only time all month my phone stays face down. Three towels, two passes, not a single nick.</p></blockquote>
+          <figcaption>Tom H. <span>&middot; Saturday shave regular</span></figcaption>
         </figure>
-        <figure class="quote quote-sm">
-          <blockquote><p>My son actually sits still for Ruby. That alone is worth the drive.</p></blockquote>
-          <figcaption><span class="quote-name">Laura M.</span><span class="quote-meta">Kids&rsquo; cut</span></figcaption>
+        <figure class="q">
+          <blockquote><p>Ruby got my four-year-old through his first haircut with the booster seat, a lollipop and a certificate for the fridge. Zero tears. Mine included.</p></blockquote>
+          <figcaption>Laura M. <span>&middot; First haircut, Chair 4</span></figcaption>
         </figure>
       </div>
     </div>
   </section>
 
-  <!-- SECTION: Booking form -->
-  <section class="section" id="book" aria-labelledby="book-title">
+  <!-- SECTION: Hours on the door decal.
+       data-days: 0 = Sunday ... 6 = Saturday. data-open / data-close in 24h time (leave off for closed days). -->
+  <section class="visit" id="hours" aria-labelledby="hours-title">
+    <div class="wrap visit-grid">
+      <div class="door">
+        <div class="door-glass">
+          <p class="hang" id="open-sign"><span class="hang-state">Walk in</span><span class="hang-sub">Tue &ndash; Sat</span></p>
+          <div class="decal">
+            <p class="decal-name" data-biz="shortName">Glen &amp; Blade</p>
+            <h2 class="decal-title" id="hours-title">Hours</h2>
+            <table class="decal-hours">
+              <caption class="sr-only">Opening hours</caption>
+              <tbody>
+                <tr data-days="2 3 4 5" data-open="9:00" data-close="19:00"><th scope="row">Tue &ndash; Fri</th><td>9 am &ndash; 7 pm</td></tr>
+                <tr data-days="6" data-open="8:00" data-close="16:00"><th scope="row">Saturday</th><td>8 am &ndash; 4 pm</td></tr>
+                <tr data-days="0 1"><th scope="row">Sun &ndash; Mon</th><td>Closed</td></tr>
+              </tbody>
+            </table>
+            <p class="decal-note">Last chair 30 min before close</p>
+          </div>
+        </div>
+        <span class="door-handle" aria-hidden="true"></span>
+      </div>
+      <div class="find">
+        <h3>Look for the pole.</h3>
+        <address><span data-biz="address">123 Sample Street, Glenview, IL 60025</span></address>
+        <p>Two blocks from the Metra, between the bakery and the hardware store. The pole is on the right of the door, and it spins when we&rsquo;re open.</p>
+        <dl>
+          <div><dt>Phone</dt><dd><a href="tel:+18475550167" data-biz="phone">(847) 555-0167</a></dd></div>
+          <div><dt>Email</dt><dd><a href="mailto:chair@example.com" data-biz="email">chair@example.com</a></dd></div>
+          <div><dt>Parking</dt><dd>Free lot behind the shop, off the alley. Bike rack out front.</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION: Booking form (the appointment book) -->
+  <section class="book" id="book" aria-labelledby="book-title">
     <div class="wrap book-grid">
       <div class="book-intro">
-        <p class="kicker"><span class="kicker-no">No. 07</span>Reservations</p>
-        <h2 class="title" id="book-title">Reserve <em>your chair.</em></h2>
-        <p class="lede">Pick a service, a barber and a time that suits you. We&rsquo;ll text to confirm, usually within the hour during shop hours.</p>
+        <h2 class="h2" id="book-title">Take a number.</h2>
+        <p class="lede">Tell us the service, the barber and a time. We confirm by text, usually within the hour while we&rsquo;re open. In a hurry? Call <a class="text-link" href="tel:+18475550167" data-biz="phone">(847) 555-0167</a>.</p>
         <ul class="book-notes">
-          <li><strong>Prefer the phone?</strong><a href="tel:+18475550167" data-biz="phone">(847) 555-0167</a></li>
-          <li><strong>Running late?</strong>Call ahead and we&rsquo;ll hold the chair for ten minutes.</li>
-          <li><strong>Need to cancel?</strong>A day&rsquo;s notice is all we ask.</li>
+          <li><b>No deposit, no app.</b> Just your name and a number to text.</li>
+          <li><b>Running late?</b> Call, and we&rsquo;ll hold the chair ten minutes.</li>
+          <li><b>Can&rsquo;t make it?</b> A day&rsquo;s notice is all we ask.</li>
         </ul>
       </div>
 
-      <div class="book-panel corners">
+      <div class="ledger">
         <!--
           BOOKING INTEGRATION
           This form is a front-end demo: the script at the bottom of the page
-          intercepts submit and shows a confirmation without sending anything.
+          intercepts submit and shows a ticket stub without sending anything.
           To go live, pick one:
-            - Square Appointments / Booksy / Vagaro / Fresha: replace this whole
-              <form> with the provider's embed snippet or a "Book Now" link.
+            - Square Appointments / Booksy / Vagaro / Fresha: replace this <form>
+              with the provider's embed snippet, or point the Book Now tickets
+              at its booking page.
             - Formspree (or similar): set action="https://formspree.io/f/YOUR_ID"
-              method="POST" on the <form>, then either delete the submit handler
-              in the bottom script or send the data with fetch() inside it
-              (see the matching comment there).
+              method="POST" on the <form>, then delete the submit handler in the
+              bottom script or send the data with fetch() inside it (see the
+              matching comment there).
         -->
         <form class="book-form" id="booking-form" action="#" method="post">
-          <h3 class="form-title">Request an appointment</h3>
-          <p class="form-hint">Fields marked <span aria-hidden="true">*</span><span class="sr-only">with an asterisk</span> are required.</p>
+          <div class="ledger-head">
+            <h3>Appointment book</h3>
+            <p data-today>This week</p>
+          </div>
           <div class="form-grid">
             <div class="field field-full">
               <label for="f-name">Name <span class="req" aria-hidden="true">*</span></label>
               <input id="f-name" name="name" type="text" autocomplete="name" required>
             </div>
             <div class="field">
-              <label for="f-phone">Phone <span class="req" aria-hidden="true">*</span></label>
-              <input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="(847) 555-0100" required>
+              <label for="f-phone">Phone (for the text) <span class="req" aria-hidden="true">*</span></label>
+              <input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required>
             </div>
             <div class="field">
               <label for="f-email">Email <span class="req" aria-hidden="true">*</span></label>
-              <input id="f-email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required>
+              <input id="f-email" name="email" type="email" autocomplete="email" required>
             </div>
             <div class="field">
               <label for="f-service">Service <span class="req" aria-hidden="true">*</span></label>
               <div class="select">
                 <select id="f-service" name="service" required>
-                  <option value="">Choose a service</option>
+                  <option value="">Choose one</option>
                   <option>Classic Cut</option>
                   <option>Skin Fade</option>
                   <option>Long Scissor Cut</option>
                   <option>Kids&rsquo; Cut (12 &amp; under)</option>
                   <option>Senior Cut (65+)</option>
+                  <option>Hot Towel Shave</option>
                   <option>Beard Trim &amp; Line-up</option>
-                  <option>Hot Towel Straight-Razor Shave</option>
-                  <option>Cut + Beard Combo</option>
+                  <option>Cut + Beard</option>
                   <option>Head Shave</option>
                   <option>Gray Blending</option>
                 </select>
               </div>
             </div>
             <div class="field">
-              <label for="f-barber">Preferred barber</label>
+              <label for="f-barber">Barber</label>
               <div class="select">
                 <select id="f-barber" name="barber">
                   <option value="">No preference</option>
@@ -1160,56 +1077,57 @@ html.js .site-nav.is-open { display: block; }
               </div>
             </div>
             <div class="field">
-              <label for="f-date">Preferred date <span class="req" aria-hidden="true">*</span></label>
+              <label for="f-date">Day <span class="req" aria-hidden="true">*</span></label>
               <input id="f-date" name="date" type="date" required>
             </div>
             <div class="field">
-              <label for="f-time">Preferred time <span class="req" aria-hidden="true">*</span></label>
+              <label for="f-time">Time <span class="req" aria-hidden="true">*</span></label>
               <div class="select">
                 <select id="f-time" name="time" required>
                   <option value="">Choose a time</option>
-                  <option value="08:00">8:00 AM (Sat only)</option>
-                  <option value="08:30">8:30 AM (Sat only)</option>
-                  <option value="09:00">9:00 AM</option>
-                  <option value="09:30">9:30 AM</option>
-                  <option value="10:00">10:00 AM</option>
-                  <option value="10:30">10:30 AM</option>
-                  <option value="11:00">11:00 AM</option>
-                  <option value="11:30">11:30 AM</option>
-                  <option value="12:00">12:00 PM</option>
-                  <option value="12:30">12:30 PM</option>
-                  <option value="13:00">1:00 PM</option>
-                  <option value="13:30">1:30 PM</option>
-                  <option value="14:00">2:00 PM</option>
-                  <option value="14:30">2:30 PM</option>
-                  <option value="15:00">3:00 PM</option>
-                  <option value="15:30">3:30 PM</option>
-                  <option value="16:00">4:00 PM</option>
-                  <option value="16:30">4:30 PM</option>
-                  <option value="17:00">5:00 PM</option>
-                  <option value="17:30">5:30 PM</option>
-                  <option value="18:00">6:00 PM</option>
-                  <option value="18:30">6:30 PM</option>
+                  <option value="08:00">8:00 am (Sat)</option>
+                  <option value="08:30">8:30 am (Sat)</option>
+                  <option value="09:00">9:00 am</option>
+                  <option value="09:30">9:30 am</option>
+                  <option value="10:00">10:00 am</option>
+                  <option value="10:30">10:30 am</option>
+                  <option value="11:00">11:00 am</option>
+                  <option value="11:30">11:30 am</option>
+                  <option value="12:00">12:00 pm</option>
+                  <option value="12:30">12:30 pm</option>
+                  <option value="13:00">1:00 pm</option>
+                  <option value="13:30">1:30 pm</option>
+                  <option value="14:00">2:00 pm</option>
+                  <option value="14:30">2:30 pm</option>
+                  <option value="15:00">3:00 pm</option>
+                  <option value="15:30">3:30 pm</option>
+                  <option value="16:00">4:00 pm</option>
+                  <option value="16:30">4:30 pm</option>
+                  <option value="17:00">5:00 pm</option>
+                  <option value="17:30">5:30 pm</option>
+                  <option value="18:00">6:00 pm</option>
+                  <option value="18:30">6:30 pm</option>
                 </select>
               </div>
             </div>
             <div class="field field-full">
               <label for="f-notes">Notes <span class="opt">(optional)</span></label>
-              <textarea id="f-notes" name="notes" rows="4" placeholder="First visit? Bringing a photo? Want a quiet chair? Let us know."></textarea>
+              <textarea id="f-notes" name="notes" rows="3" placeholder="First visit? Bringing a photo? Want the quiet chair?"></textarea>
             </div>
             <div class="field-full form-actions">
-              <button class="btn btn-gold" type="submit">Request Appointment <svg aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></button>
-              <p class="form-fine">We&rsquo;ll confirm by text. No deposit, no spam.</p>
+              <button class="ticket ticket-red" type="submit"><span class="ticket-no" style="color:inherit">No.</span>Take a Number</button>
+              <p>Fields marked <span aria-hidden="true">*</span><span class="sr-only">with an asterisk</span> are required.</p>
             </div>
           </div>
         </form>
 
-        <div class="form-success" id="form-success" role="status" aria-live="polite" tabindex="-1" hidden>
-          <svg aria-hidden="true" focusable="false"><use href="#i-check"/></svg>
-          <h3>Chair requested.</h3>
-          <p class="success-detail" id="success-detail">Thanks. We&rsquo;ll text you to confirm.</p>
-          <p>This is a sample site, so no appointment was actually booked.</p>
-          <button class="btn btn-ghost" type="button" id="book-another">Book another</button>
+        <div class="stub" id="form-success" role="status" aria-live="polite" tabindex="-1" hidden>
+          <p class="stub-top">Now serving</p>
+          <p class="stub-no"><small>No.</small><span id="stub-number">48</span></p>
+          <h3>Your chair is requested.</h3>
+          <p id="success-detail">We&rsquo;ll text you to confirm.</p>
+          <p class="stub-fine">This is a sample site, so no appointment was actually booked.</p>
+          <button class="stub-again" type="button" id="book-another">Book another</button>
         </div>
       </div>
     </div>
@@ -1220,18 +1138,16 @@ html.js .site-nav.is-open { display: block; }
 <!-- SECTION: Footer -->
 <footer class="site-footer">
   <div class="wrap footer-grid">
-    <div class="footer-brand">
-      <svg class="brand-crest" aria-hidden="true" focusable="false"><use href="#i-crest"/></svg>
-      <p class="footer-name" data-biz="name">Glen &amp; Blade Barbers</p>
-      <p class="footer-tag">Sharp cuts. Hot towels. No small talk required.</p>
-      <a class="btn btn-gold btn-sm" href="#book">Book Now</a>
+    <div class="footer-sign">
+      <p class="footer-name leaf-text" data-biz="shortName">Glen &amp; Blade</p>
+      <p class="footer-trade">Barbers</p>
     </div>
     <div class="footer-col">
       <h2 class="footer-h">Visit</h2>
       <address><span data-biz="address">123 Sample Street, Glenview, IL 60025</span></address>
     </div>
     <div class="footer-col">
-      <h2 class="footer-h">Contact</h2>
+      <h2 class="footer-h">Call or write</h2>
       <p><a href="tel:+18475550167" data-biz="phone">(847) 555-0167</a></p>
       <p><a href="mailto:chair@example.com" data-biz="email">chair@example.com</a></p>
     </div>
@@ -1242,28 +1158,29 @@ html.js .site-nav.is-open { display: block; }
   </div>
   <div class="wrap footer-bottom">
     <p>&copy; <span data-year>2026</span> <span data-biz="name">Glen &amp; Blade Barbers</span>. All rights reserved.</p>
-    <a class="text-link" href="#top">Back to top <svg aria-hidden="true" focusable="false" style="transform:rotate(-90deg)"><use href="#i-arrow"/></svg></a>
+    <a class="text-link" href="#top">Back to top</a>
     <!-- SAMPLE RIBBON: remove when customizing for a real client -->
     <div class="sample-ribbon">Sample design</div>
     <!-- /SAMPLE RIBBON -->
   </div>
-  <div class="pole-stripe" aria-hidden="true"></div>
+  <div class="checker" aria-hidden="true"></div>
 </footer>
 
 <!-- Sticky mobile booking bar -->
 <div class="book-bar" id="book-bar">
-  <a class="btn btn-ghost" href="tel:+18475550167" data-biz-href="phone"><svg aria-hidden="true" focusable="false"><use href="#i-phone"/></svg>Call</a>
-  <a class="btn btn-gold" href="#book">Book Now</a>
+  <a class="bar-call" href="tel:+18475550167" data-biz-href="phone"><svg aria-hidden="true" focusable="false"><use href="#i-phone"/></svg>Call</a>
+  <a class="ticket" href="#book"><span class="ticket-no">No.</span>Book Now</a>
 </div>
 
 <script>
 (function () {
+  function $(s) { return document.querySelector(s); }
+
   /* Mobile menu */
-  var toggle = document.querySelector(".nav-toggle");
-  var nav = document.getElementById("site-nav");
+  var toggle = $(".nav-toggle"), nav = $("#site-nav");
   function setNav(open) {
     toggle.setAttribute("aria-expanded", String(open));
-    toggle.querySelector(".sr-only").textContent = open ? "Close menu" : "Menu";
+    toggle.querySelector(".nav-toggle-label").textContent = open ? "Close" : "Menu";
     nav.classList.toggle("is-open", open);
   }
   toggle.addEventListener("click", function () { setNav(toggle.getAttribute("aria-expanded") !== "true"); });
@@ -1272,37 +1189,66 @@ html.js .site-nav.is-open { display: block; }
     if (e.key === "Escape" && toggle.getAttribute("aria-expanded") === "true") { setNav(false); toggle.focus(); }
   });
 
-  /* Year + today's hours */
-  var now = new Date();
-  document.querySelectorAll("[data-year]").forEach(function (el) { el.textContent = now.getFullYear(); });
-  var todayRow = document.querySelector('.hours-table tr[data-day="' + now.getDay() + '"]');
-  if (todayRow) {
-    todayRow.classList.add("is-today");
+  document.querySelectorAll("[data-year]").forEach(function (el) { el.textContent = new Date().getFullYear(); });
+
+  /* Hours: read the door decal (data-days / data-open / data-close) */
+  var DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  function toMin(t) { var p = t.split(":"); return +p[0] * 60 + (+p[1] || 0); }
+  function fmt(m) { var h = Math.floor(m / 60), mm = m % 60; return (h % 12 || 12) + (mm ? ":" + (mm < 10 ? "0" : "") + mm : "") + (h < 12 ? " am" : " pm"); }
+  var schedule = {};
+  document.querySelectorAll(".decal-hours tr[data-days]").forEach(function (row) {
+    row.getAttribute("data-days").split(" ").forEach(function (d) {
+      schedule[d] = { row: row, open: row.dataset.open ? toMin(row.dataset.open) : null, close: row.dataset.close ? toMin(row.dataset.close) : null };
+    });
+  });
+  function shopNow() { /* the shop's clock, not the visitor's */
+    try {
+      var o = {};
+      new Intl.DateTimeFormat("en-US", { timeZone: "America/Chicago", weekday: "short", hour: "2-digit", minute: "2-digit", hourCycle: "h23" })
+        .formatToParts(new Date()).forEach(function (p) { o[p.type] = p.value; });
+      return { day: DAYS.indexOf(o.weekday), min: (+o.hour % 24) * 60 + +o.minute };
+    } catch (err) { var d = new Date(); return { day: d.getDay(), min: d.getHours() * 60 + d.getMinutes() }; }
+  }
+  var now = shopNow(), today = schedule[now.day];
+  if (today) {
+    today.row.classList.add("is-today");
     var tag = document.createElement("span");
     tag.className = "today-tag";
     tag.textContent = "Today";
-    todayRow.querySelector("th").appendChild(tag);
+    today.row.querySelector("th").appendChild(tag);
+  }
+  var sign = $("#open-sign");
+  if (sign) {
+    var isOpen = !!(today && today.open != null && now.min >= today.open && now.min < today.close);
+    var sub = "Come on in";
+    if (!isOpen) {
+      if (today && today.open != null && now.min < today.open) sub = "Opens " + fmt(today.open);
+      else for (var i = 1; i <= 7; i++) {
+        var nd = schedule[(now.day + i) % 7];
+        if (nd && nd.open != null) { sub = "Back " + DAYS[(now.day + i) % 7] + " " + fmt(nd.open); break; }
+      }
+    }
+    sign.classList.add(isOpen ? "is-open" : "is-closed");
+    sign.querySelector(".hang-state").textContent = isOpen ? "Open" : "Closed";
+    sign.querySelector(".hang-sub").textContent = sub;
   }
 
   /* Booking form */
-  var form = document.getElementById("booking-form");
-  var success = document.getElementById("form-success");
-  var dateEl = document.getElementById("f-date");
-  var timeEl = document.getElementById("f-time");
-  var local = new Date(now.getTime() - now.getTimezoneOffset() * 60000);
+  var form = $("#booking-form"), stub = $("#form-success"), dateEl = $("#f-date"), timeEl = $("#f-time");
+  var dToday = new Date();
+  var local = new Date(dToday.getTime() - dToday.getTimezoneOffset() * 60000);
   dateEl.min = local.toISOString().slice(0, 10);
-
-  function dayOf(v) { var p = v.split("-"); return new Date(+p[0], p[1] - 1, +p[2]); }
+  $("[data-today]").textContent = "Today: " + dToday.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" });
+  function dateOf(v) { var p = v.split("-"); return new Date(+p[0], p[1] - 1, +p[2]); }
   function checkSlot() {
     dateEl.setCustomValidity("");
     timeEl.setCustomValidity("");
     if (!dateEl.value) return;
-    var day = dayOf(dateEl.value).getDay();
-    if (day === 0 || day === 1) { dateEl.setCustomValidity("We're closed Sundays and Mondays. Please pick Tuesday through Saturday."); return; }
+    var s = schedule[dateOf(dateEl.value).getDay()];
+    if (!s || s.open == null) { dateEl.setCustomValidity("We're closed that day. Check the hours on the door and pick another."); return; }
     if (!timeEl.value) return;
-    var h = +timeEl.value.slice(0, 2) + (timeEl.value.slice(3) === "30" ? 0.5 : 0);
-    if (day === 6 && h > 15.5) timeEl.setCustomValidity("Saturdays we close at 4 pm. The last appointment is 3:30.");
-    if (day !== 6 && h < 9) timeEl.setCustomValidity("Tuesday to Friday we open at 9 am.");
+    var t = toMin(timeEl.value);
+    if (t < s.open || t > s.close - 30) timeEl.setCustomValidity("That day we're open " + fmt(s.open) + " to " + fmt(s.close) + ". The last chair is " + fmt(s.close - 30) + ".");
   }
   dateEl.addEventListener("change", checkSlot);
   timeEl.addEventListener("change", checkSlot);
@@ -1315,30 +1261,26 @@ html.js .site-nav.is-open { display: block; }
     /* BOOKING INTEGRATION: to send the request somewhere real, post it here, e.g.
        fetch("https://formspree.io/f/YOUR_ID", { method: "POST", body: data, headers: { Accept: "application/json" } }); */
     var first = String(data.get("name")).trim().split(/\s+/)[0];
-    var barber = data.get("barber") ? " with " + String(data.get("barber")).split(" ")[0] : " with the first available barber";
-    var when = dayOf(data.get("date")).toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" });
+    var barber = data.get("barber") ? " with " + String(data.get("barber")).split(" ")[0] : " with the first free chair";
+    var when = dateOf(String(data.get("date"))).toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" });
     var time = timeEl.options[timeEl.selectedIndex].text.replace(/\s*\(.*\)/, "");
-    document.getElementById("success-detail").textContent =
-      "Thanks, " + first + ". Your " + data.get("service") + barber + " on " + when + " at " + time +
-      " is requested. We'll text " + data.get("phone") + " to confirm.";
+    $("#stub-number").textContent = 10 + Math.floor(Math.random() * 90);
+    $("#success-detail").textContent = first + ", that's a " + data.get("service") + barber + " on " + when + " at " + time + ". We'll text " + data.get("phone") + " to confirm.";
     form.hidden = true;
-    success.hidden = false;
-    success.focus();
+    stub.hidden = false;
+    stub.focus();
   });
-  document.getElementById("book-another").addEventListener("click", function () {
+  $("#book-another").addEventListener("click", function () {
     form.reset();
-    success.hidden = true;
+    stub.hidden = true;
     form.hidden = false;
-    document.getElementById("f-name").focus();
+    $("#f-name").focus();
   });
 
   /* Hide the sticky bar while the booking form is on screen */
-  var bar = document.getElementById("book-bar");
-  var book = document.getElementById("book");
+  var bar = $("#book-bar"), book = $("#book");
   if ("IntersectionObserver" in window) {
-    new IntersectionObserver(function (entries) {
-      bar.classList.toggle("is-hidden", entries[0].isIntersecting);
-    }, { threshold: 0.1 }).observe(book);
+    new IntersectionObserver(function (entries) { bar.classList.toggle("is-hidden", entries[0].isIntersecting); }, { threshold: 0.1 }).observe(book);
   }
 })();
 </script>
