@@ -1,31 +1,48 @@
 <!doctype html>
-<html lang="en" class="no-js">
+<html lang="en" class="no-js" data-season="summer">
 <head>
 <meta charset="utf-8">
 <!--
   ====================================================================
   === CUSTOMIZE ME ===
-  Sample website for a lawn-care & snow-removal company.
-  Concept: a modern trade company printed like a vintage screen-print
-  park poster. Rebrand it in three places near the top of this file:
+  Sample website for a lawn-care, leaf and snow-removal company.
+  This page is landscaping.html plus its photo folder img/landscaping/.
+  Everything else (CSS, JS, icons) is inline. Google Fonts is the only
+  outside request.
 
-  1. BUSINESS INFO  -> the `const BUSINESS = { ... }` object in the first
-     <script> below. Its values are copied into every element marked
-     data-biz="name | phone | email | address | hours" (including the
-     lettering on the illustrated trailer). <a data-biz="phone"> and
-     <a data-biz="email"> also get tel:/mailto: links; links that wrap
-     extra content use data-biz-href="phone|email" (href only).
+  1. BUSINESS INFO -> `const BUSINESS = { ... }` in the first <script>
+     below. Copied into every element marked
+     data-biz="name | phone | email | address | hours".
+     <a data-biz="phone"> / <a data-biz="email"> also get tel:/mailto:
+     links; links that wrap extra content use data-biz-href="phone|email".
      The same text is written in the HTML as a no-JavaScript fallback,
      so also find-and-replace the name, phone, email and address.
-  2. COLORS & FONTS -> the first `:root { }` block inside <style>.
-     Every color ("ink") and font stack is a CSS variable. If you swap
-     fonts, update the Google Fonts <link> below too.
-  3. <title> and <meta name="description"> just below this comment.
+  2. QUICK-ESTIMATE PRICES -> `const ESTIMATE = { ... }` in the same
+     <script>. All prices are SAMPLE numbers; replace with the client's.
+     The price list in the "PRICING" section is also written in the HTML
+     as a fallback, so keep the two in sync.
+  3. COLORS & FONTS -> the first `:root { }` block in <style>. If you swap
+     fonts, update the Google Fonts <link> too.
+  4. <title> and <meta name="description"> just below this comment.
+
+  PHOTOS (swap these for the client's own photos), in img/landscaping/,
+  each in one or two widths (e.g. -800.webp and -1440.webp):
+    hero-summer-bungalow-lawns   hero, Summer view
+    hero-fall-leafy-street       hero, Fall view
+    hero-winter-cleared-drive    hero, Winter view
+    leaves-before / leaves-after before/after slider. These are two closely
+                                 matched shots of the same yard, NOT a
+                                 pixel-aligned pair; use a real before/after
+                                 from the client (same spot, same framing).
+    beds-fresh-mulch             Lawn & beds
+    snow-shovel-snowbank         Snow season
+    crew-hands-planting          The crew
+    area-leafy-street            Service area band
+  Credits and licenses: img/landscaping/CREDITS.md and the "Photo credits"
+  block in the footer. Several photos are CC BY: keep their credits while
+  they're on the page, and delete them once the photos are replaced.
 
   Also edit:
-  - Services, months and starting prices: the "YARD YEAR" section.
-  - Snow contract terms and prices: the "SNOW SEASON" section.
-  - Route days by town: the "SERVICE AREA" section.
   - The quote form is demo-only: see the "FORM BACKEND" comment.
   - Remove the SAMPLE RIBBON in the footer before going live.
   - Every name, number, price, statistic and review on this page is an
@@ -33,9 +50,9 @@
   ====================================================================
 -->
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Northshore Green Co. | Lawn Care &amp; Snow Plowing in Glenview, IL</title>
-<meta name="description" content="Weekly mowing, bed edging and mulch, fall leaf cleanups and snow plowing at a 2-inch trigger for Glenview and nearby North Shore suburbs. Free written quotes.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8C%B2%3C/text%3E%3C/svg%3E">
+<title>Northshore Green Co. | Lawn Care, Leaf Cleanup &amp; Snow Plowing in Glenview, IL</title>
+<meta name="description" content="Weekly mowing, bed edging and mulch, two-pass fall leaf cleanups and snow plowing at a 2-inch trigger for Glenview and nearby North Shore suburbs. Free written quotes.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8D%82%3C/text%3E%3C/svg%3E">
 
 <script>
   /* === BUSINESS INFO: EDIT HERE ================================== */
@@ -45,6 +62,27 @@
     email:   "hello@example.com",
     address: "123 Sample Street, Glenview, IL 60025",
     hours:   "Mon–Sat, 7am–6pm"
+  };
+
+  /* === QUICK-ESTIMATE PRICES: EDIT HERE (sample numbers only) ====
+     price × qty × lot factor = starting price per service.
+     "flat: true" ignores lot size (snow is priced by driveway). */
+  const ESTIMATE = {
+    lots: [
+      { id: "small",  label: "Under ¼ acre",   factor: 0.85 },
+      { id: "medium", label: "¼–½ acre",       factor: 1 },
+      { id: "large",  label: "½ acre or more", factor: 1.45 }
+    ],
+    services: [
+      { id: "mowing", label: "Weekly mowing & edging", price: 45,  unit: "visit",      qty: 28 },
+      { id: "spring", label: "Spring cleanup",         price: 240, unit: "visit",      qty: 1 },
+      { id: "mulch",  label: "Edging & mulch",         price: 95,  unit: "cubic yard", qty: 4 },
+      { id: "aerate", label: "Aerate & overseed",      price: 160, unit: "visit",      qty: 1 },
+      { id: "leaves", label: "Fall leaf cleanup",      price: 275, unit: "pass",       qty: 2 },
+      { id: "snow",   label: "Seasonal snow contract", price: 575, unit: "season",     qty: 1, flat: true }
+    ],
+    spread: 1.25,   /* top of the range = starting price × spread */
+    payments: 12    /* monthly payments on the Year-Round Plan */
   };
   /* ================================================================ */
 
@@ -77,505 +115,473 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800;900&family=IBM+Plex+Mono:wght@500&family=Libre+Franklin:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,500..800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
 
 <style>
 :root {
   /* === BRAND COLORS & FONTS: EDIT HERE === */
 
-  /* Greens (pine is the key ink: headings, rules, dark bands) */
-  --pine-900: #13261C;
-  --pine-800: #1D3628;
-  --pine-700: #2B4B37;
-  --fern-600: #4C7A3C;
-  --fern-500: #66934C;
-  --moss-400: #8FAF6A;
-  --sage-300: #B8C9A0;
-  --sage-100: #E3E9D6;
+  /* Warm neutrals */
+  --linen: #F4EFE4;
+  --paper: #FFFCF5;
+  --oat: #E8DDC7;
+  --oat-2: #D6C7A8;
 
-  /* Warm neutrals (paper stock) */
-  --paper: #F4ECDB;
-  --paper-2: #FBF7EE;
-  --kraft-100: #EDE1C6;
-  --kraft: #DCC69B;
-  --mulch: #7A5536;
+  /* Greens */
+  --pine-900: #16261D;
+  --pine: #22392B;
+  --pine-2: #2F4D3A;
+  --leaf: #3D6A36;
+  --moss: #93A876;
+  --sage: #DDE4D0;
 
-  /* Accents */
-  --rust: #A9491F;
-  --rust-dark: #7F3412;
-  --ochre: #E2A23E;
-
-  /* Winter inks */
-  --slate: #557079;
-  --slate-900: #2C4245;
-  --asphalt: #5B6A6C;
-  --frost: #D7E0DE;
-  --snow: #FBFAF4;
+  /* Accents: clay for actions, plus one ink per season */
+  --clay: #AE4F28;
+  --clay-dark: #8C3D1D;
+  --summer: #3D6A36;
+  --fall: #A4471F;
+  --winter: #3D5F6B;
+  --slate-900: #24363D;
 
   /* Text */
-  --ink: #1A2A20;
-  --ink-2: #4A5649;
-  --ink-on-dark: #F4ECDB;
-  --ink-on-dark-2: #BFCDB8;
-  --ink-on-slate-2: #C9D6D4;
+  --ink: #1C2620;
+  --ink-2: #4E5B51;
+  --on-dark: #F4EFE4;
+  --on-dark-2: #C5D0C3;
+  --on-slate-2: #C9D6D8;
   --error: #9E3416;
 
-  /* Poster sky */
-  --sky-sum: #F0D9A6;
-  --sky-sum-ray: #F5E5C0;
-  --sky-win: #C5D3D2;
-  --sky-win-2: #D0DBD9;
-  --sky-win-3: #DCE4E1;
-
-  /* Lines, washes, shadows */
-  --rule: rgba(29, 54, 40, .16);
-  --rule-strong: rgba(29, 54, 40, .4);
-  --line-dark: rgba(244, 236, 219, .18);
-  --ochre-wash: rgba(226, 162, 62, .22);
-  --field-bg: #FFFDF8;
-  --focus: #A9491F;
-  --shadow-card: 0 1px 0 rgba(19, 38, 28, .08), 0 18px 40px -24px rgba(19, 38, 28, .45);
-  --shadow-deep: 0 30px 60px -28px rgba(0, 0, 0, .55);
+  /* Lines, scrims, shadows */
+  --line: rgba(28, 38, 32, .14);
+  --line-2: rgba(28, 38, 32, .32);
+  --line-dark: rgba(244, 239, 228, .2);
+  --veil: rgba(16, 26, 20, .38);
+  --focus: #AE4F28;
+  --shadow: 0 1px 0 rgba(22, 38, 29, .05), 0 18px 40px -24px rgba(22, 38, 29, .5);
+  --shadow-lg: 0 34px 70px -34px rgba(8, 16, 11, .75);
+  --shadow-knob: 0 6px 18px rgba(0, 0, 0, .35);
 
   /* Fonts */
-  --font-display: "Big Shoulders Display", "Avenir Next Condensed", "Bahnschrift Condensed", "Arial Narrow", "Roboto Condensed", sans-serif;
-  --font-body: "Libre Franklin", "Franklin Gothic Book", "Helvetica Neue", Arial, sans-serif;
-  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --font-head: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Source Serif 4", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
 
   /* Scale and layout (not brand-specific) */
-  --step-0: clamp(1rem, .97rem + .15vw, 1.0625rem);
-  --step-1: clamp(1.0625rem, 1rem + .3vw, 1.2rem);
-  --h2: clamp(2.5rem, 1.7rem + 3.4vw, 4.6rem);
-  --gutter: clamp(1rem, 4vw, 2rem);
+  --accent: var(--summer);
+  --step-0: clamp(1.0625rem, 1rem + .2vw, 1.125rem);
+  --lede: clamp(1.125rem, 1.04rem + .4vw, 1.3rem);
+  --h2: clamp(2.1rem, 1.35rem + 3vw, 3.7rem);
+  --gutter: clamp(1rem, 4vw, 2.5rem);
   --container: 1200px;
-  --space: clamp(4rem, 2.8rem + 5vw, 7rem);
+  --space: clamp(4.5rem, 3rem + 6vw, 8.5rem);
+  --radius: 22px;
+  --radius-sm: 12px;
 }
+html[data-season="fall"] { --accent: var(--fall); }
+html[data-season="winter"] { --accent: var(--winter); }
 
 /* ---------- Base ---------- */
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
 body {
-  margin: 0; background: var(--paper); color: var(--ink);
-  font: 400 var(--step-0)/1.6 var(--font-body);
+  margin: 0; background: var(--linen); color: var(--ink);
+  font: 400 var(--step-0)/1.62 var(--font-body);
   -webkit-font-smoothing: antialiased;
 }
 h1, h2, h3 {
-  margin: 0; font-family: var(--font-display); font-weight: 800; line-height: .95;
-  letter-spacing: .01em; text-transform: uppercase; color: var(--pine-800); text-wrap: balance;
+  margin: 0; font-family: var(--font-head); font-weight: 800; font-stretch: 110%;
+  line-height: 1; letter-spacing: -.02em; color: var(--pine); text-wrap: balance;
 }
 h2 { font-size: var(--h2); }
-h3 { font-size: 1.4rem; line-height: 1.05; }
+h3 { font-size: 1.35rem; letter-spacing: -.01em; }
 p { margin: 0; }
 a { color: inherit; }
 a[href^="tel:"] { white-space: nowrap; }
-strong { font-weight: 600; }
+img { display: block; max-width: 100%; height: auto; }
 button, input, select, textarea { font: inherit; }
 :focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; border-radius: 4px; }
-.on-dark { --focus: var(--ochre); }
-section[id] { scroll-margin-top: 70px; }
+.on-dark { --focus: var(--oat); }
+section[id] { scroll-margin-top: 64px; }
 .container { width: 100%; max-width: calc(var(--container) + 2 * var(--gutter)); margin-inline: auto; padding-inline: var(--gutter); }
 .sr-only { position: absolute !important; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
-.skip-link { position: absolute; left: 1rem; top: -100px; z-index: 100; padding: .7rem 1rem; background: var(--pine-800); color: var(--paper); font-weight: 600; border-radius: 6px; }
+.skip-link { position: absolute; left: 1rem; top: -100px; z-index: 100; padding: .7rem 1rem; background: var(--pine); color: var(--on-dark); border-radius: 8px; font: 600 1rem var(--font-head); }
 .skip-link:focus { top: .75rem; }
 .sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
-.icon { display: inline-block; flex: none; width: 1.25em; height: 1.25em; vertical-align: middle; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
-.mono { font-family: var(--font-mono); font-weight: 500; font-size: .75rem; letter-spacing: .06em; text-transform: uppercase; }
-.lede { font-size: var(--step-1); color: var(--ink-2); }
+.icon { display: inline-block; flex: none; width: 1.15em; height: 1.15em; vertical-align: -.18em; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.label { font: 600 .78rem/1.3 var(--font-head); letter-spacing: .12em; text-transform: uppercase; }
+.lede { font-size: var(--lede); line-height: 1.55; color: var(--ink-2); }
+.on-dark .lede { color: var(--on-dark-2); }
+.when { display: inline-flex; align-items: center; gap: .55rem; margin-bottom: 1rem; color: var(--accent); }
+.when::before { content: ""; width: 1.6rem; height: 3px; border-radius: 2px; background: currentColor; }
+.on-dark .when { color: var(--oat); }
 
-/* Print grain (black noise, no color) */
-.grain { position: relative; isolation: isolate; }
-.grain::after {
-  content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .7 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
-  opacity: .16; mix-blend-mode: multiply;
-}
-
-/* ---------- Buttons ---------- */
+/* ---------- Buttons & links ---------- */
 .btn {
-  display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
-  min-height: 50px; padding: .75rem 1.3rem; border: 0; border-radius: 10px;
-  font: 800 1.2rem/1 var(--font-display); letter-spacing: .06em; text-transform: uppercase;
-  text-decoration: none; white-space: nowrap; cursor: pointer;
-  transition: transform .15s, box-shadow .15s, background-color .15s;
+  display: inline-flex; align-items: center; justify-content: center; gap: .55rem;
+  min-height: 50px; padding: .8rem 1.35rem; border: 0; border-radius: 999px; cursor: pointer;
+  font: 700 1.02rem/1 var(--font-head); font-stretch: 105%; letter-spacing: .01em; text-decoration: none; white-space: nowrap;
+  transition: background-color .2s, color .2s, transform .2s;
 }
-.btn .icon { width: 1.05em; height: 1.05em; stroke-width: 2.4; }
-.btn--rust { background: var(--rust); color: var(--paper-2); box-shadow: 0 4px 0 var(--rust-dark); }
-.btn--rust:hover { transform: translateY(2px); box-shadow: 0 2px 0 var(--rust-dark); }
-.btn--rust:active { transform: translateY(4px); box-shadow: 0 0 0 var(--rust-dark); }
-.btn--sm { min-height: 44px; padding: .55rem .95rem; font-size: 1.05rem; box-shadow: 0 3px 0 var(--rust-dark); }
-.btn--line { background: transparent; color: var(--pine-800); box-shadow: inset 0 0 0 2px var(--pine-800); }
-.btn--line:hover { background: var(--pine-800); color: var(--paper); }
+.btn--clay { background: var(--clay); color: var(--paper); }
+.btn--clay:hover { background: var(--clay-dark); }
+.btn--clay:hover .icon { transform: translateX(3px); }
+.btn .icon { transition: transform .2s; }
+.btn--sm { min-height: 44px; padding: .6rem 1rem; font-size: .95rem; }
+.btn--ghost { background: transparent; color: var(--pine); box-shadow: inset 0 0 0 2px var(--line-2); }
+.btn--ghost:hover { box-shadow: inset 0 0 0 2px var(--pine); }
+.text-link { color: var(--pine); font-weight: 600; text-decoration-thickness: 1px; text-underline-offset: 4px; }
+.text-link:hover { color: var(--clay); }
 
 /* ---------- Header ---------- */
-.site-header { position: sticky; top: 0; z-index: 50; background: var(--paper); border-bottom: 2px solid var(--pine-800); }
+.site-header { position: sticky; top: 0; z-index: 50; background: var(--linen); border-bottom: 1px solid var(--line); }
 .header-bar { display: flex; align-items: center; gap: .6rem; min-height: 64px; }
-.brand { display: flex; align-items: center; gap: .6rem; min-width: 0; min-height: 44px; margin-right: auto; color: var(--pine-800); text-decoration: none; }
-.brand > span { min-width: 0; overflow: hidden; }
-.brand__mark { width: 40px; height: 40px; flex: none; }
-.brand__name { display: block; font: 900 clamp(1.05rem, .5rem + 2.6vw, 1.2rem)/.88 var(--font-display); letter-spacing: .03em; text-transform: uppercase; max-width: 6.4em; }
-.brand__tag { display: none; margin-top: .25rem; color: var(--ink-2); font-size: .66rem; }
+.brand { display: flex; flex-direction: column; justify-content: center; min-width: 0; min-height: 44px; margin-right: auto; color: var(--pine); text-decoration: none; }
+.brand__name { font: 800 1.15rem/1 var(--font-head); font-stretch: 112%; letter-spacing: -.01em; }
+.brand__sub { margin-top: .2rem; font: 600 .64rem/1.2 var(--font-head); letter-spacing: .14em; text-transform: uppercase; color: var(--ink-2); }
 .header-cta { flex: none; }
 .nav-toggle {
   flex: none; display: inline-grid; place-items: center; width: 44px; height: 44px; padding: 0; cursor: pointer;
-  background: transparent; color: var(--pine-800); border: 2px solid var(--pine-800); border-radius: 10px;
+  border: 1.5px solid var(--line-2); border-radius: 12px; background: transparent; color: var(--pine);
 }
-.nav-toggle .icon { width: 22px; height: 22px; stroke-width: 2.2; }
+.nav-toggle .icon { width: 22px; height: 22px; }
 .nav-toggle[aria-expanded="true"] .i-open, .nav-toggle[aria-expanded="false"] .i-shut { display: none; }
-.nav-menu {
-  display: none; list-style: none; margin: 0; position: absolute; left: 0; right: 0; top: 100%;
-  padding: .25rem var(--gutter) 1rem; background: var(--paper); border-bottom: 2px solid var(--pine-800);
-}
+.nav-menu { display: none; list-style: none; margin: 0; position: absolute; left: 0; right: 0; top: 100%; padding: .25rem var(--gutter) 1rem; background: var(--linen); border-bottom: 1px solid var(--line); box-shadow: var(--shadow); }
 .nav-menu.is-open { display: block; }
-.nav-menu a:not(.btn) {
-  display: flex; align-items: center; gap: .6rem; min-height: 52px; border-bottom: 1px solid var(--rule);
-  font: 800 1.5rem/1 var(--font-display); letter-spacing: .03em; text-transform: uppercase; color: var(--pine-800); text-decoration: none;
-}
-.nav-menu .nav-phone a { border: 0; color: var(--rust); }
+.nav-menu a:not(.btn) { display: flex; align-items: center; gap: .6rem; min-height: 52px; border-bottom: 1px solid var(--line); color: var(--pine); text-decoration: none; font: 700 1.2rem/1 var(--font-head); font-stretch: 108%; }
+.nav-menu .nav-phone a { border: 0; color: var(--clay); }
 .nav-menu .nav-cta { display: none; }
 .no-js .nav-toggle { display: none; }
-.no-js .header-bar { flex-wrap: wrap; padding-top: .5rem; }
+.no-js .header-bar { flex-wrap: wrap; padding-top: .4rem; }
 .no-js .site-nav { flex-basis: 100%; }
-.no-js .nav-menu { display: flex; flex-wrap: wrap; gap: 0 1.1rem; position: static; padding: 0 0 .4rem; border: 0; }
-.no-js .nav-menu a:not(.btn) { border: 0; min-height: 44px; font-size: 1.2rem; }
+.no-js .nav-menu { display: flex; flex-wrap: wrap; gap: 0 1rem; position: static; padding: 0 0 .3rem; border: 0; box-shadow: none; }
+.no-js .nav-menu a:not(.btn) { border: 0; min-height: 44px; font-size: 1rem; }
 
-/* ---------- Poster hero ---------- */
-.poster { overflow: hidden; min-height: max(30rem, calc(19rem + 21vw)); background: var(--sky-sum); }
-.poster__art { position: absolute; inset: 0; z-index: -1; display: block; width: 100%; height: 100%; }
-.poster__title { position: relative; z-index: 1; padding-top: clamp(2rem, 1.2rem + 3vw, 3.6rem); text-align: center; }
-.poster h1 {
-  max-width: 14em; margin-inline: auto;
-  font-size: clamp(2.5rem, .9rem + 6.6vw, 5.6rem); font-weight: 900; line-height: .9; letter-spacing: .012em;
-}
-.f-sky-sum { fill: var(--sky-sum); }
-.f-ray { fill: var(--sky-sum-ray); }
-.f-sun { fill: var(--ochre); }
-.f-sky-win { fill: var(--sky-win); }
-.f-sky-win2 { fill: var(--sky-win-2); }
-.f-sky-win3 { fill: var(--sky-win-3); }
-.f-sage { fill: var(--sage-300); }
-.f-moss { fill: var(--moss-400); }
-.f-fern { fill: var(--fern-500); }
-.f-fern-dk { fill: var(--fern-600); }
-.f-stripe { fill: var(--moss-400); opacity: .4; }
-.f-pine { fill: var(--pine-800); }
-.f-pine7 { fill: var(--pine-700); }
-.f-pine9 { fill: var(--pine-900); }
-.f-kraft { fill: var(--kraft); }
-.f-paper { fill: var(--paper-2); }
-.f-rust { fill: var(--rust); }
-.f-rust-dk { fill: var(--rust-dark); }
-.f-ochre { fill: var(--ochre); }
-.f-frost { fill: var(--frost); }
-.f-snow { fill: var(--snow); }
-.f-slate { fill: var(--slate); }
-.f-asphalt { fill: var(--asphalt); }
-.f-ink { fill: var(--ink); }
-.s-snow { fill: none; stroke: var(--snow); stroke-linecap: round; }
-.s-frost { fill: none; stroke: var(--frost); stroke-linecap: round; }
-.s-pine { fill: none; stroke: var(--pine-800); stroke-linecap: round; stroke-linejoin: round; }
-.s-pine9 { fill: none; stroke: var(--pine-900); stroke-linecap: round; }
-.s-ochre { fill: none; stroke: var(--ochre); }
-.s-mulch { fill: none; stroke: var(--mulch); }
-.f-mulch { fill: var(--mulch); }
-.s-slate { fill: none; stroke: var(--slate); stroke-linecap: round; }
-.s-smoke { fill: none; stroke: var(--snow); stroke-width: 7; stroke-linecap: round; opacity: .85; }
-.flakes circle { fill: var(--snow); }
-@media (prefers-reduced-motion: no-preference) {
-  .flakes { animation: fall 8s ease-in-out infinite alternate; }
-  @keyframes fall { to { transform: translate(-8px, 16px); } }
-}
+/* ---------- Hero ---------- */
+.hero__intro { padding-block: clamp(1.75rem, 1rem + 3vw, 3.5rem) clamp(1.5rem, 1rem + 2vw, 2.5rem); }
+.hero__title { font-size: clamp(2.3rem, 1.2rem + 3.6vw, 3.9rem); line-height: .96; letter-spacing: -.03em; text-wrap: initial; }
+.hero__title span { display: block; }
+.hero__row { display: grid; gap: 1.4rem; margin-top: 1.5rem; }
+.hero__lede { max-width: 38rem; }
+.hero__actions { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem 1.1rem; }
+.hero__call { color: var(--ink-2); }
+.hero__call a { color: var(--pine); font-weight: 600; text-underline-offset: 4px; }
 
-.poster-band { background: var(--pine-800); color: var(--ink-on-dark); }
-.band { display: grid; gap: 1.4rem; padding-block: 1.25rem 1.75rem; }
-.band__facts { margin: 0; }
-.band__facts div { display: grid; grid-template-columns: 5.2rem 1fr; gap: .75rem; align-items: baseline; padding-block: .65rem; border-bottom: 1px solid var(--line-dark); }
-.band__facts dt { font: 800 1.15rem/1.2 var(--font-display); letter-spacing: .08em; text-transform: uppercase; color: var(--ochre); }
-.band__facts dd { margin: 0; line-height: 1.4; }
-.band__cta { display: grid; gap: .7rem; justify-items: start; }
-.band__cta .btn { box-shadow: 0 4px 0 var(--pine-900); }
-.band__cta .btn:hover { box-shadow: 0 2px 0 var(--pine-900); }
-.band__call { color: var(--ink-on-dark-2); font-size: .95rem; }
-.band__call a { color: var(--paper-2); font-weight: 600; text-underline-offset: 3px; }
-
-/* ---------- Yard year (calendar) ---------- */
-.year { padding-block: var(--space); }
-.year__head { display: grid; gap: 1.1rem; margin-bottom: 2.25rem; }
-.year__head .lede { max-width: 34rem; }
-.almanac {
-  padding: .5rem 1rem 1rem; background: var(--paper-2);
-  border: 2px solid var(--pine-800); border-radius: 22px; box-shadow: 8px 8px 0 var(--kraft);
+.hero__stage { position: relative; }
+.hero__photos { position: relative; height: max(280px, 78vw); overflow: hidden; background: var(--oat); }
+.season-img {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  opacity: 0; display: none; transition: opacity .9s ease;
 }
-.cal-months, .cal-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: .75rem; }
-.cal-months { position: sticky; top: 66px; z-index: 3; padding-block: .6rem .4rem; background: var(--paper-2); border-bottom: 2px solid var(--pine-800); }
-.cal-months > span:first-child, .cal-months > span:last-child { display: none; }
-.cal-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); grid-column: 1 / -1; text-align: center; }
-.cal-grid span { font: 800 .95rem/1.6 var(--font-display); text-transform: uppercase; color: var(--pine-800); border-radius: 4px; }
-.cal-grid .long { display: none; }
-.cal-grid span.is-now { background: var(--ochre); }
-.cal-rows { list-style: none; margin: 0; padding: 0; }
-.cal-row { row-gap: .35rem; padding-block: 1.05rem; border-bottom: 1px solid var(--rule); }
-.cal-row:last-child { border-bottom: 0; padding-bottom: .5rem; }
-.cal-row__name { display: flex; align-items: center; gap: .5rem; font-size: 1.45rem; }
-.cal-row__name .icon { width: 26px; height: 26px; color: var(--c); stroke-width: 1.6; }
-.cal-row__when { display: inline-block; margin-left: .15rem; color: var(--ink-2); }
-.cal-row__note { grid-column: 1 / -1; color: var(--ink-2); font-size: .95rem; line-height: 1.5; }
-.cal-row__price { grid-column: 2; grid-row: 1; align-self: center; text-align: right; font: 800 1.35rem/1 var(--font-display); color: var(--pine-800); }
-.cal-row__price small { display: block; margin-top: .2rem; font: 500 .68rem/1.2 var(--font-mono); letter-spacing: .04em; text-transform: uppercase; color: var(--ink-2); }
-.cal-track {
-  grid-column: 1 / -1; display: grid; grid-template-columns: repeat(24, minmax(0, 1fr)); align-items: center;
-  height: 22px; margin-top: .3rem;
-  background: repeating-linear-gradient(90deg, var(--rule) 0 1px, transparent 1px calc(100% / 12));
-  border-right: 1px solid var(--rule);
-}
-.cal-track::before { content: none; }
-.has-now .cal-track::before { content: ""; grid-row: 1; grid-column: var(--now) / span 2; align-self: stretch; margin-block: -6px; background: var(--ochre-wash); }
-.cal-track .bar { grid-row: 1; height: 12px; border-radius: 3px; background: var(--c); }
-.now-tag { display: inline-block; white-space: nowrap; margin-left: .2rem; padding: .2rem .45rem; border-radius: 4px; background: var(--ochre); color: var(--pine-900); font-size: .62rem; vertical-align: middle; }
-.year__foot { margin-top: 1.4rem; color: var(--ink-2); font-size: .9rem; }
+.season-img.is-armed, .season-img.is-active { display: block; }
+.season-img.is-active { opacity: 1; }
+.season-img[data-season="summer"] { object-position: 72% 60%; }
+.season-img[data-season="fall"] { object-position: 62% 60%; }
+.season-img[data-season="winter"] { object-position: 38% 55%; }
 
-/* ---------- Snow season ---------- */
-.snow { padding-block: var(--space); background: var(--slate-900); color: var(--ink-on-dark); overflow: hidden; }
+.season-card {
+  position: relative; z-index: 2; margin: -2.25rem var(--gutter) 0; padding: .55rem .55rem 1rem;
+  background: var(--paper); border-radius: var(--radius); box-shadow: var(--shadow-lg);
+}
+.season-switch { display: grid; grid-template-columns: repeat(3, 1fr); gap: .3rem; padding: .3rem; background: var(--linen); border-radius: 16px; }
+.no-js .season-switch { display: none; }
+.season-btn {
+  position: relative; min-height: 46px; padding: .4rem .5rem; border: 0; border-radius: 12px; cursor: pointer;
+  background: transparent; color: var(--ink-2); font: 700 1rem/1 var(--font-head); font-stretch: 105%;
+  transition: background-color .2s, color .2s;
+}
+.season-btn:hover { color: var(--pine); background: var(--paper); }
+.season-btn[aria-pressed="true"] { background: var(--accent); color: var(--paper); }
+.season-btn .now { display: block; margin-top: .25rem; font: 600 .6rem/1 var(--font-head); letter-spacing: .14em; text-transform: uppercase; opacity: .85; }
+.season-caption { padding: .9rem .65rem 0; font-size: 1rem; line-height: 1.5; color: var(--ink); }
+.season-caption__when { display: block; margin-bottom: .25rem; color: var(--accent); }
+.season-caption a { color: var(--pine); font-weight: 600; text-underline-offset: 3px; white-space: nowrap; }
+
+/* ---------- Lawn & beds ---------- */
+.lawn { padding-block: var(--space) calc(var(--space) * .8); }
+.lawn__grid { display: grid; gap: 2.25rem; grid-template-columns: minmax(0, 1fr); }
+.photo { margin: 0; }
+.photo img { width: 100%; border-radius: var(--radius); }
+.photo figcaption { margin-top: .7rem; font-size: .9rem; font-style: italic; color: var(--ink-2); }
+.lawn__copy .lede { margin-top: 1.1rem; }
+.specs { list-style: none; margin: 2rem 0 0; padding: 0; border-top: 2px solid var(--pine); }
+.specs li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .2rem 1rem; padding-block: .95rem; border-bottom: 1px solid var(--line-2); }
+.specs__name { font: 700 1.12rem/1.25 var(--font-head); color: var(--pine); }
+.specs__price { font: 700 1.12rem/1.25 var(--font-head); color: var(--pine); text-align: right; white-space: nowrap; }
+.specs__price small { font-weight: 600; font-size: .78rem; color: var(--ink-2); }
+.specs__detail { grid-column: 1 / -1; font-size: .98rem; color: var(--ink-2); }
+
+/* ---------- Leaves (before / after) ---------- */
+.leaves { padding-block: var(--space); background: var(--pine); color: var(--on-dark); }
+.leaves h2 { color: var(--paper); }
+.leaves__head { display: grid; gap: 1.1rem; margin-bottom: 2.25rem; grid-template-columns: minmax(0, 1fr); }
+.compare { position: relative; margin: 0; }
+.compare__box { position: relative; aspect-ratio: 16 / 9; overflow: hidden; border-radius: var(--radius); background: var(--pine-2); box-shadow: var(--shadow-lg); }
+.compare__box img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.compare__before { position: absolute; inset: 0; clip-path: inset(0 calc(100% - var(--pos, 50%)) 0 0); }
+.compare__tag { position: absolute; top: .8rem; padding: .35rem .7rem; border-radius: 999px; background: var(--veil); color: var(--paper); pointer-events: none; }
+.compare__tag--before { left: .8rem; }
+.compare__tag--after { right: .8rem; }
+.compare__handle { position: absolute; top: 0; bottom: 0; left: var(--pos, 50%); width: 3px; margin-left: -1.5px; background: var(--paper); pointer-events: none; }
+.compare__knob {
+  position: absolute; top: 50%; left: 50%; display: grid; place-items: center; width: 48px; height: 48px; margin: -24px 0 0 -24px;
+  border-radius: 50%; background: var(--paper); color: var(--pine); box-shadow: var(--shadow-knob);
+}
+.compare__knob .icon { width: 26px; height: 26px; }
+.compare__range { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: ew-resize; -webkit-appearance: none; appearance: none; }
+.compare__range:focus-visible ~ .compare__handle .compare__knob { outline: 3px solid var(--oat); outline-offset: 3px; }
+.no-js .compare__range { display: none; }
+.compare figcaption { margin-top: .8rem; font-size: .92rem; font-style: italic; color: var(--on-dark-2); }
+.leaves__facts { list-style: none; display: grid; gap: 0; margin: 2.5rem 0 0; padding: 0; border-top: 1px solid var(--line-dark); }
+.leaves__facts li { padding-block: 1.1rem; border-bottom: 1px solid var(--line-dark); }
+.leaves__facts b { display: block; margin-bottom: .3rem; font: 700 1.2rem/1.2 var(--font-head); color: var(--paper); }
+.leaves__facts span { color: var(--on-dark-2); }
+
+/* ---------- Snow ---------- */
+.snow { padding-block: var(--space); background: var(--slate-900); color: var(--on-dark); }
 .snow h2 { color: var(--paper); }
-.snow__top { display: grid; gap: 2.5rem; }
-.snow__link { margin-top: 1.25rem; }
-.snow .lede { margin-top: 1rem; color: var(--ink-on-slate-2); max-width: 32rem; }
-.rules { list-style: none; margin: 3rem 0 0; padding: 0; border-top: 2px solid var(--line-dark); }
-.rules li { display: grid; grid-template-columns: 4.6rem minmax(0, 1fr); gap: 1rem; padding-block: 1.15rem; border-bottom: 1px solid var(--line-dark); }
-.rules__num { font: 900 2.4rem/.9 var(--font-display); color: var(--ochre); }
-.rules h3 { color: var(--paper); font-size: 1.45rem; }
-.rules p { margin-top: .35rem; color: var(--ink-on-slate-2); }
-.tickets { display: grid; gap: 1.25rem; align-content: start; }
-.ticket {
-  position: relative; padding: 1.3rem 1.4rem 1.35rem; border-radius: 18px;
-  background: var(--paper-2); color: var(--ink); box-shadow: var(--shadow-deep);
-}
-.ticket__price { position: relative; }
-.ticket__price::before, .ticket__price::after { content: ""; position: absolute; bottom: -12px; width: 22px; height: 22px; border-radius: 50%; background: var(--slate-900); }
-.ticket__price::before { left: calc(-1.4rem - 11px); }
-.ticket__price::after { right: calc(-1.4rem - 11px); }
+.snow .when { color: var(--on-slate-2); }
+.snow .lede { margin-top: 1rem; color: var(--on-slate-2); max-width: 34rem; }
+.snow__grid { display: grid; gap: 2.5rem; grid-template-columns: minmax(0, 1fr); }
+.snow__photo { margin: 0; }
+.snow__photo img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; object-position: 50% 40%; border-radius: var(--radius); }
+.rules { list-style: none; margin: 2.25rem 0 0; padding: 0; display: grid; gap: 0; border-top: 2px solid var(--line-dark); }
+.rules li { display: grid; grid-template-columns: 5.6rem minmax(0, 1fr); gap: .9rem; padding-block: 1.1rem; border-bottom: 1px solid var(--line-dark); }
+.rules__num { font: 800 1.8rem/1 var(--font-head); font-stretch: 108%; color: var(--oat); }
+.rules h3 { color: var(--paper); font-size: 1.2rem; }
+.rules p { margin-top: .3rem; color: var(--on-slate-2); font-size: 1rem; }
+.tickets { display: grid; gap: 1rem; margin-top: 2.5rem; }
+.ticket { position: relative; padding: 1.25rem 1.35rem 1.3rem; background: var(--paper); color: var(--ink); border-radius: var(--radius); }
 .ticket__top { display: flex; justify-content: space-between; gap: 1rem; color: var(--ink-2); }
-.ticket h3 { margin: .55rem 0 .5rem; font-size: 1.6rem; }
-.ticket__price { display: flex; align-items: baseline; gap: .5rem; padding-bottom: 1rem; border-bottom: 2px dashed var(--rule-strong); }
-.ticket__price b { font: 900 3.6rem/1 var(--font-display); color: var(--rust); }
-.ticket ul { list-style: none; margin: 1rem 0 0; padding: 0; display: grid; gap: .45rem; font-size: .95rem; }
-.ticket li { display: flex; gap: .6rem; }
-.ticket li::before { content: ""; flex: none; width: 10px; height: 2px; margin-top: .72em; background: var(--rust); }
-.snow__link { display: inline-flex; align-items: center; gap: .45rem; min-height: 44px; color: var(--ochre); font: 800 1.2rem/1 var(--font-display); letter-spacing: .05em; text-transform: uppercase; text-decoration: none; }
-.snow__link:hover { text-decoration: underline; text-underline-offset: 4px; }
+.ticket h3 { margin-top: .6rem; font-size: 1.4rem; }
+.ticket__price { position: relative; display: flex; align-items: baseline; gap: .5rem; margin-top: .5rem; padding-bottom: 1rem; border-bottom: 2px dashed var(--line-2); }
+.ticket__price b { font: 800 2.9rem/1 var(--font-head); font-stretch: 110%; color: var(--winter); }
+.ticket__price::before, .ticket__price::after { content: ""; position: absolute; bottom: -12px; width: 22px; height: 22px; border-radius: 50%; background: var(--slate-900); }
+.ticket__price::before { left: calc(-1.35rem - 11px); }
+.ticket__price::after { right: calc(-1.35rem - 11px); }
+.ticket ul { list-style: none; margin: 1rem 0 0; padding: 0; display: grid; gap: .4rem; font-size: 1rem; }
+.ticket li { display: flex; gap: .55rem; }
+.ticket li .icon { margin-top: .25em; color: var(--winter); }
+
+/* ---------- Pricing (estimator) ---------- */
+.pricing { padding-block: var(--space); }
+.pricing__head { display: grid; gap: 1rem; margin-bottom: 2.5rem; grid-template-columns: minmax(0, 1fr); }
+.est { display: grid; gap: 1.5rem; grid-template-columns: minmax(0, 1fr); align-items: start; }
+.est fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
+.est legend { padding: 0; margin-bottom: .7rem; color: var(--ink-2); }
+.est-list { list-style: none; margin: 0; padding: 0; border-top: 2px solid var(--pine); }
+.est-row { position: relative; border-bottom: 1px solid var(--line-2); }
+.est-row input { position: absolute; left: .2rem; top: 1.2rem; width: 22px; height: 22px; margin: 0; accent-color: var(--leaf); cursor: pointer; }
+.est-row label { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .15rem 1rem; padding: 1rem 0 1rem 2.4rem; cursor: pointer; }
+.est-row label:hover .est-name { color: var(--clay); }
+.est-name { font: 700 1.1rem/1.3 var(--font-head); color: var(--pine); }
+.est-when { grid-column: 1; font-size: .95rem; color: var(--ink-2); }
+.est-price { grid-column: 2; grid-row: 1 / span 2; align-self: center; text-align: right; font: 700 1.05rem/1.2 var(--font-head); color: var(--pine); white-space: nowrap; }
+.est-price small { display: block; font-weight: 600; font-size: .75rem; color: var(--ink-2); }
+.est .lots { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .4rem; margin-top: 2.25rem; }
+.lots legend { grid-column: 1 / -1; }
+.lot input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.lot span {
+  display: flex; align-items: center; justify-content: center; min-height: 52px; padding: .5rem; text-align: center; cursor: pointer;
+  border: 1.5px solid var(--line-2); border-radius: 14px; background: var(--paper); font: 700 .95rem/1.2 var(--font-head); color: var(--pine);
+}
+.lot input:checked + span { background: var(--pine); border-color: var(--pine); color: var(--paper); }
+.lot input:focus-visible + span { outline: 3px solid var(--focus); outline-offset: 3px; }
+.est-result { padding: 1.5rem 1.4rem 1.4rem; background: var(--paper); border-radius: var(--radius); box-shadow: var(--shadow); }
+.est-result__label { color: var(--ink-2); }
+.est-total { margin-top: .5rem; font: 800 clamp(2.1rem, 1.6rem + 2vw, 2.9rem)/1 var(--font-head); font-stretch: 108%; letter-spacing: -.02em; color: var(--pine); }
+.est-total small { display: block; margin-top: .45rem; font: 600 .95rem/1.3 var(--font-head); letter-spacing: 0; color: var(--ink-2); }
+.est-month { margin-top: 1rem; padding: .75rem .9rem; border-radius: var(--radius-sm); background: var(--sage); font-size: .98rem; }
+.est-lines { list-style: none; margin: 1.1rem 0 0; padding: 0; font-size: .95rem; }
+.est-lines li { display: flex; justify-content: space-between; gap: 1rem; padding-block: .4rem; border-bottom: 1px dashed var(--line-2); }
+.est-lines li span:last-child { font-family: var(--font-head); font-weight: 600; white-space: nowrap; }
+.est-result .btn { width: 100%; margin-top: 1.25rem; }
+.est-note { margin-top: .9rem; font-size: .85rem; color: var(--ink-2); }
+.no-js .est-live { display: none; }
+.js .est-static { display: none; }
 
 /* ---------- Crew (about) ---------- */
-.crew { padding-block: var(--space); background: var(--sage-100); overflow: hidden; }
-.crew__grid { display: grid; gap: 2rem; margin-top: 3rem; }
-.crew__copy .lede { margin-top: 1.25rem; }
-.crew__copy .lede + p { margin-top: 1rem; color: var(--ink-2); }
-.spec { display: grid; grid-template-columns: auto minmax(0, 1fr); margin: 2rem 0 0; border-top: 2px solid var(--pine-800); }
-.spec dt, .spec dd { margin: 0; padding-block: .65rem; border-bottom: 1px solid var(--rule-strong); }
-.spec dt { padding-right: 1.25rem; color: var(--ink-2); align-self: stretch; display: flex; align-items: center; }
-.spec dd { font: 800 1.25rem/1.2 var(--font-display); letter-spacing: .02em; text-transform: uppercase; color: var(--pine-800); }
-.truck { max-width: 1060px; margin: 0 auto; }
-.truck svg { display: block; width: 100%; height: auto; }
-.truck figcaption { margin-top: .75rem; color: var(--ink-2); text-align: center; }
-.tl-name { font: 900 40px var(--font-display); letter-spacing: .02em; text-transform: uppercase; fill: var(--pine-800); }
-.tl-line { font: 800 15px var(--font-display); letter-spacing: .22em; fill: var(--fern-600); }
-.tl-phone { font: 900 25px var(--font-display); letter-spacing: .04em; fill: var(--rust); }
-.tl-small { font: 800 15px var(--font-display); letter-spacing: .16em; fill: var(--paper-2); }
+.crew { padding-block: var(--space); background: var(--sage); }
+.crew h2 { max-width: 16em; }
+.crew__grid { display: grid; gap: 2rem; margin-top: 2.5rem; grid-template-columns: minmax(0, 1fr); }
+.crew__story p + p { margin-top: 1rem; color: var(--ink-2); }
+.facts { display: grid; grid-template-columns: auto minmax(0, 1fr); margin: 0; border-top: 2px solid var(--pine); }
+.facts dt, .facts dd { margin: 0; padding-block: .75rem; border-bottom: 1px solid var(--line-2); }
+.facts dt { padding-right: 1.25rem; color: var(--ink-2); display: flex; align-items: center; }
+.facts dd { font: 700 1.1rem/1.25 var(--font-head); color: var(--pine); }
 
 /* ---------- Reviews ---------- */
 .reviews { padding-block: var(--space); }
-.reviews h2 { margin-bottom: 2.5rem; }
-.reviews__grid { display: grid; gap: 2rem; }
-.feature { margin: 0; }
-.feature blockquote { margin: 0; position: relative; padding-top: 2.6rem; }
-.feature blockquote::before { content: "\201C"; position: absolute; top: -.4rem; left: -.1rem; font: 900 6rem/1 var(--font-display); color: var(--rust); }
-.feature blockquote p { font-size: clamp(1.35rem, 1.1rem + 1.1vw, 1.95rem); line-height: 1.38; color: var(--pine-800); }
-.who { display: flex; flex-wrap: wrap; align-items: baseline; gap: .25rem .8rem; margin-top: 1.25rem; }
-.who b { font: 800 1.3rem/1 var(--font-display); letter-spacing: .04em; text-transform: uppercase; color: var(--pine-800); }
-.who span { color: var(--ink-2); }
-.jobs { list-style: none; margin: 0; padding: 0; display: grid; gap: 1.1rem; }
-.job { margin: 0; overflow: hidden; background: var(--paper-2); border: 2px solid var(--pine-800); border-radius: 16px; box-shadow: var(--shadow-card); }
-.job__head { display: flex; justify-content: space-between; gap: 1rem; padding: .55rem 1rem; background: var(--pine-800); color: var(--paper); }
-.job blockquote { margin: 0; padding: 1rem 1.15rem .5rem; }
-.job figcaption { padding: 0 1.15rem 1.1rem; }
-.job .who { margin-top: .4rem; }
-.job .who b { font-size: 1.1rem; }
+.reviews__grid { display: grid; gap: 1.25rem; margin-top: 2.5rem; grid-template-columns: minmax(0, 1fr); }
+.review { margin: 0; display: flex; flex-direction: column; padding: 1.5rem 1.4rem; background: var(--paper); border-radius: var(--radius); box-shadow: var(--shadow); }
+.review__job { color: var(--accent); }
+.review blockquote { flex: 1; margin: .8rem 0 0; }
+.review blockquote p { font-size: 1.1rem; line-height: 1.55; }
+.review--big blockquote p { font-size: clamp(1.3rem, 1.1rem + 1vw, 1.75rem); line-height: 1.4; font-style: italic; color: var(--pine); }
+.review figcaption { margin-top: 1.2rem; padding-top: 1rem; border-top: 1px solid var(--line); font: 600 1rem/1.3 var(--font-head); color: var(--pine); }
+.review figcaption span { display: block; font-weight: 500; font-size: .9rem; color: var(--ink-2); }
 
 /* ---------- Service area ---------- */
-.area { padding-block: var(--space); background: var(--kraft-100); }
-.area__grid { display: grid; gap: 2.5rem; }
-.area .lede { margin-top: 1.1rem; }
-.routes { width: 100%; margin-top: 1.75rem; border-collapse: collapse; border-top: 2px solid var(--pine-800); }
-.routes caption { text-align: left; }
-.routes th, .routes td { padding: .55rem 0; border-bottom: 1px solid var(--rule-strong); text-align: left; font-weight: 400; }
-.routes thead th { color: var(--ink-2); padding-block: .5rem; }
-.routes tbody th { font: 800 1.3rem/1.1 var(--font-display); letter-spacing: .03em; text-transform: uppercase; color: var(--pine-800); }
-.routes td { text-align: right; }
-.routes .home th::after { content: "The shop"; margin-left: .55rem; padding: .15rem .4rem; border-radius: 4px; background: var(--rust); color: var(--paper-2); font: 500 .62rem/1 var(--font-mono); letter-spacing: .06em; vertical-align: middle; }
-.area__note { margin-top: 1.25rem; color: var(--ink-2); }
-.area__note a { color: var(--pine-800); font-weight: 600; text-underline-offset: 3px; }
-.map { width: 100%; max-width: 540px; justify-self: center; margin: 0; padding: .6rem; background: var(--paper-2); border: 2px solid var(--pine-800); border-radius: 20px; box-shadow: 8px 8px 0 var(--kraft); }
-.map svg { display: block; width: 100%; height: auto; border-radius: 13px; }
-.map figcaption { padding: .55rem .4rem .1rem; color: var(--ink-2); text-align: center; }
-.m-land { fill: var(--paper-2); }
-.m-preserve { fill: var(--sage-300); opacity: .7; }
-.m-lake { fill: var(--sky-win); }
-.m-hatch { stroke: var(--slate); stroke-width: 1; opacity: .35; }
-.m-road { fill: none; stroke: var(--kraft); stroke-width: 4; stroke-linecap: round; }
-.m-loop { fill: none; stroke: var(--rust); stroke-width: 2; stroke-dasharray: 6 6; }
-.m-legend { font: 800 12px var(--font-display); letter-spacing: .14em; fill: var(--rust); }
-.m-dot { fill: var(--pine-800); }
-.m-town { font: 800 13.5px var(--font-display); letter-spacing: .06em; fill: var(--pine-800); text-transform: uppercase; paint-order: stroke; stroke: var(--paper-2); stroke-width: 4px; stroke-linejoin: round; }
-.m-home { font: 900 19px var(--font-display); letter-spacing: .05em; fill: var(--pine-800); paint-order: stroke; stroke: var(--paper-2); stroke-width: 5px; stroke-linejoin: round; }
-.m-lake-label { font: 800 13px var(--font-display); letter-spacing: .3em; fill: var(--slate-900); }
+.area { position: relative; background: var(--oat); }
+.area__photo img { width: 100%; height: max(240px, 56vw); object-fit: cover; object-position: 50% 60%; }
+.area__card { position: relative; z-index: 1; margin-top: -3rem; padding: 1.6rem 1.4rem 1.4rem; background: var(--paper); border-radius: var(--radius); box-shadow: var(--shadow-lg); }
+.area__card h2 { font-size: clamp(1.8rem, 1.3rem + 2vw, 2.6rem); }
+.area__card > p { margin-top: .9rem; color: var(--ink-2); }
+.area__pad { padding-bottom: var(--space); }
+.routes { width: 100%; margin-top: 1.4rem; border-collapse: collapse; border-top: 2px solid var(--pine); }
+.routes th, .routes td { padding: .6rem 0; border-bottom: 1px solid var(--line-2); text-align: left; font-weight: 400; }
+.routes thead th { color: var(--ink-2); }
+.routes tbody th { font: 700 1.08rem/1.2 var(--font-head); color: var(--pine); }
+.routes td { text-align: right; font-family: var(--font-head); font-weight: 600; color: var(--ink-2); }
+.routes .home th::after { content: "The shop"; margin-left: .5rem; padding: .18rem .45rem; border-radius: 6px; background: var(--clay); color: var(--paper); font: 600 .62rem/1 var(--font-head); letter-spacing: .1em; text-transform: uppercase; vertical-align: .15em; }
+.area__note { margin-top: 1.1rem; color: var(--ink-2); }
+.area__note a { color: var(--pine); font-weight: 600; text-underline-offset: 3px; }
 
-/* ---------- Quote (work order) ---------- */
-.quote { padding-block: var(--space); background: var(--pine-800); color: var(--ink-on-dark); }
+/* ---------- Quote ---------- */
+.quote { padding-block: var(--space); background: var(--pine); color: var(--on-dark); }
 .quote h2 { color: var(--paper); }
-.quote .lede { margin-top: 1.1rem; color: var(--ink-on-dark-2); }
-.quote__grid { display: grid; gap: 2.5rem; }
-.call-shop { margin-top: 2rem; padding-top: 1.25rem; border-top: 1px solid var(--line-dark); }
-.call-shop p { color: var(--ink-on-dark-2); }
-.call-shop__phone { display: inline-flex; align-items: center; gap: .6rem; min-height: 48px; margin-top: .25rem; color: var(--paper); text-decoration: none; font: 900 2.2rem/1 var(--font-display); letter-spacing: .02em; }
-.call-shop__phone:hover { color: var(--ochre); }
-.call-shop__phone .icon { width: 28px; height: 28px; color: var(--ochre); }
-.call-shop ul { list-style: none; margin: .5rem 0 0; padding: 0; }
-.call-shop li { display: flex; align-items: center; gap: .6rem; min-height: 40px; color: var(--ink-on-dark-2); }
-.call-shop li a { color: var(--paper); display: inline-flex; align-items: center; min-height: 44px; text-underline-offset: 3px; }
-.call-shop .icon { color: var(--sage-300); }
+.quote__grid { display: grid; gap: 2.5rem; grid-template-columns: minmax(0, 1fr); }
+.quote .lede { margin-top: 1.1rem; }
+.steps { list-style: none; counter-reset: s; margin: 2rem 0 0; padding: 0; border-top: 1px solid var(--line-dark); }
+.steps li { counter-increment: s; display: grid; grid-template-columns: 2.5rem minmax(0, 1fr); gap: .75rem; padding-block: 1rem; border-bottom: 1px solid var(--line-dark); }
+.steps li::before { content: counter(s); font: 800 1.6rem/1 var(--font-head); color: var(--oat); }
+.steps b { display: block; font: 700 1.08rem/1.3 var(--font-head); color: var(--paper); }
+.steps span { color: var(--on-dark-2); font-size: 1rem; }
+.call-shop { margin-top: 2rem; }
+.call-shop p { color: var(--on-dark-2); }
+.call-shop__phone { display: inline-flex; align-items: center; gap: .6rem; min-height: 48px; color: var(--paper); text-decoration: none; font: 800 2rem/1 var(--font-head); font-stretch: 108%; }
+.call-shop__phone:hover { color: var(--oat); }
+.call-shop ul { list-style: none; margin: .4rem 0 0; padding: 0; }
+.call-shop li { display: flex; align-items: center; gap: .6rem; min-height: 44px; color: var(--on-dark-2); }
+.call-shop li a { display: inline-flex; align-items: center; min-height: 44px; color: var(--paper); text-underline-offset: 3px; }
 
-.wo { --focus: var(--rust); overflow: hidden; background: var(--paper-2); color: var(--ink); border-radius: 20px; box-shadow: var(--shadow-deep); }
-.wo__head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: .25rem 1rem; padding: 1rem 1.3rem .9rem; background: var(--kraft-100); border-bottom: 2px solid var(--pine-800); }
-.wo__head h3 { font-size: 1.85rem; }
-.wo__meta { color: var(--ink-2); }
-.wo__body { padding: 1.3rem; }
-.wo__hint { color: var(--ink-2); font-size: .9rem; }
-.fields { display: grid; gap: 1rem; margin-top: 1.1rem; }
-.field label { display: flex; justify-content: space-between; gap: .5rem; margin-bottom: .35rem; font-size: .78rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--pine-800); }
-.field label .opt { font-weight: 400; letter-spacing: .04em; color: var(--ink-2); }
+.form-card { --focus: var(--clay); padding: 1.5rem 1.35rem; background: var(--paper); color: var(--ink); border-radius: var(--radius); box-shadow: var(--shadow-lg); }
+.form-card h3 { font-size: 1.7rem; }
+.form-card__sub { margin-top: .45rem; color: var(--ink-2); font-size: .98rem; }
+.est-attached { display: flex; gap: .6rem; align-items: flex-start; margin-top: 1rem; padding: .75rem .9rem; border-radius: var(--radius-sm); background: var(--sage); font-size: .95rem; }
+.est-attached[hidden] { display: none; }
+.fields { display: grid; gap: 1rem; margin-top: 1.25rem; grid-template-columns: minmax(0, 1fr); }
+.field label { display: flex; justify-content: space-between; gap: .5rem; margin-bottom: .35rem; font: 600 .95rem/1.3 var(--font-head); color: var(--pine); }
+.field .opt { font-weight: 500; color: var(--ink-2); }
 .field input, .field select, .field textarea {
   display: block; width: 100%; min-height: 50px; padding: .7rem .9rem; font-size: 1rem; color: var(--ink);
-  background: var(--field-bg); border: 1.5px solid var(--rule-strong); border-radius: 8px;
-  -webkit-appearance: none; appearance: none; transition: border-color .15s, box-shadow .15s;
+  background: var(--paper); border: 1.5px solid var(--line-2); border-radius: 12px; -webkit-appearance: none; appearance: none;
+  transition: border-color .15s, box-shadow .15s;
 }
-.field textarea { min-height: 110px; resize: vertical; line-height: 1.5; }
+.field textarea { min-height: 120px; resize: vertical; line-height: 1.5; }
 .field select {
   padding-right: 2.6rem; cursor: pointer;
-  background-image: linear-gradient(45deg, transparent 50%, var(--pine-800) 50%), linear-gradient(135deg, var(--pine-800) 50%, transparent 50%);
+  background-image: linear-gradient(45deg, transparent 50%, var(--pine) 50%), linear-gradient(135deg, var(--pine) 50%, transparent 50%);
   background-position: calc(100% - 21px) 52%, calc(100% - 15px) 52%; background-size: 6px 6px; background-repeat: no-repeat;
 }
-.field ::placeholder { color: var(--ink-2); opacity: .85; }
-.field input:hover, .field select:hover, .field textarea:hover { border-color: var(--pine-700); }
-.field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--pine-800); box-shadow: 0 0 0 3px var(--ochre); }
+.field ::placeholder { color: var(--ink-2); opacity: .8; }
+.field input:hover, .field select:hover, .field textarea:hover { border-color: var(--pine-2); }
+.field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--pine); box-shadow: 0 0 0 3px var(--oat-2); }
 .field input:user-invalid, .field select:user-invalid { border-color: var(--error); }
-.wo .btn { width: 100%; margin-top: 1.4rem; }
-.wo__fine { margin-top: .9rem; color: var(--ink-2); font-size: .85rem; text-align: center; }
-.received { padding: 2.25rem 1.3rem 2rem; text-align: center; }
-.received:focus { outline: none; }
-.received[hidden], .quote-form[hidden] { display: none; }
-.received .stamp {
-  display: inline-block; margin: 0; max-width: none; text-transform: uppercase; padding: .35rem 1rem .25rem; border: 5px double var(--rust); border-radius: 8px;
-  color: var(--rust); font: 900 2.6rem/1 var(--font-display); letter-spacing: .1em; transform: rotate(-6deg);
-}
-@media (prefers-reduced-motion: no-preference) {
-  .received:not([hidden]) .stamp { animation: thunk .35s cubic-bezier(.2, 1.6, .4, 1) both; }
-  @keyframes thunk { from { transform: rotate(-12deg) scale(1.6); opacity: 0; } }
-}
-.received h3 { margin-top: 1.4rem; font-size: 1.9rem; }
-.received p { max-width: 26rem; margin: .7rem auto 0; color: var(--ink-2); }
-.received p a { color: var(--pine-800); font-weight: 600; }
-.received .btn { width: auto; margin-top: 1.5rem; }
+.form-card .btn--clay { width: 100%; margin-top: 1.4rem; }
+.form-fine { margin-top: .8rem; font-size: .88rem; color: var(--ink-2); text-align: center; }
+.sent { padding: 1.5rem .5rem; text-align: center; }
+.sent:focus { outline: none; }
+.sent[hidden], .quote-form[hidden] { display: none; }
+.sent__mark { display: grid; place-items: center; width: 72px; height: 72px; margin: 0 auto 1.25rem; border-radius: 50%; background: var(--sage); color: var(--leaf); }
+.sent__mark .icon { width: 34px; height: 34px; stroke-width: 2.4; }
+.sent h3 { font-size: 1.8rem; }
+.sent p { max-width: 26rem; margin: .75rem auto 0; color: var(--ink-2); }
+.sent p a { color: var(--pine); font-weight: 600; }
+.sent .btn { margin-top: 1.4rem; }
 
 /* ---------- Footer ---------- */
-.site-footer { background: var(--pine-900); color: var(--ink-on-dark-2); font-size: .95rem; }
-.footer__word { padding-block: 2.75rem 1.75rem; background: linear-gradient(var(--line-dark), var(--line-dark)) center bottom / calc(100% - 2 * var(--gutter)) 1px no-repeat; }
-.footer__word p { font: 900 clamp(2.6rem, .8rem + 8.4vw, 8.2rem)/.86 var(--font-display); letter-spacing: .015em; text-transform: uppercase; color: var(--paper); text-wrap: balance; }
-.footer__cols { display: grid; gap: 2rem; padding-block: 2.25rem; }
-.footer__cols h2 { margin-bottom: .5rem; font-size: 1.15rem; letter-spacing: .1em; color: var(--ochre); }
+.site-footer { background: var(--pine-900); color: var(--on-dark-2); font-size: 1rem; }
+.footer__word { padding-block: 3rem 1.75rem; }
+.footer__word p { font: 800 clamp(2.2rem, .9rem + 6vw, 6.6rem)/.9 var(--font-head); font-stretch: 115%; letter-spacing: -.03em; color: var(--on-dark); }
+.footer__cols { display: grid; gap: 1.75rem; padding-block: 2rem; border-top: 1px solid var(--line-dark); grid-template-columns: minmax(0, 1fr); }
+.footer__cols h2 { margin-bottom: .4rem; font-size: .8rem; font-stretch: 100%; letter-spacing: .14em; text-transform: uppercase; color: var(--oat); }
 .footer__cols ul { list-style: none; margin: 0; padding: 0; }
 .footer__cols li { display: flex; align-items: center; gap: .6rem; min-height: 44px; }
-.footer__cols .icon { color: var(--sage-300); }
-.site-footer a { color: var(--paper); text-decoration: none; display: inline-flex; align-items: center; min-height: 44px; }
+.site-footer a { color: var(--on-dark); text-decoration: none; display: inline-flex; align-items: center; min-height: 44px; }
 .site-footer a:hover { text-decoration: underline; text-underline-offset: 3px; }
-.footer__bottom { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; padding-block: 1.25rem 1.6rem; background: linear-gradient(var(--line-dark), var(--line-dark)) center top / calc(100% - 2 * var(--gutter)) 1px no-repeat; font-size: .85rem; }
+.footer__bottom { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .75rem 1.5rem; padding-block: 1.25rem 1.75rem; border-top: 1px solid var(--line-dark); font-size: .92rem; }
+.credits { flex-basis: 100%; order: 3; font-size: .85rem; }
+.credits summary { display: inline-flex; align-items: center; gap: .4rem; min-height: 44px; cursor: pointer; list-style: none; color: var(--on-dark); font-family: var(--font-head); font-weight: 600; }
+.credits summary::-webkit-details-marker { display: none; }
+.credits summary::before { content: "+"; display: inline-grid; place-items: center; width: 1.2rem; height: 1.2rem; border: 1px solid var(--line-dark); border-radius: 50%; font-size: .85rem; line-height: 1; }
+.credits[open] summary::before { content: "–"; }
+.credits ul { margin: .25rem 0 0; padding-left: 1.1rem; display: grid; gap: .35rem; }
+.credits a { display: inline; min-height: 0; text-decoration: underline; text-underline-offset: 2px; }
 .sample-ribbon {
-  display: inline-flex; align-items: center; gap: .45rem; padding: .3rem 1.3rem .3rem .75rem;
-  background: var(--kraft); color: var(--pine-900); font: 500 .68rem/1.4 var(--font-mono); letter-spacing: .1em; text-transform: uppercase;
+  display: inline-flex; align-items: center; gap: .45rem; padding: .32rem 1.3rem .32rem .8rem;
+  background: var(--oat); color: var(--pine-900); font: 600 .68rem/1.4 var(--font-head); letter-spacing: .14em; text-transform: uppercase;
   clip-path: polygon(0 0, 100% 0, calc(100% - 9px) 50%, 100% 100%, 0 100%); border-radius: 3px 0 0 3px;
 }
-.sample-ribbon::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--rust); }
+.sample-ribbon::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--clay); }
 
 /* ====================================================================
    Larger screens
    ==================================================================== */
+@media (max-width: 479px) {
+  .brand__sub { display: none; }
+}
 @media (max-width: 379px) {
-  .header-cta { padding-inline: .7rem; font-size: .98rem; }
-  .header-bar { gap: .45rem; }
+  .header-cta { padding-inline: .8rem; }
+  .brand__name { font-size: 1.05rem; }
 }
 @media (min-width: 600px) {
   .fields { grid-template-columns: 1fr 1fr; }
   .fields .full { grid-column: 1 / -1; }
   .tickets { grid-template-columns: 1fr 1fr; }
+  .leaves__facts { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2rem; border-top: 0; }
+  .leaves__facts li { border-top: 1px solid var(--line-dark); border-bottom: 0; }
   .footer__cols { grid-template-columns: 1fr 1fr; }
-  .cal-grid .short { display: none; }
-  .cal-grid .long { display: inline; }
+  .hero__photos { height: max(320px, 60vw); }
 }
 @media (min-width: 860px) {
-  .band { grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 2.5rem; padding-block: 1.6rem; }
-  .band__facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .band__facts div { grid-template-columns: 1fr; gap: .15rem; padding: 0 1.4rem; border-bottom: 0; border-left: 1px solid var(--line-dark); }
-  .band__facts div:first-child { padding-left: 0; border-left: 0; }
-  .band__cta { justify-items: center; }
-  .footer__cols { grid-template-columns: 1.3fr 1fr 1fr; }
-}
-@media (min-width: 960px) {
-  .header-bar { min-height: 74px; gap: 1.5rem; }
-  .brand__mark { width: 46px; height: 46px; }
-  .brand__name { max-width: none; font-size: 1.6rem; }
-  .brand__tag { display: block; }
+  .header-bar { min-height: 72px; gap: 1.25rem; }
+  .brand__name { font-size: 1.35rem; }
   .header-cta, .nav-toggle { display: none; }
-  .nav-menu, .no-js .nav-menu { display: flex; align-items: center; gap: .1rem; position: static; padding: 0; border: 0; background: none; }
+  .nav-menu, .no-js .nav-menu { display: flex; align-items: center; gap: .1rem; position: static; padding: 0; background: none; border: 0; box-shadow: none; }
   .no-js .site-nav { flex-basis: auto; }
   .no-js .header-bar { flex-wrap: nowrap; padding-top: 0; }
-  .nav-menu a:not(.btn), .no-js .nav-menu a:not(.btn) { min-height: 44px; padding: 0 .7rem; border: 0; font-size: 1.25rem; }
-  .nav-menu a:not(.btn):hover { color: var(--rust); }
+  .nav-menu a:not(.btn), .no-js .nav-menu a:not(.btn) { min-height: 44px; padding: 0 .65rem; border: 0; font-size: 1rem; font-weight: 600; font-stretch: 100%; }
+  .nav-menu a:not(.btn):hover { color: var(--clay); }
   .nav-menu .nav-phone { display: none; }
-  .nav-menu .nav-cta { display: block; margin-left: .6rem; }
-  section[id] { scroll-margin-top: 80px; }
+  .nav-menu .nav-cta { display: block; margin-left: .5rem; }
+  section[id] { scroll-margin-top: 72px; }
 
-  .year__head { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: end; gap: 3rem; }
-  .almanac { padding: .5rem 1.75rem 1.25rem; }
-  .cal-months, .cal-row { grid-template-columns: 19.5rem minmax(0, 1fr) 7.5rem; column-gap: 1.75rem; }
-  .cal-months { top: 76px; }
-  .cal-months > span:first-child, .cal-months > span:last-child { display: block; }
-  .cal-grid { grid-column: 2; }
-  .cal-row { align-items: center; row-gap: .2rem; padding-block: 1.15rem; }
-  .cal-row__name { grid-column: 1; grid-row: 1; }
-  .cal-row__note { grid-column: 1; grid-row: 2; font-size: .88rem; }
-  .cal-track { grid-column: 2; grid-row: 1 / span 2; margin-top: 0; }
-  .cal-row__price { grid-column: 3; grid-row: 1 / span 2; }
-  .cal-row__when { display: none; }
+  .hero__intro { display: grid; grid-template-columns: minmax(0, 1fr) 21rem; gap: 3rem; align-items: end; }
+  .hero__row { margin-top: 0; gap: 1.25rem; padding-bottom: .3rem; }
+  .hero__lede { font-size: 1.12rem; }
+  .hero__photos { height: clamp(420px, calc(100svh - 24rem), 760px); }
+  .season-card { position: absolute; left: max(var(--gutter), calc((100% - var(--container)) / 2)); bottom: 1.75rem; width: 420px; margin: 0; }
 
-  .snow__top { grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: 4rem; align-items: center; }
-  .rules { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0 2.25rem; margin-top: 5rem; }
-  .rules li { grid-template-columns: 1fr; gap: .6rem; padding-block: 1.4rem 0; border-bottom: 0; }
-  .rules__num { font-size: 3.2rem; }
-  .ticket:nth-child(1) { transform: rotate(-1.2deg); }
-  .ticket:nth-child(2) { transform: rotate(1deg) translateY(1.5rem); }
-
-  .crew__grid { grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: 4.5rem; align-items: start; margin-top: 4rem; }
-  .spec { margin-top: .4rem; }
-
-  .reviews__grid { grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: 4rem; align-items: start; }
-
-  .area__grid { grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: 4rem; align-items: start; }
-  .map { order: -1; }
-
+  .lawn__grid { grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: 4rem; align-items: center; }
+  .leaves__head { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 4rem; align-items: end; }
+  .snow__grid { grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: 4rem; align-items: start; }
+  .snow__photo { position: sticky; top: 104px; }
+  .snow__photo img { aspect-ratio: 4 / 5; }
+  .rules { grid-template-columns: 1fr 1fr; gap: 0 2.5rem; }
+  .rules li { grid-template-columns: minmax(0, 1fr); gap: .6rem; padding-block: 1.3rem; }
+  .rules__num { font-size: 2.3rem; }
+  .pricing__head { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 4rem; align-items: end; }
+  .est { grid-template-columns: minmax(0, 1.25fr) minmax(0, .75fr); gap: 3.5rem; }
+  .est-result { position: sticky; top: 100px; }
+  .crew__grid { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr) minmax(0, .8fr); gap: 2.5rem; align-items: start; }
+  .reviews__grid { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); grid-template-rows: auto auto; gap: 1.5rem; }
+  .review--big { grid-row: 1 / span 2; padding: 2.4rem 2.3rem 2rem; }
+  .review--big blockquote p { font-size: 2.05rem; line-height: 1.32; }
+  .area { padding-block: clamp(4.5rem, 8vw, 8rem); }
+  .area__photo { position: absolute; inset: 0; }
+  .area__photo img { height: 100%; object-position: 30% 60%; }
+  .area__wrap .container { display: flex; justify-content: flex-end; }
+  .area__card { width: 470px; margin: 0; padding: 2rem 2rem 1.7rem; }
+  .routes th, .routes td { padding-block: .5rem; }
+  .area__pad { display: none; }
   .quote__grid { grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: 4.5rem; align-items: start; }
   .quote__intro { position: sticky; top: 110px; }
+  .form-card { padding: 2.1rem 2rem; }
+  .footer__cols { grid-template-columns: 1.3fr 1fr 1fr; }
 }
-@media (min-width: 1200px) {
+@media (min-width: 1100px) {
   .nav-menu .nav-phone { display: block; }
-  .nav-menu .nav-phone a { color: var(--rust); }
+  .nav-menu .nav-phone a { color: var(--clay); }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
@@ -586,35 +592,14 @@ section[id] { scroll-margin-top: 70px; }
 <body id="top">
 <a class="skip-link" href="#main">Skip to main content</a>
 
-<!-- Line icons (one stroke style) + logo, reused with <use> -->
 <svg class="sprite" aria-hidden="true" focusable="false">
-  <defs><clipPath id="lg-clip"><circle cx="24" cy="24" r="18"/></clipPath></defs>
-  <symbol id="logo" viewBox="0 0 48 48">
-    <circle cx="24" cy="24" r="23.5" class="f-pine"/>
-    <g clip-path="url(#lg-clip)">
-      <rect width="24" height="48" class="f-sky-sum"/>
-      <rect x="24" width="24" height="48" class="f-sky-win3"/>
-      <circle cx="16" cy="27" r="7.5" class="f-sun"/>
-      <path class="f-fern" d="M0 31Q12 23 24 27V48H0Z"/>
-      <path class="f-snow" d="M24 27Q36 23 48 29V48H24Z"/>
-      <path class="f-moss" d="M4 36l4-4h3l-4 4zM11 37l4-5h3l-4 5z" opacity=".9"/>
-      <path class="f-pine" d="M33 15l5 8h-2.6l3.6 6h-12l3.6-6H28z"/>
-      <path class="f-asphalt" d="M28 48c2-8 5-13 9-17h3c-2 4-3 10-3 17z"/>
-    </g>
-  </symbol>
-  <symbol id="i-plow" viewBox="0 0 24 24"><path d="M3 16.5v-4.3h6.4V8.6h4.4l2.6 3.6h1.7a1 1 0 0 1 1 1v3.3"/><path d="M11.4 10.2v2h3.6"/><path d="M19.2 9.3c1.6 1 2.4 3.3 2.4 7.4h-2.4"/><circle cx="6.6" cy="17" r="1.9"/><circle cx="15" cy="17" r="1.9"/></symbol>
-  <symbol id="i-shovel" viewBox="0 0 24 24"><path d="M17.3 2.8l3.9 3.9M19.2 4.8 11 13"/><path d="M8.2 10.2l5.6 5.6-4 4a3 3 0 0 1-2.1.9H4.3a1 1 0 0 1-1-1v-3.4a3 3 0 0 1 .9-2.1z"/></symbol>
-  <symbol id="i-rake" viewBox="0 0 24 24"><path d="M20.5 3.5 10.6 13.4M6 9l7 7M6 9l-2.5 2.5M8.3 11.3l-2.5 2.5M10.7 13.7l-2.5 2.5M13 16l-2.5 2.5"/></symbol>
-  <symbol id="i-barrow" viewBox="0 0 24 24"><path d="M2.5 9h13l-2.2 5H5.2z"/><path d="M15.5 9l5.5-2.2M5.2 14l3 2.2M13.3 14l-2.7 2.6"/><circle cx="9.4" cy="17.8" r="2.2"/><path d="M5 9c.8-2 2.6-3 4.8-3s4 1 4.8 3"/></symbol>
-  <symbol id="i-mower" viewBox="0 0 24 24"><path d="M14.6 11.2 20 4.6M18.4 3.4l3 2.4"/><path d="M3 16.2v-3a2 2 0 0 1 2-2h10.4l1 5"/><path d="M6.6 11.2V8.6h4.6v2.6"/><circle cx="6.5" cy="18" r="2.1"/><circle cx="14" cy="18" r="2.1"/></symbol>
-  <symbol id="i-aerate" viewBox="0 0 24 24"><path d="M3 13h18"/><path d="M5.5 13c0-2 .5-3.6 1.6-4.8M9.6 13c0-2.6.9-4.6 2.3-5.8M14.4 13c0-2-.7-3.6-1.9-4.6M18.6 13c0-1.8-.5-3.2-1.4-4.1"/><rect x="5" y="16" width="4.5" height="2.2" rx="1.1"/><rect x="14.5" y="17.6" width="4.5" height="2.2" rx="1.1"/></symbol>
-  <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M4.5 19.5C4.5 10.5 10 4.5 19.5 4.5c0 9.5-5.5 15-15 15z"/><path d="M4.5 19.5 14.5 9.5M9 15h4.2M12 12V7.8"/></symbol>
-  <symbol id="i-stake" viewBox="0 0 24 24"><path d="M9 21V4M16 21V9"/><path d="M7.4 5.5h3.2v4H7.4zM14.4 10.5h3.2v3.5h-3.2z"/><path d="M4 21c1.8-1.6 14.2-1.6 16 0"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4.5 12h15M13.5 6l6 6-6 6"/></symbol>
   <symbol id="i-phone" viewBox="0 0 24 24"><path d="M5.2 3.5h3.2l1.6 4.2-2.1 1.4a11.5 11.5 0 0 0 7 7l1.4-2.1 4.2 1.6v3.2a2 2 0 0 1-2.1 2A16.5 16.5 0 0 1 3.2 5.6a2 2 0 0 1 2-2.1z"/></symbol>
   <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.8 6.5 8.2 6.5 8.2-6.5"/></symbol>
   <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21.5s-7-6.2-7-11.7a7 7 0 0 1 14 0c0 5.5-7 11.7-7 11.7z"/><circle cx="12" cy="9.8" r="2.6"/></symbol>
   <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5.2l3.2 2"/></symbol>
-  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4.5 12h15M13.5 6l6 6-6 6"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-drag" viewBox="0 0 24 24"><path d="M9 7l-5 5 5 5M15 7l5 5-5 5"/></symbol>
   <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
   <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
 </svg>
@@ -623,26 +608,23 @@ section[id] { scroll-margin-top: 70px; }
 <header class="site-header">
   <div class="container header-bar">
     <a class="brand" href="#top">
-      <svg class="brand__mark" aria-hidden="true" focusable="false"><use href="#logo"/></svg>
-      <span>
-        <span class="brand__name" data-biz="name">Northshore Green Co.</span>
-        <span class="brand__tag mono">Lawn · Leaves · Snow · Glenview, Ill.</span>
-      </span>
+      <span class="brand__name" data-biz="name">Northshore Green Co.</span>
+      <span class="brand__sub">Lawns · Leaves · Snow · Glenview</span>
     </a>
-    <a class="btn btn--rust btn--sm header-cta" href="#quote">Free quote</a>
+    <a class="btn btn--clay btn--sm header-cta" href="#quote">Free quote</a>
     <nav class="site-nav" aria-label="Main">
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-menu" aria-label="Open menu">
         <svg class="icon i-open" aria-hidden="true" focusable="false"><use href="#i-menu"/></svg>
         <svg class="icon i-shut" aria-hidden="true" focusable="false"><use href="#i-close"/></svg>
       </button>
       <ul id="site-menu" class="nav-menu">
-        <li><a href="#year">The year</a></li>
+        <li><a href="#lawn">Lawn &amp; beds</a></li>
+        <li><a href="#leaves">Leaves</a></li>
         <li><a href="#snow">Snow</a></li>
-        <li><a href="#crew">The crew</a></li>
-        <li><a href="#reviews">Reviews</a></li>
+        <li><a href="#pricing">Pricing</a></li>
         <li><a href="#area">Area</a></li>
         <li class="nav-phone"><a href="tel:+18475550142" data-biz-href="phone"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span data-biz="phone">(847) 555-0142</span></a></li>
-        <li class="nav-cta"><a class="btn btn--rust btn--sm" href="#quote">Get a free quote</a></li>
+        <li class="nav-cta"><a class="btn btn--clay btn--sm" href="#quote">Get a free quote</a></li>
       </ul>
     </nav>
   </div>
@@ -650,349 +632,231 @@ section[id] { scroll-margin-top: 70px; }
 
 <main id="main">
 
-  <!-- ==================== HERO: screen-print poster ==================== -->
+  <!-- ==================== HERO (season photos) ==================== -->
   <section class="hero" aria-labelledby="hero-title">
-    <div class="poster grain">
-      <!-- Decorative poster: one house, two seasons. Summer lawn on the left, plowed winter driveway on the right. -->
-      <svg class="poster__art" viewBox="0 0 1440 720" preserveAspectRatio="xMidYMax slice" aria-hidden="true" focusable="false">
-        <defs>
-          <clipPath id="c-sum"><rect width="720" height="720"/></clipPath>
-          <clipPath id="c-win"><rect x="720" width="720" height="720"/></clipPath>
-          <path id="h-far" d="M0 470C160 430 300 420 450 440C600 460 700 430 860 418C1020 406 1180 440 1300 432C1370 428 1410 430 1440 432V720H0Z"/>
-          <path id="h-mid" d="M0 522C200 488 360 494 540 510C700 524 820 500 980 490C1140 480 1300 508 1440 498V720H0Z"/>
-          <path id="h-front" d="M0 598C240 566 480 560 720 580C960 600 1200 578 1440 566V720H0Z"/>
-          <path id="walk" d="M704 580H736C744 630 760 680 782 720H658C680 680 696 630 704 580Z"/>
-          <clipPath id="c-front"><use href="#h-front"/></clipPath>
-          <pattern id="dots" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(30)"><circle cx="4.5" cy="4.5" r="1.6" class="f-pine"/></pattern>
-          <pattern id="dots-w" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(30)"><circle cx="4.5" cy="4.5" r="1.6" class="f-slate"/></pattern>
-          <g id="oak">
-            <path class="f-pine9" d="M-7 0-5-74H5L7 0Z"/>
-            <path class="f-pine7" d="M-60-72C-72-114-40-156 0-156C42-156 72-116 60-74C52-50-52-48-60-72Z"/>
-            <path class="f-fern-dk" d="M0-156C42-156 72-116 60-74C55-62 40-55 25-55C42-82 38-128 0-156Z"/>
-          </g>
-          <g id="pine">
-            <rect x="-5" y="-16" width="10" height="18" class="f-pine9"/>
-            <path class="f-pine" d="M0-130 30-84H16L42-46H24L50-12H-50L-24-46H-42L-16-84H-30Z"/>
-            <path class="f-snow" d="M0-130 11-111Q4-107 0-110Q-5-106-11-111ZM-30-84H30L25-79Q14-75 7-79Q0-74-7-79Q-16-75-25-79ZM-42-46H42L36-40Q24-36 14-41Q3-35-7-41Q-19-36-36-40ZM-50-12H50L44-7Q30-3 18-8Q5-2-8-8Q-23-3-44-7Z"/>
-          </g>
-        </defs>
-
-        <!-- SUMMER (left half) -->
-        <g clip-path="url(#c-sum)">
-          <rect width="720" height="720" class="f-sky-sum"/>
-          <path class="f-ray" d="M470 470L-678 410L-666 290ZM470 470L-641 172L-604 58ZM470 470L-555 -52L-494 -156ZM470 470L-424 -254L-343 -343ZM470 470L-254 -424L-156 -494ZM470 470L-52 -555L58 -604ZM470 470L172 -641L290 -666ZM470 470L410 -678L530 -678ZM470 470L650 -666L768 -641ZM470 470L882 -604L992 -555ZM470 470L1096 -494L1194 -424ZM470 470L1283 -343L1364 -254ZM470 470L1434 -156L1495 -52ZM470 470L1544 58L1581 172ZM470 470L1606 290L1618 410Z"/>
-          <circle cx="470" cy="470" r="86" class="f-sun"/>
-          <path class="s-pine" stroke-width="3" d="M132 372q9-9 18 0q9-9 18 0M176 352q6-6 12 0q6-6 12 0" opacity=".7"/>
-          <use href="#h-far" class="f-sage"/>
-          <use href="#oak" transform="translate(206 446) scale(.3)"/>
-          <use href="#oak" transform="translate(238 442) scale(.24)"/>
-          <use href="#oak" transform="translate(612 446) scale(-.26 .26)"/>
-          <use href="#h-mid" class="f-moss"/>
-          <use href="#oak" transform="translate(110 548) scale(.62 .92)"/>
-          <use href="#oak" transform="translate(330 560)"/>
-          <use href="#oak" transform="translate(586 574) scale(-.5 .5)"/>
-          <use href="#h-front" class="f-fern"/>
-          <g clip-path="url(#c-front)">
-            <path class="f-stripe" d="M-40 560h46l-92 160h-46zM52 560h46l-92 160h-46zM144 560h46l-92 160h-46zM236 560h46l-92 160h-46zM328 560h46l-92 160h-46zM420 560h46l-92 160h-46zM512 560h46l-92 160h-46zM604 560h46l-92 160h-46zM696 560h46l-92 160h-46zM788 560h46l-92 160h-46z"/>
-            <rect y="664" width="720" height="56" fill="url(#dots)" opacity=".3"/>
-          </g>
-          <use href="#walk" class="f-kraft"/>
-          <!-- push mower -->
-          <g transform="translate(486 618)">
-            <path class="s-pine" stroke-width="4" d="M2 0 26 22"/>
-            <path class="f-kraft" d="M6 14h16v14H9z"/>
-            <path class="f-rust" d="M20 22h36q6 0 6 6v4H18z"/>
-            <rect x="30" y="13" width="17" height="10" rx="2" class="f-pine"/>
-            <circle cx="24" cy="35" r="5.5" class="f-ink"/><circle cx="56" cy="35" r="5.5" class="f-ink"/>
-          </g>
-        </g>
-
-        <!-- WINTER (right half) -->
-        <g clip-path="url(#c-win)">
-          <rect x="720" width="720" height="720" class="f-sky-win"/>
-          <rect x="720" y="300" width="720" height="420" class="f-sky-win2"/>
-          <rect x="720" y="372" width="720" height="348" class="f-sky-win3"/>
-          <g class="flakes"><circle cx="1066" cy="95" r="2"/><circle cx="1139" cy="351" r="2"/><circle cx="784" cy="55" r="3.5"/><circle cx="1283" cy="66" r="2.5"/><circle cx="794" cy="277" r="3"/><circle cx="954" cy="37" r="2.5"/><circle cx="1163" cy="53" r="3.5"/><circle cx="1299" cy="235" r="3.5"/><circle cx="861" cy="132" r="2"/><circle cx="1380" cy="339" r="2"/><circle cx="1331" cy="49" r="3"/><circle cx="1325" cy="317" r="3"/><circle cx="1031" cy="232" r="3"/><circle cx="882" cy="294" r="3.5"/><circle cx="1050" cy="304" r="3.5"/><circle cx="1389" cy="114" r="2"/><circle cx="1116" cy="67" r="2"/><circle cx="1295" cy="382" r="3"/><circle cx="796" cy="334" r="3.5"/><circle cx="945" cy="272" r="2"/><circle cx="1105" cy="171" r="2"/><circle cx="989" cy="424" r="3"/><circle cx="919" cy="375" r="3.5"/><circle cx="1323" cy="171" r="3"/><circle cx="1086" cy="391" r="3.5"/><circle cx="1194" cy="165" r="3"/></g>
-          <use href="#h-far" class="f-frost"/>
-          <use href="#pine" transform="translate(1176 446) scale(.34)"/>
-          <use href="#pine" transform="translate(1206 448) scale(.26)"/>
-          <use href="#pine" transform="translate(842 434) scale(.3)"/>
-          <use href="#h-mid" class="f-snow"/>
-          <path class="s-frost" stroke-width="3" d="M720 515C780 506 880 494 980 490C1140 480 1300 508 1440 498"/>
-          <g class="s-pine9">
-            <path stroke-width="6" d="M1250 528v-86"/>
-            <path stroke-width="4" d="M1250 488l-30-30M1250 470l24-34M1250 452l-8-30M1236 474l-16 4M1262 452l18-6"/>
-          </g>
-          <use href="#pine" transform="translate(1010 540) scale(.95)"/>
-          <use href="#pine" transform="translate(1086 532) scale(.7)"/>
-          <use href="#pine" transform="translate(1340 548) scale(1.1)"/>
-          <use href="#pine" transform="translate(1418 540) scale(.8)"/>
-          <use href="#h-front" class="f-snow"/>
-          <path class="s-frost" stroke-width="3" d="M720 582C960 600 1200 578 1440 566"/>
-          <use href="#walk" class="f-frost"/>
-          <path class="s-snow" stroke-width="9" d="M738 582C746 632 762 682 784 720"/>
-          <!-- plowed driveway with snowbanks -->
-          <path class="f-asphalt" d="M822 578H900C952 630 1062 680 1214 720H952C902 680 852 630 822 578Z"/>
-          <path class="s-frost" stroke-width="14" d="M816 580C846 632 896 682 946 722M906 580C958 632 1068 682 1220 722"/>
-          <path class="s-snow" stroke-width="9" d="M812 578C842 630 892 680 942 720M910 578C962 630 1072 680 1224 720"/>
-          <!-- plow truck, logo on the door -->
-          <g transform="translate(888 598)">
-            <path class="f-pine" d="M6 42V27H40V12H64L77 27H94Q98 27 98 31V42Z"/>
-            <path class="f-frost" d="M44 15H62L72 26H44Z"/>
-            <rect x="50" y="6" width="12" height="6" rx="1.5" class="f-ochre"/>
-            <circle cx="57" cy="34" r="5" class="f-ochre"/>
-            <path class="f-rust" d="M100 22C110 26 113 38 109 51H98V22Z"/>
-            <path class="f-snow" d="M108 52C113 40 132 40 138 52Z"/>
-            <circle cx="24" cy="44" r="8.5" class="f-ink"/><circle cx="24" cy="44" r="3.5" class="f-frost"/>
-            <circle cx="80" cy="44" r="8.5" class="f-ink"/><circle cx="80" cy="44" r="3.5" class="f-frost"/>
-          </g>
-          <!-- mailbox at the end of the drive + split-rail fence -->
-          <rect x="1244" y="664" width="7" height="44" class="f-mulch"/>
-          <path class="f-pine" d="M1230 672v-12a9 9 0 0 1 9-9h17a9 9 0 0 1 9 9v12z"/>
-          <rect x="1262" y="652" width="4" height="14" class="f-rust"/>
-          <path class="f-snow" d="M1228 653q19-14 39 0q-19-5-39 0z"/>
-          <path class="s-mulch" stroke-width="5" d="M1300 628 1440 616M1300 646 1440 634"/>
-          <path class="f-mulch" d="M1298 614h9v48h-9zM1366 608h9v48h-9zM1434 602h9v48h-9z"/>
-          <path class="s-snow" stroke-width="4" d="M1300 624 1440 612"/>
-          <path class="f-snow" d="M1296 615q6.5-8 13 0zM1364 609q6.5-8 13 0zM1432 603q6.5-8 13 0z"/>
-          <g clip-path="url(#c-front)"><rect x="720" y="668" width="720" height="52" fill="url(#dots-w)" opacity=".3"/></g>
-        </g>
-
-        <!-- HOUSE (straddles the seasons) -->
-        <path class="s-smoke" d="M778 396c-12-14 9-24-1-38s11-24 4-40"/>
-        <rect x="768" y="404" width="20" height="56" class="f-rust-dk"/>
-        <rect x="632" y="470" width="176" height="110" class="f-paper"/>
-        <rect x="632" y="470" width="176" height="9" class="f-kraft"/>
-        <path class="f-rust" d="M610 480 720 398 830 480Z"/>
-        <g clip-path="url(#c-win)">
-          <path class="f-snow" d="M720 392 836 480Q828 490 818 483Q808 492 798 484Q788 491 778 483Q768 490 758 482L720 482Z"/>
-          <path class="f-snow" d="M766 400h24v8h-24z"/>
-        </g>
-        <rect x="644" y="496" width="8" height="38" class="f-pine"/><rect x="694" y="496" width="8" height="38" class="f-pine"/>
-        <rect x="652" y="496" width="42" height="38" class="f-ochre"/>
-        <path class="s-pine" stroke-width="3" d="M673 496v38M652 515h42"/>
-        <rect x="646" y="536" width="54" height="9" rx="2" class="f-rust-dk"/>
-        <circle cx="656" cy="533" r="5" class="f-rust"/><circle cx="670" cy="531" r="5" class="f-ochre"/><circle cx="684" cy="533" r="5" class="f-rust"/>
-        <rect x="738" y="496" width="8" height="38" class="f-pine"/><rect x="788" y="496" width="8" height="38" class="f-pine"/>
-        <rect x="746" y="496" width="42" height="38" class="f-ochre"/>
-        <path class="s-pine" stroke-width="3" d="M767 496v38M746 515h42"/>
-        <path class="s-snow" stroke-width="6" d="M744 538h46"/>
-        <path class="f-pine" d="M706 580v-46a14 14 0 0 1 28 0v46z"/>
-        <circle cx="728" cy="558" r="2.5" class="f-ochre"/>
-        <rect x="698" y="578" width="44" height="6" class="f-kraft"/>
-        <ellipse cx="648" cy="578" rx="18" ry="12" class="f-fern-dk"/><ellipse cx="676" cy="582" rx="12" ry="9" class="f-pine7"/>
-        <ellipse cx="790" cy="580" rx="16" ry="10" class="f-pine7"/><path class="f-snow" d="M775 576q15-12 31 0q-15-4-31 0z"/>
-        <!-- garage -->
-        <rect x="808" y="508" width="104" height="72" class="f-paper"/>
-        <path class="f-rust" d="M800 513 860 480 920 513Z"/>
-        <path class="f-snow" d="M797 514 860 477 923 514Q913 522 903 516Q891 523 879 517Q867 523 853 517Q841 523 829 517Q817 523 805 517Z"/>
-        <rect x="822" y="524" width="76" height="56" class="f-frost"/>
-        <path class="s-slate" stroke-width="2" d="M822 538h76M822 552h76M822 566h76"/>
-      </svg>
-
-      <div class="container poster__title">
-        <h1 id="hero-title">The crew that mows your lawn also plows your driveway.</h1>
+    <div class="container hero__intro">
+      <h1 id="hero-title" class="hero__title"><span>Mowed weekly.</span> <span>Raked by Thanksgiving.</span> <span>Plowed by 6&nbsp;a.m.</span></h1>
+      <div class="hero__row">
+        <p class="lede hero__lede">A family-run crew working out of one Glenview shop since 2009. Lawns, leaves and snow: one crew, one number to call, one bill.</p>
+        <p class="hero__actions">
+          <a class="btn btn--clay" href="#quote">Get a free quote <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
+          <span class="hero__call">or call <a href="tel:+18475550142" data-biz="phone">(847) 555-0142</a></span>
+        </p>
       </div>
     </div>
 
-    <div class="poster-band on-dark">
-      <div class="container band">
-        <dl class="band__facts">
-          <div><dt>Mowing</dt><dd>Weekly, mid-April through October</dd></div>
-          <div><dt>Leaves</dt><dd>Two passes, mid-October to Thanksgiving</dd></div>
-          <div><dt>Snow</dt><dd>2-inch trigger, plowed by 6 a.m.</dd></div>
-        </dl>
-        <div class="band__cta">
-          <a class="btn btn--rust" href="#quote">Get a free quote <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
-          <p class="band__call">or call the shop: <a href="tel:+18475550142" data-biz="phone">(847) 555-0142</a></p>
+    <div class="hero__stage">
+      <div class="hero__photos">
+        <img class="season-img is-active" data-season="summer"
+             src="img/landscaping/hero-summer-bungalow-lawns-1440.webp"
+             srcset="img/landscaping/hero-summer-bungalow-lawns-800.webp 800w, img/landscaping/hero-summer-bungalow-lawns-1440.webp 1440w"
+             sizes="100vw" width="1440" height="900" fetchpriority="high" decoding="async"
+             alt="Summer: a row of brick bungalows with freshly mowed front lawns and clean sidewalk edges">
+        <img class="season-img" data-season="fall" aria-hidden="true"
+             src="img/landscaping/hero-fall-leafy-street-1440.webp"
+             srcset="img/landscaping/hero-fall-leafy-street-800.webp 800w, img/landscaping/hero-fall-leafy-street-1440.webp 1440w"
+             sizes="100vw" width="1440" height="900" loading="lazy" decoding="async"
+             alt="Fall: a suburban street under orange and red maples, with fallen leaves across the lawns">
+        <img class="season-img" data-season="winter" aria-hidden="true"
+             src="img/landscaping/hero-winter-cleared-drive-1440.webp"
+             srcset="img/landscaping/hero-winter-cleared-drive-800.webp 800w, img/landscaping/hero-winter-cleared-drive-1440.webp 1440w"
+             sizes="100vw" width="1440" height="900" loading="lazy" decoding="async"
+             alt="Winter: a green cottage after a heavy snowfall, with the driveway and front walk cleared">
+      </div>
+
+      <div class="season-card">
+        <div class="season-switch" role="group" aria-label="Show the yard in">
+          <button class="season-btn" type="button" data-season="summer" aria-pressed="true"
+                  data-when="Mid-April to October" data-href="#lawn" data-link="Lawn &amp; beds"
+                  data-text="Weekly mowing on the same weekday, trimming and blow-off included. From $45 a visit.">Summer</button>
+          <button class="season-btn" type="button" data-season="fall" aria-pressed="false"
+                  data-when="Mid-October to Thanksgiving" data-href="#leaves" data-link="Leaf cleanup"
+                  data-text="Leaf cleanup in two passes, hauled or mulched, beds and window wells included. From $275 a pass.">Fall</button>
+          <button class="season-btn" type="button" data-season="winter" aria-pressed="false"
+                  data-when="December 1 to March 31" data-href="#snow" data-link="Snow contracts"
+                  data-text="Plowed at a 2-inch trigger and cleared by 6 a.m., curb ridge included. Contracts from $575 a season.">Winter</button>
         </div>
+        <p class="season-caption" aria-live="polite">
+          <span class="season-caption__when label">Mid-April to October</span>
+          <span class="season-caption__text">Weekly mowing on the same weekday, trimming and blow-off included. From $45 a visit.</span>
+          <a class="season-caption__link" href="#lawn">Lawn &amp; beds</a>
+        </p>
       </div>
     </div>
   </section>
 
-  <!-- ==================== YARD YEAR (services by month) ====================
-       Each row: --c is the ink color; bars use half-month columns 1–24
-       (Jan 1–15 = 1, Jan 16–31 = 2 ... Dec 16–31 = 24). data-cols lists the
-       same ranges for the "in season" highlight. Prices are placeholders. -->
-  <section id="year" class="year" aria-labelledby="year-title">
+  <!-- ==================== LAWN & BEDS ==================== -->
+  <section id="lawn" class="lawn" aria-labelledby="lawn-title">
+    <div class="container lawn__grid">
+      <figure class="photo">
+        <img src="img/landscaping/beds-fresh-mulch-900.webp"
+             srcset="img/landscaping/beds-fresh-mulch-600.webp 600w, img/landscaping/beds-fresh-mulch-900.webp 900w"
+             sizes="(min-width: 860px) 54vw, 100vw" width="900" height="675" loading="lazy" decoding="async"
+             alt="A foundation bed with fresh dark mulch, yellow daylilies and a clean curved edge against a mowed lawn">
+        <figcaption>Spade-cut edge, shredded hardwood mulch, daylilies left room to spread.</figcaption>
+      </figure>
+      <div class="lawn__copy">
+        <p class="when label">Mid-April to October</p>
+        <h2 id="lawn-title">Lawn &amp; beds</h2>
+        <p class="lede">You get a mow day, and it stays your mow day. The same crew lead shows up that weekday every week, cuts at 3½ inches through the July heat, and blows the walks clean before leaving.</p>
+        <ul class="specs">
+          <li><span class="specs__name">Weekly mowing</span><span class="specs__price">from $45<small>/visit</small></span><span class="specs__detail">Trimming, edging and blow-off included. No contract.</span></li>
+          <li><span class="specs__name">Spring cleanup</span><span class="specs__price">from $240</span><span class="specs__detail">Mid-March to April. Matted leaves out, plow-scraped turf raked and patched.</span></li>
+          <li><span class="specs__name">Edging &amp; mulch</span><span class="specs__price">$95<small>/cubic yard</small></span><span class="specs__detail">Hand spade-cut edges, shredded hardwood, priced by the yard, installed.</span></li>
+          <li><span class="specs__name">Aerate &amp; overseed</span><span class="specs__price">from $160</span><span class="specs__detail">September. Core aeration with a sun-and-shade seed mix.</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== LEAVES (before / after slider) ==================== -->
+  <section id="leaves" class="leaves on-dark" aria-labelledby="leaves-title">
     <div class="container">
-      <div class="year__head">
-        <h2 id="year-title">The yard year</h2>
-        <p class="lede">Everything we do, the months we do it, and what it starts at for a typical quarter-acre Glenview lot. After a walk-through you get the real number in writing.</p>
-      </div>
-
-      <div class="almanac" id="almanac">
-        <div class="cal-months" aria-hidden="true">
-          <span class="mono">Service</span>
-          <div class="cal-grid">
-            <span><b class="short">J</b><b class="long">Jan</b></span><span><b class="short">F</b><b class="long">Feb</b></span><span><b class="short">M</b><b class="long">Mar</b></span><span><b class="short">A</b><b class="long">Apr</b></span><span><b class="short">M</b><b class="long">May</b></span><span><b class="short">J</b><b class="long">Jun</b></span><span><b class="short">J</b><b class="long">Jul</b></span><span><b class="short">A</b><b class="long">Aug</b></span><span><b class="short">S</b><b class="long">Sep</b></span><span><b class="short">O</b><b class="long">Oct</b></span><span><b class="short">N</b><b class="long">Nov</b></span><span><b class="short">D</b><b class="long">Dec</b></span>
-          </div>
-          <span class="mono" style="text-align:right">Starts at</span>
+      <div class="leaves__head">
+        <div>
+          <p class="when label">Mid-October to Thanksgiving</p>
+          <h2 id="leaves-title">Leaf cleanup, in two passes</h2>
         </div>
-
-        <ol class="cal-rows">
-          <li class="cal-row" style="--c: var(--slate)" data-cols="23-25,1-7">
-            <h3 class="cal-row__name"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-plow"/></svg>Snow plowing</h3>
-            <p class="cal-row__note"><span class="cal-row__when mono">Dec–Mar · </span>2-inch trigger, cleared by 6 a.m., plus the slush ridge the village plow leaves at your curb.</p>
-            <div class="cal-track" aria-hidden="true"><span class="bar" style="grid-column:23/25"></span><span class="bar" style="grid-column:1/7"></span></div>
-            <p class="cal-row__price">$55 <small>per push</small></p>
-          </li>
-          <li class="cal-row" style="--c: var(--slate)" data-cols="22-25,1-7">
-            <h3 class="cal-row__name"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-shovel"/></svg>Shoveling &amp; salting</h3>
-            <p class="cal-row__note"><span class="cal-row__when mono">Late Nov–Mar · </span>Front walk, stoop and the public sidewalk. Pet-safe melt, reapplied after freeze–thaw nights.</p>
-            <div class="cal-track" aria-hidden="true"><span class="bar" style="grid-column:22/25"></span><span class="bar" style="grid-column:1/7"></span></div>
-            <p class="cal-row__price">+$25 <small>per visit</small></p>
-          </li>
-          <li class="cal-row" style="--c: var(--rust)" data-cols="6-9">
-            <h3 class="cal-row__name"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-rake"/></svg>Spring cleanup</h3>
-            <p class="cal-row__note"><span class="cal-row__when mono">Mid-Mar–Apr · </span>Matted leaves out, plow-scraped turf raked and patched, beds cleared, first cut.</p>
-            <div class="cal-track" aria-hidden="true"><span class="bar" style="grid-column:6/9"></span></div>
-            <p class="cal-row__price">$240 <small>one visit</small></p>
-          </li>
-          <li class="cal-row" style="--c: var(--mulch)" data-cols="8-11">
-            <h3 class="cal-row__name"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-barrow"/></svg>Edging &amp; mulch</h3>
-            <p class="cal-row__note"><span class="cal-row__when mono">Mid-Apr–May · </span>Hand-cut spade edges and shredded hardwood mulch, priced by the cubic yard, installed.</p>
-            <div class="cal-track" aria-hidden="true"><span class="bar" style="grid-column:8/11"></span></div>
-            <p class="cal-row__price">$95 <small>per yard</small></p>
-          </li>
-          <li class="cal-row" style="--c: var(--fern-500)" data-cols="8-21">
-            <h3 class="cal-row__name"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-mower"/></svg>Weekly mowing</h3>
-            <p class="cal-row__note"><span class="cal-row__when mono">Mid-Apr–Oct · </span>Same weekday all season. Trimming, edging and blow-off included. No contract.</p>
-            <div class="cal-track" aria-hidden="true"><span class="bar" style="grid-column:8/21"></span></div>
-            <p class="cal-row__price">$45 <small>per visit</small></p>
-          </li>
-          <li class="cal-row" style="--c: var(--moss-400)" data-cols="17-19">
-            <h3 class="cal-row__name"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-aerate"/></svg>Aerate &amp; overseed</h3>
-            <p class="cal-row__note"><span class="cal-row__when mono">Sep · </span>Core aeration with a sun-and-shade seed mix and starter fertilizer.</p>
-            <div class="cal-track" aria-hidden="true"><span class="bar" style="grid-column:17/19"></span></div>
-            <p class="cal-row__price">$160 <small>one visit</small></p>
-          </li>
-          <li class="cal-row" style="--c: var(--rust)" data-cols="20-23">
-            <h3 class="cal-row__name"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-leaf"/></svg>Fall leaf cleanup</h3>
-            <p class="cal-row__note"><span class="cal-row__when mono">Mid-Oct–Nov · </span>Raked, mulch-mowed or hauled. Most lots need two passes once the oaks let go.</p>
-            <div class="cal-track" aria-hidden="true"><span class="bar" style="grid-column:20/23"></span></div>
-            <p class="cal-row__price">$275 <small>per pass</small></p>
-          </li>
-          <li class="cal-row" style="--c: var(--ochre)" data-cols="21-22">
-            <h3 class="cal-row__name"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-stake"/></svg>Snow stakes</h3>
-            <p class="cal-row__note"><span class="cal-row__when mono">Early Nov · </span>Reflective markers along the drive and beds, hoses and spigots shut down for winter.</p>
-            <div class="cal-track" aria-hidden="true"><span class="bar" style="grid-column:21/22"></span></div>
-            <p class="cal-row__price">$60 <small>flat</small></p>
-          </li>
-        </ol>
+        <p class="lede">The maples go first and the oaks hang on until the end of November, so one visit is never enough. We come once when most leaves are down and again after the last ones drop.</p>
       </div>
-      <p class="year__foot">Mowing, cleanups and snow can be bundled on one monthly bill. Ask when you request a quote.</p>
+
+      <!-- Placeholder pair: two closely matched shots, not pixel-aligned. Swap for the client's own before/after. -->
+      <figure class="compare" style="--pos: 50%">
+        <div class="compare__box">
+          <img src="img/landscaping/leaves-after-1000.webp"
+               srcset="img/landscaping/leaves-after-640.webp 640w, img/landscaping/leaves-after-1000.webp 1000w"
+               sizes="(min-width: 1260px) 1200px, 100vw" width="1000" height="562" loading="lazy" decoding="async"
+               alt="After: the same wooded front yard with the lawn, stone edging and beds cleared of leaves">
+          <div class="compare__before">
+            <img src="img/landscaping/leaves-before-1000.webp"
+                 srcset="img/landscaping/leaves-before-640.webp 640w, img/landscaping/leaves-before-1000.webp 1000w"
+                 sizes="(min-width: 1260px) 1200px, 100vw" width="1000" height="562" loading="lazy" decoding="async"
+                 alt="Before: a wooded front yard buried under a layer of fallen leaves">
+          </div>
+          <span class="compare__tag compare__tag--before label">Before</span>
+          <span class="compare__tag compare__tag--after label">After</span>
+          <input class="compare__range" type="range" min="0" max="100" value="50" step="1" aria-label="Before and after comparison: slide to reveal more of the before photo">
+          <div class="compare__handle" aria-hidden="true"><span class="compare__knob"><svg class="icon" focusable="false"><use href="#i-drag"/></svg></span></div>
+        </div>
+        <figcaption>Same front yard, one week apart. Drag the handle (or use the arrow keys) to compare.</figcaption>
+      </figure>
+
+      <ul class="leaves__facts">
+        <li><b>Hauled or mulched</b><span>Your call. Nothing left in curb piles waiting on the village truck.</span></li>
+        <li><b>Beds and window wells too</b><span>Leaves come out of the shrubs and window wells, not just off the lawn.</span></li>
+        <li><b>From $275 a pass</b><span>Most quarter-acre lots need two passes. Gutters on request.</span></li>
+      </ul>
     </div>
   </section>
 
   <!-- ==================== SNOW SEASON (contract terms; prices are placeholders) ==================== -->
-  <section id="snow" class="snow on-dark grain" aria-labelledby="snow-title">
-    <div class="container">
-      <div class="snow__top">
-        <div>
-          <h2 id="snow-title">Snow season, in writing</h2>
-          <p class="lede">Two ways to sign up. Either way, every snow customer gets the same four rules on paper before December 1.</p>
-          <a class="snow__link" href="#quote">Reserve a contract spot <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
-        </div>
+  <section id="snow" class="snow on-dark" aria-labelledby="snow-title">
+    <div class="container snow__grid">
+      <figure class="snow__photo">
+        <img src="img/landscaping/snow-shovel-snowbank-640.webp" width="640" height="799" loading="lazy" decoding="async"
+             alt="An orange snow pusher standing upright in a freshly shoveled bank of snow beside a cleared walk">
+      </figure>
+      <div>
+        <p class="when label">December 1 to March 31</p>
+        <h2 id="snow-title">Snow season, in writing</h2>
+        <p class="lede">Every snow customer gets these four rules on paper before the first storm.</p>
+        <ol class="rules">
+          <li><span class="rules__num" aria-hidden="true">2"</span><div><h3>We plow at two inches</h3><p>Measured at the shop. Lighter dustings get salted instead, free for contract customers.</p></div></li>
+          <li><span class="rules__num" aria-hidden="true">6:00</span><div><h3>Done before you leave</h3><p>Overnight snow is off your drive by 6 a.m. If it keeps falling, we keep coming.</p></div></li>
+          <li><span class="rules__num" aria-hidden="true">+1</span><div><h3>We come back for the curb</h3><p>The slush wall the village plow leaves at the end of your drive is part of the job.</p></div></li>
+          <li><span class="rules__num" aria-hidden="true">Nov</span><div><h3>Stakes go in early</h3><p>Reflective markers along your drive and beds in November, so the blade never finds your lawn.</p></div></li>
+        </ol>
         <div class="tickets">
-          <article class="ticket" aria-labelledby="t1">
-            <p class="ticket__top mono"><span>Dec 1 – Mar 31</span><span>No. S-01</span></p>
-            <h3 id="t1">Seasonal contract</h3>
+          <article class="ticket" aria-labelledby="t-season">
+            <p class="ticket__top label"><span>Dec 1 – Mar 31</span><span>Most chosen</span></p>
+            <h3 id="t-season">Seasonal contract</h3>
             <p class="ticket__price"><b>$575</b><span>per season</span></p>
             <ul>
-              <li>Unlimited pushes, every storm</li>
-              <li>Walks &amp; salting included</li>
-              <li>First on the route</li>
-              <li>Curb ridge cleared</li>
+              <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Every storm, unlimited pushes</li>
+              <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Walks and salting included</li>
+              <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>First on the route</li>
             </ul>
           </article>
-          <article class="ticket" aria-labelledby="t2">
-            <p class="ticket__top mono"><span>Pay as it falls</span><span>No. P-02</span></p>
-            <h3 id="t2">Per push</h3>
+          <article class="ticket" aria-labelledby="t-push">
+            <p class="ticket__top label"><span>Pay as it falls</span><span>No commitment</span></p>
+            <h3 id="t-push">Per push</h3>
             <p class="ticket__price"><b>$55</b><span>per plow</span></p>
             <ul>
-              <li>No commitment, billed monthly</li>
-              <li>Walks &amp; salting +$25</li>
-              <li>After contract homes</li>
-              <li>Curb ridge cleared</li>
+              <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Billed monthly</li>
+              <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Walks and salting +$25</li>
+              <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Plowed after contract homes</li>
             </ul>
           </article>
         </div>
       </div>
-      <ol class="rules">
-        <li><span class="rules__num" aria-hidden="true">2"</span><div><h3>We plow at two inches</h3><p>Measured at the shop. Lighter dustings get salted instead, at no charge for contract customers.</p></div></li>
-        <li><span class="rules__num" aria-hidden="true">6:00</span><div><h3>Done before you leave</h3><p>Overnight snow is off your drive by 6 a.m. If it keeps coming, so do we.</p></div></li>
-        <li><span class="rules__num" aria-hidden="true">+1</span><div><h3>We come back for the curb</h3><p>The wall of slush the village plow leaves at the end of your drive is part of the job.</p></div></li>
-        <li><span class="rules__num" aria-hidden="true">Nov</span><div><h3>Stakes go in early</h3><p>Reflective markers along your drive and beds, so the blade never finds your lawn.</p></div></li>
-      </ol>
+    </div>
+  </section>
+
+  <!-- ==================== PRICING (quick estimate) ==================== -->
+  <section id="pricing" class="pricing" aria-labelledby="pricing-title">
+    <div class="container">
+      <div class="pricing__head">
+        <h2 id="pricing-title">Price out your year</h2>
+        <p class="lede">Tick what you'd want done and pick a lot size. You'll get a starting range for the whole year, and you can send it straight to us with your quote request.</p>
+      </div>
+
+      <div class="est">
+        <form id="estimator" class="est__form" onsubmit="return false">
+          <fieldset>
+            <legend class="label">Services</legend>
+            <ul class="est-list">
+              <li class="est-row"><input type="checkbox" id="est-mowing" value="mowing" checked><label for="est-mowing"><span class="est-name">Weekly mowing &amp; edging</span><span class="est-when">Mid-April to October · 28 visits</span><span class="est-price" data-price="mowing">from $45<small>per visit</small></span></label></li>
+              <li class="est-row"><input type="checkbox" id="est-spring" value="spring"><label for="est-spring"><span class="est-name">Spring cleanup</span><span class="est-when">Mid-March to April · 1 visit</span><span class="est-price" data-price="spring">from $240<small>per visit</small></span></label></li>
+              <li class="est-row"><input type="checkbox" id="est-mulch" value="mulch"><label for="est-mulch"><span class="est-name">Edging &amp; mulch</span><span class="est-when">April to May · about 4 cubic yards</span><span class="est-price" data-price="mulch">from $95<small>per cubic yard</small></span></label></li>
+              <li class="est-row"><input type="checkbox" id="est-aerate" value="aerate"><label for="est-aerate"><span class="est-name">Aerate &amp; overseed</span><span class="est-when">September · 1 visit</span><span class="est-price" data-price="aerate">from $160<small>per visit</small></span></label></li>
+              <li class="est-row"><input type="checkbox" id="est-leaves" value="leaves" checked><label for="est-leaves"><span class="est-name">Fall leaf cleanup</span><span class="est-when">Mid-October to Thanksgiving · 2 passes</span><span class="est-price" data-price="leaves">from $275<small>per pass</small></span></label></li>
+              <li class="est-row"><input type="checkbox" id="est-snow" value="snow" checked><label for="est-snow"><span class="est-name">Seasonal snow contract</span><span class="est-when">Dec 1 to Mar 31 · priced by driveway</span><span class="est-price" data-price="snow">from $575<small>per season</small></span></label></li>
+            </ul>
+          </fieldset>
+          <fieldset class="lots">
+            <legend class="label">Lot size</legend>
+            <label class="lot"><input type="radio" name="lot" value="small"><span>Under ¼ acre</span></label>
+            <label class="lot"><input type="radio" name="lot" value="medium" checked><span>¼–½ acre</span></label>
+            <label class="lot"><input type="radio" name="lot" value="large"><span>½ acre or more</span></label>
+          </fieldset>
+        </form>
+
+        <aside class="est-result" aria-labelledby="est-title">
+          <p id="est-title" class="est-result__label label">Your starting range</p>
+          <div class="est-live" aria-live="polite">
+            <p class="est-total"><span data-est-range>$2,385–$2,980</span><small data-est-sub>for the year, before a walk-through</small></p>
+            <p class="est-month">About <b data-est-month>$199</b> a month on the Year-Round Plan, billed in 12 payments.</p>
+            <ul class="est-lines" data-est-lines></ul>
+            <button class="btn btn--clay" type="button" data-est-use>Add this to my quote request <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></button>
+          </div>
+          <p class="est-static">Weekly mowing, two leaf passes and a snow contract on a ¼–½ acre lot start at about $2,385 a year.</p>
+          <p class="est-note">A ballpark, not a quote. Sample prices for this demo site; your written quote after a walk-through is the real number.</p>
+        </aside>
+      </div>
     </div>
   </section>
 
   <!-- ==================== THE CREW (about) ==================== -->
   <section id="crew" class="crew" aria-labelledby="crew-title">
     <div class="container">
-      <figure class="truck">
-        <svg viewBox="0 92 960 218" role="img" aria-labelledby="truck-title">
-          <title id="truck-title">Illustration of the company's green plow truck towing a white enclosed trailer lettered with the business name and phone number.</title>
-          <rect x="30" y="292" width="920" height="10" rx="5" class="f-pine" opacity=".16"/>
-          <!-- plow blade + mount -->
-          <path class="s-slate" stroke-width="7" d="M48 240H84M48 256H84"/>
-          <path class="f-rust" d="M28 184C10 200 6 252 22 284H48C40 254 40 212 52 184Z"/>
-          <rect x="18" y="282" width="34" height="7" rx="2" class="f-pine9"/>
-          <!-- truck body -->
-          <path class="f-pine7" d="M88 262H522V188Q522 180 514 180H348V134Q348 122 336 122H248Q240 122 234 129L196 178L100 186Q82 188 82 204V256Q82 262 88 262Z"/>
-          <path class="f-pine" d="M82 232H522V256Q522 262 516 262H88Q82 262 82 256Z"/>
-          <path class="f-frost" d="M246 132H334V174H214Z"/>
-          <rect x="288" y="132" width="8" height="42" class="f-pine7"/>
-          <rect x="258" y="110" width="66" height="10" rx="3" class="f-ochre"/>
-          <rect x="254" y="118" width="74" height="5" class="f-pine9"/>
-          <rect x="206" y="150" width="9" height="18" rx="2" class="f-pine9"/>
-          <path class="s-pine9" stroke-width="2.5" d="M204 180V250M340 128V250"/>
-          <rect x="316" y="196" width="16" height="5" rx="2.5" class="f-frost"/>
-          <path class="s-snow" stroke-width="3" d="M82 212H204M340 212H522" opacity=".9"/>
-          <path class="s-ochre" stroke-width="3" d="M82 218H204M340 218H522"/>
-          <use href="#logo" x="246" y="182" width="52" height="52"/>
-          <rect x="84" y="194" width="12" height="13" rx="2" class="f-ochre"/>
-          <rect x="76" y="242" width="20" height="18" rx="3" class="f-slate"/>
-          <text class="tl-small" x="358" y="205">GLENVIEW, IL</text>
-          <!-- tools in the bed -->
-          <path class="s-pine9" stroke-width="5" d="M420 180 446 118M470 180 484 108"/>
-          <path class="s-pine9" stroke-width="5" d="M436 112 458 122M476 104h18"/>
-          <!-- wheels -->
-          <circle cx="164" cy="266" r="40" class="f-pine9"/><circle cx="450" cy="266" r="40" class="f-pine9"/>
-          <circle cx="164" cy="266" r="32" class="f-ink"/><circle cx="164" cy="266" r="15" class="f-frost"/><circle cx="164" cy="266" r="6" class="f-slate"/>
-          <circle cx="450" cy="266" r="32" class="f-ink"/><circle cx="450" cy="266" r="15" class="f-frost"/><circle cx="450" cy="266" r="6" class="f-slate"/>
-          <!-- hitch -->
-          <path class="s-slate" stroke-width="8" d="M520 246H590"/>
-          <!-- enclosed trailer -->
-          <path class="f-paper" d="M600 100H930Q944 100 944 114V256Q944 264 936 264H596Q588 264 588 256V114Q588 100 600 100Z"/>
-          <path class="s-pine" stroke-width="3" d="M600 100H930Q944 100 944 114V256Q944 264 936 264H596Q588 264 588 256V114Q588 100 600 100Z"/>
-          <rect x="588" y="218" width="356" height="12" class="f-fern-dk"/>
-          <rect x="588" y="232" width="356" height="5" class="f-ochre"/>
-          <text class="tl-name" x="612" y="156" textLength="306" lengthAdjust="spacingAndGlyphs" data-biz="name">Northshore Green Co.</text>
-          <text class="tl-line" x="613" y="180">LAWN · BEDS · LEAVES · SNOW</text>
-          <text class="tl-phone" x="612" y="208" data-biz="phone">(847) 555-0142</text>
-          <rect x="934" y="112" width="6" height="12" rx="2" class="f-ochre"/><rect x="934" y="240" width="6" height="12" rx="2" class="f-rust"/>
-          <path class="s-slate" stroke-width="5" d="M604 264V294M596 294H612"/>
-          <circle cx="770" cy="268" r="30" class="f-pine9"/><circle cx="836" cy="268" r="30" class="f-pine9"/>
-          <circle cx="770" cy="270" r="24" class="f-ink"/><circle cx="770" cy="270" r="10" class="f-frost"/>
-          <circle cx="836" cy="270" r="24" class="f-ink"/><circle cx="836" cy="270" r="10" class="f-frost"/>
-          <path class="s-pine9" stroke-width="6" d="M736 254Q740 234 770 234H836Q866 234 870 254"/>
-        </svg>
-        <figcaption class="mono">Truck No. 2 and the mowing trailer. Tuesdays on the Glenview route.</figcaption>
-      </figure>
+      <h2 id="crew-title">Sixteen seasons from one Glenview shop</h2>
       <div class="crew__grid">
-        <div class="crew__copy">
-        <h2 id="crew-title">Sixteen seasons from one Glenview shop</h2>
-        <p class="lede"><span data-biz="name">Northshore Green Co.</span> started in 2009 with six lawns on one street, a used push mower and a borrowed pickup. Today there are nine of us and three plow trucks, and every route stays within about six miles of the shop. That's how a 3 a.m. snowfall is gone before your alarm.</p>
-        <p>You'll see the same crew lead every week. They learn which gate sticks, where the sprinkler heads hide, and that your dog is friendly.</p>
+        <figure class="photo">
+          <img src="img/landscaping/crew-hands-planting-860.webp"
+               srcset="img/landscaping/crew-hands-planting-600.webp 600w, img/landscaping/crew-hands-planting-860.webp 860w"
+               sizes="(min-width: 860px) 36vw, 100vw" width="860" height="574" loading="lazy" decoding="async"
+               alt="Gloveless hands setting a young shrub into a freshly dug hole in mulched soil">
+        </figure>
+        <div class="crew__story">
+          <p class="lede"><span data-biz="name">Northshore Green Co.</span> started in 2009 with six lawns on one street, a used push mower and a borrowed pickup.</p>
+          <p>Today there are nine of us and three plow trucks, and every route stays within about six miles of the shop. That's how a 3 a.m. snowfall is gone before your alarm, and why the same crew lead knows which gate sticks and where the sprinkler heads hide.</p>
         </div>
-        <dl class="spec">
-          <dt class="mono">Established</dt><dd>2009, Glenview</dd>
-          <dt class="mono">Crew</dt><dd>9, with 3 crew leads</dd>
-          <dt class="mono">Trucks</dt><dd>3, all plow-equipped</dd>
-          <dt class="mono">Insurance</dt><dd>$2M general liability</dd>
-          <dt class="mono">Route radius</dt><dd>About 6 miles</dd>
+        <dl class="facts">
+          <dt class="label">Since</dt><dd>2009, Glenview</dd>
+          <dt class="label">Crew</dt><dd>9, with 3 crew leads</dd>
+          <dt class="label">Trucks</dt><dd>3, all plow-equipped</dd>
+          <dt class="label">Insured</dt><dd>$2M general liability</dd>
+          <dt class="label">Radius</dt><dd>About 6 miles</dd>
         </dl>
       </div>
     </div>
@@ -1003,117 +867,94 @@ section[id] { scroll-margin-top: 70px; }
     <div class="container">
       <h2 id="reviews-title">Customer notes, by job</h2>
       <div class="reviews__grid">
-        <figure class="feature">
+        <figure class="review review--big">
+          <p class="review__job label">Seasonal snow contract</p>
           <blockquote><p>The February storm dropped nine inches overnight. Our drive was clear at 5:40, and they came back at noon for the slush wall the village plow left at the curb. I didn't pick up a shovel all winter.</p></blockquote>
-          <figcaption class="who"><b>Dana R., Glenview</b><span class="mono">Seasonal snow contract · 3rd winter</span></figcaption>
+          <figcaption>Dana R., Glenview<span>Third winter on contract</span></figcaption>
         </figure>
-        <ul class="jobs">
-          <li>
-            <figure class="job">
-              <p class="job__head mono"><span>Edging &amp; mulch</span><span>Northbrook · May</span></p>
-              <blockquote><p>They hand-cut every bed edge and spread four yards of mulch before lunch. The quote said $380 and the invoice said $380.</p></blockquote>
-              <figcaption class="who"><b>Marcus T., Northbrook</b></figcaption>
-            </figure>
-          </li>
-          <li>
-            <figure class="job">
-              <p class="job__head mono"><span>Fall leaf cleanup</span><span>Wilmette · Nov</span></p>
-              <blockquote><p>Our two oaks drop everything in one week. They came twice, hauled it all away, and even cleared the leaves out of the window wells.</p></blockquote>
-              <figcaption class="who"><b>Priya K., Wilmette</b></figcaption>
-            </figure>
-          </li>
-        </ul>
+        <figure class="review">
+          <p class="review__job label">Edging &amp; mulch</p>
+          <blockquote><p>They hand-cut every bed edge and spread four yards of mulch before lunch. The quote said $380 and the invoice said $380.</p></blockquote>
+          <figcaption>Marcus T., Northbrook<span>May</span></figcaption>
+        </figure>
+        <figure class="review">
+          <p class="review__job label">Fall leaf cleanup</p>
+          <blockquote><p>Our two oaks drop everything in one week. They came twice, hauled it all away, and even cleared the window wells.</p></blockquote>
+          <figcaption>Priya K., Wilmette<span>November</span></figcaption>
+        </figure>
       </div>
     </div>
   </section>
 
   <!-- ==================== SERVICE AREA ==================== -->
   <section id="area" class="area" aria-labelledby="area-title">
-    <div class="container area__grid">
-      <div>
-        <h2 id="area-title">Proudly serving Glenview and nearby suburbs</h2>
-        <p class="lede">Our routes stay inside about six miles of the shop. Here's when the mowing crew is usually on your street. Snow routes run every storm, contract homes first.</p>
-        <table class="routes">
-          <caption class="sr-only">Usual mowing route day by town</caption>
-          <thead><tr><th scope="col" class="mono">Town</th><th scope="col" class="mono" style="text-align:right">Mowing day</th></tr></thead>
-          <tbody>
-            <tr class="home"><th scope="row">Glenview</th><td>Mon &amp; Tue</td></tr>
-            <tr><th scope="row">Golf</th><td>Tue</td></tr>
-            <tr><th scope="row">Northbrook</th><td>Wed</td></tr>
-            <tr><th scope="row">Northfield</th><td>Wed</td></tr>
-            <tr><th scope="row">Wilmette</th><td>Thu</td></tr>
-            <tr><th scope="row">Winnetka</th><td>Thu</td></tr>
-            <tr><th scope="row">Skokie</th><td>Fri</td></tr>
-            <tr><th scope="row">Morton Grove</th><td>Fri</td></tr>
-          </tbody>
-        </table>
-        <p class="area__note">Just past the edge of the map? Call <a href="tel:+18475550142" data-biz="phone">(847) 555-0142</a>. If we can get a truck there before 6 a.m., we'll take the job.</p>
-      </div>
-
-      <figure class="map">
-        <svg viewBox="0 0 400 340" role="img" aria-labelledby="map-title map-desc">
-          <title id="map-title">Service area map</title>
-          <desc id="map-desc">Stylized map of the six-mile route loop around the Glenview shop, covering Northbrook, Northfield, Winnetka, Wilmette, Golf, Skokie and Morton Grove, with Lake Michigan to the east.</desc>
-          <defs>
-            <pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse"><path d="M0 4h8" class="m-hatch"/></pattern>
-          </defs>
-          <rect width="400" height="340" class="m-land"/>
-          <path class="m-preserve" d="M128 0C120 40 134 70 126 110C118 150 132 190 124 230C118 270 128 300 122 340H104C110 300 100 270 106 230C114 190 100 150 108 110C116 70 102 40 110 0Z"/>
-          <path class="m-road" d="M58 0C70 90 74 200 62 340M0 248C120 256 230 244 318 240"/>
-          <path class="m-lake" d="M302 0C298 60 308 120 320 170C330 220 336 280 340 340H400V0Z"/>
-          <path d="M302 0C298 60 308 120 320 170C330 220 336 280 340 340H400V0Z" fill="url(#hatch)"/>
-          <text class="m-lake-label" transform="translate(372 170) rotate(90)" text-anchor="middle">LAKE MICHIGAN</text>
-          <circle class="m-loop" cx="160" cy="170" r="140"/>
-          <circle class="m-dot" cx="98" cy="86" r="4.5"/><text class="m-town" x="107" y="91">Northbrook</text>
-          <circle class="m-dot" cx="186" cy="112" r="4.5"/><text class="m-town" x="195" y="117">Northfield</text>
-          <circle class="m-dot" cx="240" cy="86" r="4.5"/><text class="m-town" x="240" y="74" text-anchor="middle">Winnetka</text>
-          <circle class="m-dot" cx="288" cy="150" r="4.5"/><text class="m-town" x="279" y="155" text-anchor="end">Wilmette</text>
-          <circle class="m-dot" cx="226" cy="206" r="4.5"/><text class="m-town" x="235" y="211">Golf</text>
-          <circle class="m-dot" cx="262" cy="262" r="4.5"/><text class="m-town" x="253" y="267" text-anchor="end">Skokie</text>
-          <circle class="m-dot" cx="138" cy="286" r="4.5"/><text class="m-town" x="147" y="291">Morton Grove</text>
-          <use href="#logo" x="136" y="146" width="48" height="48"/>
-          <text class="m-home" x="160" y="216" text-anchor="middle">GLENVIEW</text>
-          <g transform="translate(26 40)"><path class="m-dot" d="M0-18 6 0 0-4-6 0z"/><text class="m-town" x="0" y="15" text-anchor="middle">N</text></g>
-          <rect x="12" y="306" width="150" height="24" rx="5" class="m-land"/>
-          <path class="m-loop" d="M20 318h28"/><text class="m-legend" x="56" y="322">6-MILE ROUTE LOOP</text>
-        </svg>
-        <figcaption class="mono">Not to scale. Route days are typical, not promised.</figcaption>
-      </figure>
+    <div class="area__photo">
+      <img src="img/landscaping/area-leafy-street-1280.webp"
+           srcset="img/landscaping/area-leafy-street-800.webp 800w, img/landscaping/area-leafy-street-1280.webp 1280w"
+           sizes="100vw" width="1280" height="960" loading="lazy" decoding="async"
+           alt="A quiet residential street in early fall, with shade trees, low ranch houses and leaves along the curb">
     </div>
+    <div class="area__wrap">
+      <div class="container">
+        <div class="area__card">
+          <h2 id="area-title">Proudly serving Glenview and nearby suburbs</h2>
+          <p>Every route stays within about six miles of the shop. Here's the usual mowing day for each town. In a storm, contract driveways go first wherever they are.</p>
+          <table class="routes">
+            <caption class="sr-only">Usual mowing day by town</caption>
+            <thead><tr><th scope="col" class="label">Town</th><th scope="col" class="label" style="text-align:right">Mowing day</th></tr></thead>
+            <tbody>
+              <tr class="home"><th scope="row">Glenview</th><td>Mon &amp; Tue</td></tr>
+              <tr><th scope="row">Golf</th><td>Tue</td></tr>
+              <tr><th scope="row">Northbrook</th><td>Wed</td></tr>
+              <tr><th scope="row">Northfield</th><td>Wed</td></tr>
+              <tr><th scope="row">Wilmette</th><td>Thu</td></tr>
+              <tr><th scope="row">Winnetka</th><td>Thu</td></tr>
+              <tr><th scope="row">Skokie</th><td>Fri</td></tr>
+              <tr><th scope="row">Morton Grove</th><td>Fri</td></tr>
+            </tbody>
+          </table>
+          <p class="area__note">Just past the list? Call <a href="tel:+18475550142" data-biz="phone">(847) 555-0142</a> and we'll tell you straight.</p>
+        </div>
+      </div>
+    </div>
+    <div class="area__pad"></div>
   </section>
 
-  <!-- ==================== QUOTE FORM (work order) ==================== -->
+  <!-- ==================== QUOTE FORM ==================== -->
   <section id="quote" class="quote on-dark" aria-labelledby="quote-title">
     <div class="container quote__grid">
       <div class="quote__intro">
         <h2 id="quote-title">Get a free, written quote</h2>
-        <p class="lede">Tell us what you need. A crew lead walks the property, measures the beds and the drive, and leaves a written price in your door, usually within two business days. The number on the quote is the number on the bill.</p>
+        <p class="lede">A crew lead walks the property, measures the beds and the drive, and leaves a written price in your door. The number on the quote is the number on the bill.</p>
+        <ol class="steps">
+          <li><span><b>Send the form</b><span>Two minutes, tops.</span></span></li>
+          <li><span><b>We call within one business day</b><span>To set a time for the walk-through.</span></span></li>
+          <li><span><b>Written quote in your door</b><span>Usually within two business days.</span></span></li>
+        </ol>
         <div class="call-shop">
           <p>Rather talk it through? Call the shop.</p>
           <a class="call-shop__phone" href="tel:+18475550142" data-biz-href="phone"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span data-biz="phone">(847) 555-0142</span></a>
           <ul>
             <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-mail"/></svg><a href="mailto:hello@example.com" data-biz="email">hello@example.com</a></li>
-            <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-clock"/></svg><span>Office <span data-biz="hours">Mon–Sat, 7am–6pm</span></span></li>
+            <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-clock"/></svg><span>Office: <span data-biz="hours">Mon–Sat, 7am–6pm</span></span></li>
           </ul>
         </div>
       </div>
 
-      <div class="wo">
-        <div class="wo__head">
-          <h3>Quote request</h3>
-          <p class="wo__meta mono">Customer copy · <span data-today>Date ____</span></p>
-        </div>
+      <div class="form-card">
         <!--
           FORM BACKEND: this form is demo-only. The "DEMO FORM HANDLER" script at the
-          bottom of the page stops the submit and shows the "Received" message.
+          bottom of the page stops the submit and shows a thank-you message.
           To collect real requests, pick one:
             - Formspree:     action="https://formspree.io/f/YOUR_FORM_ID" (keep method="post"),
                              then send the data with fetch() inside the demo handler.
             - Netlify Forms: add data-netlify="true" name="quote" to <form>, remove the demo handler.
             - Your own endpoint or CRM webhook: set action to its URL.
         -->
-        <form id="quote-form" class="quote-form wo__body" action="#" method="post">
-          <p class="wo__hint">Everything is required unless it says optional.</p>
+        <form id="quote-form" class="quote-form" action="#" method="post">
+          <h3>Quote request</h3>
+          <p class="form-card__sub">Everything is required unless it says optional.</p>
+          <p class="est-attached" data-est-attached hidden><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Your estimate is in the notes below. Edit anything you like.</span></p>
           <div class="fields">
             <div class="field">
               <label for="f-name">Name</label>
@@ -1131,28 +972,27 @@ section[id] { scroll-margin-top: 70px; }
               <label for="f-address">Street address or suburb</label>
               <input id="f-address" name="address" type="text" autocomplete="street-address" placeholder="e.g. 456 Elm Ave, Glenview" required>
             </div>
-            <div class="field full">
-              <label for="f-service">Service needed</label>
+            <div class="field">
+              <label for="f-service">Main service</label>
               <select id="f-service" name="service" required>
-                <option value="">Pick the main one…</option>
-                <optgroup label="Snow &amp; ice">
-                  <option>Seasonal snow contract</option>
-                  <option>Snow plowing, per push</option>
-                  <option>Sidewalk &amp; driveway shoveling and salting</option>
-                </optgroup>
-                <optgroup label="Lawn &amp; beds">
-                  <option>Weekly mowing &amp; edging</option>
-                  <option>Spring cleanup</option>
-                  <option>Bed edging &amp; mulch</option>
-                  <option>Aeration &amp; overseeding</option>
-                </optgroup>
-                <optgroup label="Fall">
-                  <option>Fall leaf cleanup</option>
-                  <option>Snow stakes &amp; winterizing</option>
-                </optgroup>
-                <optgroup label="Other">
-                  <option>A bit of everything (year-round)</option>
-                </optgroup>
+                <option value="">Pick one…</option>
+                <option>Weekly mowing &amp; edging</option>
+                <option>Spring cleanup</option>
+                <option>Edging &amp; mulch</option>
+                <option>Aerate &amp; overseed</option>
+                <option>Fall leaf cleanup</option>
+                <option>Seasonal snow contract</option>
+                <option>Snow plowing, per push</option>
+                <option>A mix of services (see notes)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="f-lot">Lot size <span class="opt">Optional</span></label>
+              <select id="f-lot" name="lot">
+                <option value="">Not sure</option>
+                <option>Under ¼ acre</option>
+                <option>¼–½ acre</option>
+                <option>½ acre or more</option>
               </select>
             </div>
             <div class="field full">
@@ -1160,16 +1000,16 @@ section[id] { scroll-margin-top: 70px; }
               <textarea id="f-message" name="message" rows="4" placeholder="Corner lot, long drive, gate code, the dog's name…"></textarea>
             </div>
           </div>
-          <button class="btn btn--rust" type="submit">Send quote request <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></button>
-          <p class="wo__fine">We use this only to call you back about the quote.</p>
+          <button class="btn btn--clay" type="submit">Send quote request <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></button>
+          <p class="form-fine">We use this only to call you back about your quote.</p>
         </form>
 
-        <div id="received" class="received" role="status" tabindex="-1" hidden>
-          <p class="stamp" aria-hidden="true">Received</p>
-          <h3>Thanks<span data-thanks-name></span>. It's on the board.</h3>
+        <div id="sent" class="sent" role="status" tabindex="-1" hidden>
+          <div class="sent__mark"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg></div>
+          <h3>Thanks<span data-thanks-name></span>, we've got it.</h3>
           <p>A crew lead will call <strong data-thanks-phone>you</strong> within one business day to set up the walk-through.</p>
           <p>Need us sooner? Call <a href="tel:+18475550142" data-biz="phone">(847) 555-0142</a>.</p>
-          <button class="btn btn--line" type="button" data-form-reset>Send another request</button>
+          <button class="btn btn--ghost" type="button" data-form-reset>Send another request</button>
         </div>
       </div>
     </div>
@@ -1194,15 +1034,15 @@ section[id] { scroll-margin-top: 70px; }
       <h2>Hours</h2>
       <ul>
         <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-clock"/></svg><span>Office: <span data-biz="hours">Mon–Sat, 7am–6pm</span></span></li>
-        <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-plow"/></svg><span>Snow line: 24/7, Dec–Mar</span></li>
+        <li><span>Snow line: 24/7, December to March</span></li>
       </ul>
     </div>
     <nav aria-label="Footer">
       <h2>On this page</h2>
       <ul>
-        <li><a href="#year">The yard year</a></li>
+        <li><a href="#lawn">Lawn &amp; beds</a></li>
         <li><a href="#snow">Snow contracts</a></li>
-        <li><a href="#area">Route days</a></li>
+        <li><a href="#pricing">Price out your year</a></li>
         <li><a href="#quote">Free quote</a></li>
       </ul>
     </nav>
@@ -1212,11 +1052,27 @@ section[id] { scroll-margin-top: 70px; }
     <!-- SAMPLE RIBBON: remove when customizing for a real client -->
     <div class="sample-ribbon">Sample design</div>
     <!-- /SAMPLE RIBBON -->
+    <!-- PHOTO CREDITS: required while the CC BY photos are on the page. Delete once they're replaced with the client's own. -->
+    <details class="credits">
+      <summary>Photo credits</summary>
+      <ul>
+        <li>“Chicago Bungalows in Bevo” by <a href="https://www.flickr.com/photos/53301297@N00">pasa47</a>, <a href="https://creativecommons.org/licenses/by/2.0/">CC BY 2.0</a> (<a href="https://www.flickr.com/photos/53301297@N00/53896404855">source</a>). Cropped, color-graded, plates blurred.</li>
+        <li>“cleanup on aisle 3” by <a href="https://www.flickr.com/photos/51035597937@N01">mccun934</a>, <a href="https://creativecommons.org/licenses/by/2.0/">CC BY 2.0</a> (<a href="https://www.flickr.com/photos/51035597937@N01/6345691700">source</a>). Cropped, color-graded.</li>
+        <li>“Snow-covered house on Hillcrest Drive” by <a href="https://www.flickr.com/photos/193316968@N06">chris.rycroft</a>, <a href="https://creativecommons.org/licenses/by/2.0/">CC BY 2.0</a> (<a href="https://www.flickr.com/photos/193316968@N06/54017879914">source</a>). Cropped, color-graded, house number blurred.</li>
+        <li>“Front yard before…” and “Front yard after…” by <a href="https://www.flickr.com/photos/36767313@N00">Scottb211</a>, <a href="https://creativecommons.org/licenses/by/2.0/">CC BY 2.0</a> (<a href="https://www.flickr.com/photos/36767313@N00/50448888161">before</a>, <a href="https://www.flickr.com/photos/36767313@N00/50449062502">after</a>). Cropped to match, color-graded.</li>
+        <li>“More work on the front flower bed.” by <a href="https://www.flickr.com/photos/60849758@N05">HAUS By Emily May</a>, <a href="https://creativecommons.org/licenses/by/2.0/">CC BY 2.0</a> (<a href="https://www.flickr.com/photos/60849758@N05/9002669952">source</a>). Cropped, color-graded.</li>
+        <li>“A view up my street” by <a href="https://www.flickr.com/photos/60206297@N00">tachyondecay</a>, <a href="https://creativecommons.org/licenses/by/2.0/">CC BY 2.0</a> (<a href="https://www.flickr.com/photos/60206297@N00/15624651785">source</a>). Cropped, color-graded.</li>
+        <li>“A random view of sidewalk snow bank” by Tinjure20 (<a href="https://wordpress.org/photos/photo/67963bddca/">source</a>) and “Planting an Azalea” via rawpixel (<a href="https://www.rawpixel.com/image/6074385/planting-azalea">source</a>), both <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0</a>.</li>
+      </ul>
+    </details>
   </div>
 </footer>
 
 <script>
 (function () {
+  var root = document.documentElement;
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
   /* ---------- Mobile menu ---------- */
   var toggle = document.querySelector(".nav-toggle");
   var menu = document.getElementById("site-menu");
@@ -1231,49 +1087,151 @@ section[id] { scroll-margin-top: 70px; }
     if (e.key === "Escape" && toggle.getAttribute("aria-expanded") === "true") { setMenu(false); toggle.focus(); }
   });
 
-  /* ---------- Yard year: mark this month and what's in season ---------- */
-  var now = new Date();
-  var col = now.getMonth() * 2 + (now.getDate() > 15 ? 2 : 1); // half-month column 1–24
-  var almanac = document.getElementById("almanac");
-  almanac.style.setProperty("--now", now.getMonth() * 2 + 1);
-  almanac.classList.add("has-now");
-  var months = almanac.querySelectorAll(".cal-grid > span");
-  if (months[now.getMonth()]) months[now.getMonth()].classList.add("is-now");
-  almanac.querySelectorAll(".cal-row").forEach(function (row) {
-    var on = row.getAttribute("data-cols").split(",").some(function (r) {
-      var p = r.split("-"); return col >= +p[0] && col < +p[1];
+  /* ---------- Season hero: crossfade between photos ---------- */
+  var imgs = {};
+  document.querySelectorAll(".season-img").forEach(function (img) { imgs[img.getAttribute("data-season")] = img; });
+  var seasonBtns = Array.prototype.slice.call(document.querySelectorAll(".season-btn"));
+  var card = document.querySelector(".season-card");
+  var cap = {
+    when: card.querySelector(".season-caption__when"),
+    text: card.querySelector(".season-caption__text"),
+    link: card.querySelector(".season-caption__link")
+  };
+  // The other seasons' photos only start loading once someone shows interest in the switch.
+  function armAll() { Object.keys(imgs).forEach(function (k) { imgs[k].classList.add("is-armed"); }); }
+  ["pointerenter", "focusin", "touchstart"].forEach(function (ev) { card.addEventListener(ev, armAll, { once: true, passive: true }); });
+
+  function showSeason(season) {
+    Object.keys(imgs).forEach(function (k) {
+      var on = k === season;
+      imgs[k].classList.toggle("is-active", on);
+      imgs[k].setAttribute("aria-hidden", on ? "false" : "true");
     });
-    if (!on) return;
+  }
+  function selectSeason(btn) {
+    var season = btn.getAttribute("data-season");
+    seasonBtns.forEach(function (b) { b.setAttribute("aria-pressed", String(b === btn)); });
+    root.setAttribute("data-season", season);
+    cap.when.textContent = btn.getAttribute("data-when");
+    cap.text.textContent = btn.getAttribute("data-text");
+    cap.link.textContent = btn.getAttribute("data-link");
+    cap.link.setAttribute("href", btn.getAttribute("data-href"));
+    var img = imgs[season];
+    img.classList.add("is-armed");
+    if (img.complete && img.naturalWidth) { showSeason(season); }
+    else {
+      var done = function () { if (root.getAttribute("data-season") === season) showSeason(season); };
+      img.addEventListener("load", done, { once: true });
+      img.addEventListener("error", done, { once: true });
+    }
+  }
+  seasonBtns.forEach(function (btn) { btn.addEventListener("click", function () { selectSeason(btn); }); });
+  // Mark the season we're in right now.
+  var m = new Date().getMonth();
+  var nowSeason = m >= 3 && m <= 8 ? "summer" : m >= 9 && m <= 10 ? "fall" : "winter";
+  seasonBtns.forEach(function (b) {
+    if (b.getAttribute("data-season") !== nowSeason) return;
     var tag = document.createElement("span");
-    tag.className = "now-tag mono";
-    tag.textContent = "In season";
-    row.querySelector(".cal-row__name").appendChild(tag);
+    tag.className = "now";
+    tag.textContent = "Right now";
+    b.appendChild(tag);
   });
 
-  /* ---------- Date on the work order ---------- */
-  var today = document.querySelector("[data-today]");
-  if (today) today.textContent = now.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+  /* ---------- Before / after slider ---------- */
+  document.querySelectorAll(".compare").forEach(function (fig) {
+    var range = fig.querySelector(".compare__range");
+    function update() {
+      fig.style.setProperty("--pos", range.value + "%");
+      range.setAttribute("aria-valuetext", range.value + "% before, " + (100 - range.value) + "% after");
+    }
+    range.addEventListener("input", update);
+    update();
+  });
+
+  /* ---------- Quick estimate ---------- */
+  var est = document.getElementById("estimator");
+  var money = function (n) { return "$" + Math.round(n).toLocaleString("en-US"); };
+  var to5 = function (n) { return Math.round(n / 5) * 5; };
+  var out = {
+    range: document.querySelector("[data-est-range]"),
+    sub: document.querySelector("[data-est-sub]"),
+    month: document.querySelector("[data-est-month]"),
+    lines: document.querySelector("[data-est-lines]"),
+    use: document.querySelector("[data-est-use]")
+  };
+  // Keep the visible price list in sync with the ESTIMATE config.
+  ESTIMATE.services.forEach(function (s) {
+    var el = est.querySelector('[data-price="' + s.id + '"]');
+    if (el) el.innerHTML = "from " + money(s.price) + "<small>per " + s.unit + "</small>";
+  });
+  var current = null;
+  function calculate() {
+    var lotId = (est.querySelector('input[name="lot"]:checked') || {}).value || "medium";
+    var lot = ESTIMATE.lots.filter(function (l) { return l.id === lotId; })[0] || ESTIMATE.lots[0];
+    var total = 0, picked = [];
+    out.lines.innerHTML = "";
+    ESTIMATE.services.forEach(function (s) {
+      var box = document.getElementById("est-" + s.id);
+      if (!box || !box.checked) return;
+      var sub = to5(s.price * s.qty * (s.flat ? 1 : lot.factor));
+      total += sub;
+      picked.push(s.label);
+      var li = document.createElement("li");
+      li.innerHTML = "<span></span><span></span>";
+      li.firstChild.textContent = s.label;
+      li.lastChild.textContent = money(sub);
+      out.lines.appendChild(li);
+    });
+    if (!picked.length) {
+      out.range.textContent = "$0";
+      out.sub.textContent = "Tick at least one service";
+      out.month.textContent = "$0";
+      out.use.disabled = true;
+      current = null;
+      return;
+    }
+    var high = to5(total * ESTIMATE.spread);
+    out.range.textContent = money(total) + "–" + money(high);
+    out.sub.textContent = "for the year on a " + lot.label + " lot";
+    out.month.textContent = money(total / ESTIMATE.payments);
+    out.use.disabled = false;
+    current = { picked: picked, lot: lot, range: out.range.textContent };
+  }
+  est.addEventListener("change", calculate);
+  calculate();
+
+  var form = document.getElementById("quote-form");
+  out.use.addEventListener("click", function () {
+    if (!current) return;
+    var f = form.elements;
+    f.namedItem("service").value = current.picked.length > 1 ? "A mix of services (see notes)" : current.picked[0];
+    f.namedItem("lot").value = current.lot.label;
+    f.namedItem("message").value = "From the estimator: " + current.picked.join(", ") + ". Lot: " + current.lot.label + ". Starting range " + current.range + " for the year.";
+    form.querySelector("[data-est-attached]").hidden = false;
+    document.getElementById("quote").scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth" });
+    f.namedItem("name").focus({ preventScroll: true });
+  });
 
   /* ---------- DEMO FORM HANDLER ----------
-     Stops the real submit and shows the "Received" message.
+     Stops the real submit and shows a thank-you message.
      To send real data, see the FORM BACKEND comment above the form. */
-  var form = document.getElementById("quote-form");
-  var done = document.getElementById("received");
+  var sent = document.getElementById("sent");
   form.addEventListener("submit", function (e) {
     e.preventDefault();
     if (!form.checkValidity()) { form.reportValidity(); return; }
     // e.g. fetch(form.action, { method: "POST", body: new FormData(form), headers: { Accept: "application/json" } });
     var first = (form.elements.namedItem("name").value || "").trim().split(/\s+/)[0];
     var phone = (form.elements.namedItem("phone").value || "").trim();
-    done.querySelector("[data-thanks-name]").textContent = first ? ", " + first : "";
-    done.querySelector("[data-thanks-phone]").textContent = phone || "you";
+    sent.querySelector("[data-thanks-name]").textContent = first ? ", " + first : "";
+    sent.querySelector("[data-thanks-phone]").textContent = phone || "you";
     form.hidden = true;
-    done.hidden = false;
-    done.focus();
+    sent.hidden = false;
+    sent.focus();
   });
-  done.querySelector("[data-form-reset]").addEventListener("click", function () {
+  sent.querySelector("[data-form-reset]").addEventListener("click", function () {
     form.reset();
-    done.hidden = true;
+    form.querySelector("[data-est-attached]").hidden = true;
+    sent.hidden = true;
     form.hidden = false;
     form.elements.namedItem("name").focus();
   });
