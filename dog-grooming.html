@@ -23,6 +23,25 @@
         are plain HTML below.
      5. FORM -> search for "FORM BACKEND" to plug in a real form service.
      6. Remove the "Sample design" badge in the footer (search "SAMPLE RIBBON").
+     7. PHOTOS -> placeholder dog photos (CC0 / CC BY, see img/dog-grooming/
+        CREDITS.md). Swap these for the client's own photos, keeping the
+        file names or updating the src/srcset paths:
+          img/dog-grooming/washer-rinse-bath-tub.webp        (hero porthole 1)
+          img/dog-grooming/washer-fluff-apricot-doodle.webp  (hero porthole 2)
+          img/dog-grooming/washer-spa-towel-puppy.webp       (hero porthole 3)
+          img/dog-grooming/washer-done-white-doodle.webp     (hero porthole 4)
+          img/dog-grooming/biscuit-maltipoo-before.webp      (before/after slider:
+          img/dog-grooming/biscuit-maltipoo-after.webp        use the client's own
+                                                              before & after shots,
+                                                              same 4:5 crop; the
+                                                              "after" is also the
+                                                              report-card photo)
+          img/dog-grooming/pepper-mini-schnauzer-280|560.webp (instant photo)
+          img/dog-grooming/luna-shih-tzu-280|560.webp        (instant photo)
+          img/dog-grooming/mochi-pomeranian-280|560.webp     (instant photo)
+          img/dog-grooming/avatar-biscuit|luna|pepper-96.webp (review avatars)
+        When the photos are the client's own, delete the "Photo credits" block
+        in the footer (search "PHOTO CREDITS") and img/dog-grooming/CREDITS.md.
      ========================================================================= -->
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Wag &amp; Wash Studio | Dog Grooming in Glenview, IL</title>
@@ -88,35 +107,20 @@
     /* Laundromat pastels */
     --tile:         #FFD4DF;  /* pink wall tile */
     --grout:        #FFF3F6;
-    --pink-strong:  #FF8DBB;  /* bows, tongues */
     --mint:         #BFEBDB;  /* machines */
     --mint-deep:    #86CFB5;
     --butter:       #FFE58C;  /* signage */
     --butter-soft:  #FFF5CF;
     --sky:          #CFE6FF;  /* porthole glass */
     --sky-soft:     #EBF5FF;
-    --sky-deep:     #93C3EC;
     --lilac:        #E2D7FF;
     --chrome:       #E4E9EC;
     --chrome-dark:  #A7B3BA;
-    --cloud:        #ECE8EE;  /* "before" photo background */
 
     /* Deep accent: coin-op red (buttons, prices, stamps) */
     --signal:       #C4214F;
     --signal-deep:  #8E1435;
 
-    /* Illustration fur */
-    --fur:          #F9DDB1;
-    --fur-light:    #FFF6E8;
-    --fur-dark:     #E2A86F;
-    --fur-grey:     #C6CED4;
-    --fur-grey-dark:#8F9BA3;
-    --fur-orange:   #F5B36C;
-    --fur-dull:     #CDB89C;
-    --fur-dull-light:#E4D6C2;
-    --fur-dull-dark:#A2896A;
-    --mud:          #8F6E52;
-    --leaf:         #8CCB9B;
 
     /* Roles */
     --bg:    var(--paper);
@@ -178,23 +182,6 @@
   .btn--line:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--ink); }
   .btn--sm { min-height: 44px; padding: .5em 1em; font-size: .97rem; }
 
-  /* SVG paint classes (illustrations) */
-  .s-ink   { stroke: var(--ink); stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
-  .s-thin  { stroke-width: 3.5; }
-  .s-fat   { stroke-width: 11; }
-  .s-soft  { stroke: var(--ink-soft); stroke-width: 3; stroke-linecap: round; fill: none; opacity: .45; }
-  .s-tangle{ stroke: var(--fur-dull-dark); stroke-width: 3.5; stroke-linecap: round; fill: none; }
-  .s-mud   { stroke: var(--mud); stroke-width: 4; stroke-linecap: round; fill: none; }
-  .f-none { fill: none; } .f-white { fill: var(--white); } .f-ink { fill: var(--ink); }
-  .f-fur { fill: var(--fur); } .f-fur-light { fill: var(--fur-light); } .f-fur-dark { fill: var(--fur-dark); }
-  .f-grey { fill: var(--fur-grey); } .f-grey-dark { fill: var(--fur-grey-dark); } .f-orange { fill: var(--fur-orange); }
-  .f-dull { fill: var(--fur-dull); } .f-dull-light { fill: var(--fur-dull-light); } .f-dull-dark { fill: var(--fur-dull-dark); }
-  .f-mud { fill: var(--mud); } .f-leaf { fill: var(--leaf); } .f-pink-strong { fill: var(--pink-strong); }
-  .f-sky { fill: var(--sky); } .f-butter { fill: var(--butter); } .f-tile { fill: var(--tile); } .f-signal { fill: var(--signal); }
-  .blush { fill: var(--pink-strong); opacity: .5; }
-  .dust  { fill: var(--ink-soft); opacity: .22; }
-  .water { fill: var(--sky-deep); opacity: .6; }
-  .spark { fill: var(--butter); stroke: var(--ink); stroke-width: 1.6; stroke-linejoin: round; }
   .ico   { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 
   /* ---------- Header ---------- */
@@ -293,14 +280,20 @@
   }
   .machine__door {
     position: relative; width: 82%; aspect-ratio: 1; margin: 14px auto 0; overflow: hidden; border-radius: 50%;
-    border: 9px solid var(--chrome); box-shadow: 0 0 0 3px var(--ink), inset 0 0 0 3px var(--chrome-dark);
-    background: radial-gradient(circle at 34% 28%, var(--white) 0 10%, var(--sky) 52%);
+    border: 9px solid var(--chrome); box-shadow: 0 0 0 3px var(--ink);
+    background: var(--sky);
   }
-  .machine__door svg { width: 100%; height: 100%; }
+  .machine__door img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  /* glass: soft reflection + inner shade over the photo */
+  .machine__door::after {
+    content: ""; position: absolute; inset: 0; border-radius: 50%; pointer-events: none;
+    background:
+      radial-gradient(ellipse 30% 16% at 30% 18%, color-mix(in srgb, var(--white) 45%, transparent), transparent 70%),
+      linear-gradient(140deg, color-mix(in srgb, var(--sky) 22%, transparent), transparent 40%);
+    box-shadow: inset 0 0 0 3px var(--chrome-dark), inset 0 6px 14px color-mix(in srgb, var(--ink) 35%, transparent);
+  }
   .machine__no { position: absolute; left: 12px; bottom: 5px; font: 700 .58rem/1 var(--font-mono); letter-spacing: .08em; color: color-mix(in srgb, var(--ink) 70%, transparent); }
   .machine--3, .machine--4 { display: none; }
-  .slosh { animation: slosh 3.2s ease-in-out infinite alternate; transform-box: view-box; transform-origin: 50% 70%; }
-  @keyframes slosh { from { transform: rotate(-5deg); } to { transform: rotate(5deg); } }
 
   /* ---------- Cycles (packages by size) ---------- */
   .cycles-head { display: grid; gap: 2rem; margin-bottom: 2.5rem; }
@@ -396,12 +389,13 @@
   .work { background: var(--sky-soft); }
   .work__grid { display: grid; gap: 2.5rem; align-items: center; }
   .work__copy h2 { max-width: 10ch; }
+  .work__copy > p { max-width: 34rem; }
   .polaroid {
     margin: 0; padding: 12px 12px 0; background: var(--white); border-radius: 6px;
     box-shadow: 0 1px 2px color-mix(in srgb, var(--ink) 22%, transparent), 0 24px 40px -24px color-mix(in srgb, var(--ink) 55%, transparent);
   }
   .polaroid__cap { margin: 0; padding: .55rem .4rem .8rem; font: 600 clamp(1.22rem, 1rem + .9vw, 1.5rem)/1.1 var(--font-hand); text-align: center; color: var(--ink); }
-  .polaroid--big { max-width: 700px; transform: rotate(-1.2deg); }
+  .polaroid--big { width: 100%; max-width: 440px; justify-self: center; transform: rotate(-1.2deg); }
   .cut-sheet { margin: 1.5rem 0 0; border-top: 2px solid var(--ink); }
   .cut-sheet div { display: grid; grid-template-columns: 6.5rem 1fr; gap: .75rem; padding: .6rem 0; border-bottom: 2px solid color-mix(in srgb, var(--ink) 12%, transparent); }
   .cut-sheet dt { padding-top: .25rem; font: 700 .7rem var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); }
@@ -410,13 +404,12 @@
   @property --pos { syntax: "<percentage>"; inherits: true; initial-value: 50%; }
   .ba {
     --pos: 50%;
-    position: relative; aspect-ratio: 5 / 4; overflow: hidden; border-radius: 3px;
+    position: relative; aspect-ratio: 4 / 5; overflow: hidden; border-radius: 3px; background: var(--sky-soft);
     touch-action: pan-y; user-select: none; -webkit-user-select: none; cursor: ew-resize;
   }
   .ba__layer { position: absolute; inset: 0; }
-  .ba__layer svg { width: 100%; height: 100%; }
-  .ba__layer--before { background: var(--cloud); }
-  .ba__layer--after { background: var(--mint); clip-path: inset(0 0 0 var(--pos)); }
+  .ba__layer img { display: block; width: 100%; height: 100%; object-fit: cover; pointer-events: none; -webkit-user-drag: none; }
+  .ba__layer--after { clip-path: inset(0 0 0 var(--pos)); }
   .ba__tag { position: absolute; top: .75rem; padding: .3rem .55rem; border-radius: 6px; background: var(--white); border: 2px solid var(--ink); font: 700 .68rem/1 var(--font-mono); letter-spacing: .1em; text-transform: uppercase; }
   .ba__tag--before { left: .75rem; }
   .ba__tag--after { right: .75rem; background: var(--ink); color: var(--white); }
@@ -434,10 +427,7 @@
   .minis { list-style: none; margin: 3rem 0 0; padding: 0; display: grid; gap: 1rem; }
   .mini { display: grid; grid-template-columns: 112px 1fr; align-items: center; gap: .9rem; padding: 10px; }
   .mini .polaroid__cap { padding: 0; text-align: left; font-size: 1.35rem; }
-  .mini__photo { aspect-ratio: 1; border-radius: 3px; background: var(--bgc, var(--sky)); }
-  .mini__photo svg { width: 100%; height: 100%; }
-  .mini:nth-child(2) .mini__photo { --bgc: var(--tile); }
-  .mini:nth-child(3) .mini__photo { --bgc: var(--butter); }
+  .mini__photo { display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; border-radius: 3px; background: var(--sky-soft); }
 
   /* ---------- About + report card ---------- */
   .about__grid { display: grid; gap: 3rem; align-items: center; }
@@ -450,10 +440,16 @@
     position: relative; padding: 1.25rem 1.2rem 1.4rem; background: var(--white); border: 2px solid var(--ink); border-radius: 18px;
     transform: rotate(1.3deg); box-shadow: 8px 10px 0 var(--tile);
   }
-  .report__head { display: flex; justify-content: space-between; align-items: flex-end; gap: 1rem; margin-bottom: .9rem; padding-bottom: .65rem; border-bottom: 3px solid var(--ink); }
+  .report__head { margin-bottom: .9rem; padding: 0 6.5rem .65rem 0; border-bottom: 3px solid var(--ink); }
+  .report__photo {
+    position: absolute; top: -1.4rem; right: 1rem; width: 92px; margin: 0; padding: 5px 5px 14px; background: var(--white);
+    border-radius: 3px; transform: rotate(4deg); box-shadow: 0 1px 2px color-mix(in srgb, var(--ink) 30%, transparent), 0 10px 18px -10px color-mix(in srgb, var(--ink) 60%, transparent);
+  }
+  .report__photo img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; }
+  .report__clip { position: absolute; top: -14px; left: 14px; width: 22px; height: 40px; fill: none; stroke: var(--chrome-dark); stroke-width: 1.8; stroke-linecap: round; }
   .report__brand { margin: 0 0 .35rem; }
   .report__title { margin: 0; font: 400 2rem/.95 var(--font-sign); color: var(--signal); }
-  .report__no { margin: 0; white-space: nowrap; }
+  .report__no { margin: .35rem 0 0; }
   .report dl { margin: 0; }
   .report dt { font: 700 .64rem var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); }
   .report dd { margin: 0; }
@@ -484,7 +480,8 @@
   .quote blockquote p { margin: 0; }
   .quote--lead blockquote p { font-size: clamp(1.3rem, 1.05rem + 1.15vw, 1.9rem); font-weight: 700; line-height: 1.32; letter-spacing: -.01em; }
   .quote--lead::before { content: "“"; content: "“" / ""; display: block; height: .55em; font: 400 5.5rem/1 var(--font-sign); color: var(--signal); }
-  .quote figcaption { margin-top: 1rem; }
+  .quote figcaption { display: flex; align-items: center; gap: .8rem; margin-top: 1rem; }
+  .avatar { flex: none; width: 48px; height: 48px; border-radius: 50%; object-fit: cover; border: 2px solid var(--ink); background: var(--white); }
   .quote figcaption strong { font-weight: 800; }
   .quote__meta { display: block; margin-top: .15rem; font: 700 .72rem/1.4 var(--font-mono); letter-spacing: .05em; text-transform: uppercase; color: var(--ink-soft); }
   .quote--card { padding: 1.25rem 1.3rem; background: var(--white); border: 2px solid var(--ink); border-radius: 20px; }
@@ -560,6 +557,13 @@
   .footer-col a { display: inline-block; padding-block: .25rem; font-weight: 700; }
   .footer-bottom { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .8rem 1.25rem; padding-block: 1.2rem 1.6rem; border-top: 2px solid var(--ink); font-size: .9rem; }
   .footer-bottom p { margin: 0; }
+  .credits { flex-basis: 100%; font-size: .82rem; }
+  .credits summary { display: inline-flex; align-items: center; min-height: 44px; cursor: pointer; font: 700 .7rem var(--font-mono); letter-spacing: .1em; text-transform: uppercase; }
+  .credits summary::-webkit-details-marker { display: none; }
+  .credits summary::after { content: "+"; margin-left: .45rem; font-size: .9rem; }
+  .credits[open] summary::after { content: "–"; }
+  .credits ul { margin: .25rem 0 0; padding-left: 1.1rem; display: grid; gap: .3rem; max-width: 60rem; }
+  .credits a { font-weight: 400; }
   .sample-ribbon {
     display: inline-block; padding: .3rem .75rem; border: 1.5px dashed var(--ink); border-radius: 999px; background: var(--white);
     font: 700 .68rem/1.2 var(--font-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--ink);
@@ -607,7 +611,7 @@
     .panel .loads { grid-template-columns: 1fr 1fr; }
     .addons__grid { grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: 4.5rem; align-items: start; }
     .board { padding: 1.6rem 1.75rem .8rem; }
-    .work__grid { grid-template-columns: minmax(0, 1.3fr) minmax(0, .7fr); gap: 4.5rem; }
+    .work__grid { grid-template-columns: minmax(0, 440px) minmax(0, 1fr); gap: 5rem; }
     .about__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 5rem; }
     .reviews { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); column-gap: 4rem; row-gap: 1.25rem; align-items: start; }
     .reviews h2 { grid-column: 1; grid-row: 1; }
@@ -635,17 +639,8 @@
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 
-<!-- Reusable SVG: icons (one 24px line style), logo, and the clean-pup drawing -->
+<!-- Reusable SVG: logo + icons (one 24px line style) -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
-  <defs>
-    <g id="cloud-head">
-      <circle cx="200" cy="165" r="78"/>
-      <circle cx="276" cy="165" r="24"/><circle cx="266" cy="201" r="24"/><circle cx="238" cy="227" r="24"/>
-      <circle cx="200" cy="237" r="24"/><circle cx="162" cy="227" r="24"/><circle cx="134" cy="201" r="24"/>
-      <circle cx="124" cy="165" r="24"/><circle cx="134" cy="129" r="24"/><circle cx="162" cy="103" r="24"/>
-      <circle cx="200" cy="93" r="24"/><circle cx="238" cy="103" r="24"/><circle cx="266" cy="129" r="24"/>
-    </g>
-  </defs>
   <symbol id="logo" viewBox="0 0 40 40">
     <rect x="3" y="2.5" width="34" height="35" rx="8" style="fill:var(--mint);stroke:var(--ink);stroke-width:2.5"/>
     <path d="M3 11.5h34" style="stroke:var(--ink);stroke-width:2.5"/>
@@ -654,30 +649,14 @@
     <circle cx="20" cy="24.5" r="9" style="fill:var(--sky);stroke:var(--ink);stroke-width:2.5"/>
     <path d="M12.5 26c2.5-2 5-2 7.5 0s5 2 7.5 0" style="fill:none;stroke:var(--signal);stroke-width:2.2;stroke-linecap:round"/>
   </symbol>
-  <symbol id="pup" viewBox="0 0 400 320">
-    <use href="#cloud-head" class="f-fur s-ink s-fat"/>
-    <use href="#cloud-head" class="f-fur"/>
-    <g class="f-fur-dark s-ink">
-      <ellipse cx="100" cy="190" rx="26" ry="50" transform="rotate(12 100 190)"/>
-      <ellipse cx="300" cy="190" rx="26" ry="50" transform="rotate(-12 300 190)"/>
-    </g>
-    <ellipse class="blush" cx="150" cy="198" rx="13" ry="8"/><ellipse class="blush" cx="250" cy="198" rx="13" ry="8"/>
-    <ellipse class="f-fur-light" cx="200" cy="202" rx="42" ry="30"/>
-    <g class="f-none s-ink s-thin"><path d="M156 140q14-9 28 0"/><path d="M216 140q14-9 28 0"/></g>
-    <circle class="f-ink" cx="170" cy="164" r="11"/><circle class="f-ink" cx="230" cy="164" r="11"/>
-    <circle class="f-white" cx="174" cy="160" r="3.5"/><circle class="f-white" cx="234" cy="160" r="3.5"/>
-    <path class="f-pink-strong s-ink s-thin" d="M192 215c0 17 16 17 16 0z"/>
-    <path class="f-ink" d="M186 188q14-8 28 0q2 10-14 16q-16-6-14-16z"/>
-    <path class="f-none s-ink s-thin" d="M200 204v6M184 211q8 10 16 0q8 10 16 0"/>
-  </symbol>
-  <symbol id="sparkle" viewBox="0 0 24 24"><path d="M12 1.5C13 7.6 16.4 11 22.5 12 16.4 13 13 16.4 12 22.5 11 16.4 7.6 13 1.5 12 7.6 11 11 7.6 12 1.5Z"/></symbol>
   <symbol id="i-nail" viewBox="0 0 24 24"><circle cx="9" cy="15" r="5"/><path d="M12.6 11.3c1.6-3 4-5.3 7.4-6.3-.8 3.4-3.2 6-6.4 7.6"/><path d="M14.8 5.6l3.8 3.8" stroke-dasharray="1.6 2.4"/></symbol>
   <symbol id="i-brush" viewBox="0 0 24 24"><rect x="2" y="15" width="20" height="3.5" rx="1.75"/><rect x="13" y="8.5" width="7.5" height="6.5" rx="1"/><path d="M15.5 8.5V15M18 8.5V15"/></symbol>
   <symbol id="i-berry" viewBox="0 0 24 24"><circle cx="7.8" cy="15.5" r="3.8"/><circle cx="16.2" cy="15.5" r="3.8"/><circle cx="12" cy="8.2" r="3.8"/><path d="M11 7.2l2 2M13 7.2l-2 2"/></symbol>
   <symbol id="i-rake" viewBox="0 0 24 24"><path d="M4.5 11h15M6 11V5M9 11V5M12 11V5M15 11V5M18 11V5M12 11v10"/></symbol>
   <symbol id="i-jar" viewBox="0 0 24 24"><rect x="7" y="3.5" width="10" height="3.5" rx="1"/><path d="M6.5 7h11v11a2.5 2.5 0 0 1-2.5 2.5H9A2.5 2.5 0 0 1 6.5 18z"/><path d="M9.5 12.5h5M9.5 15.5h3"/></symbol>
   <symbol id="i-bottle" viewBox="0 0 24 24"><path d="M8.5 10h7v9a2 2 0 0 1-2 2h-3a2 2 0 0 1-2-2z"/><path d="M11 10V6.5h2V10M11 6.5H7.5M12 13.5v4M10 15.5h4"/></symbol>
-  <symbol id="i-puppy" viewBox="0 0 24 24"><path d="M7.5 10c0-3 2-5.5 4.5-5.5s4.5 2.5 4.5 5.5v3c0 4-2 6.5-4.5 6.5S7.5 17 7.5 13z"/><path d="M7.6 8.6C5 8.6 3 11 3.5 14c1.8.3 3-.6 4-2M16.4 8.6C19 8.6 21 11 20.5 14c-1.8.3-3-.6-4-2M10 11.5v.4M14 11.5v.4M11 15h2"/></symbol>
+  <symbol id="i-bone" viewBox="0 0 24 24"><g transform="rotate(-35 12 12)"><path d="M7.2 10.6h9.6M7.2 13.4h9.6"/><circle cx="5.6" cy="10" r="2.2"/><circle cx="5.6" cy="14" r="2.2"/><circle cx="18.4" cy="10" r="2.2"/><circle cx="18.4" cy="14" r="2.2"/></g></symbol>
+  <symbol id="i-clip" viewBox="0 0 24 44"><path d="M8 6v26a5 5 0 0 0 10 0V8a3.5 3.5 0 0 0-7 0v22"/></symbol>
   <symbol id="i-arrows" viewBox="0 0 24 24"><path d="M9 6l-6 6 6 6M15 6l6 6-6 6"/></symbol>
 </svg>
 
@@ -720,57 +699,32 @@
     </div>
   </div>
 
-  <div class="laundromat" role="img" aria-label="Illustration: a row of pastel washing machines against a pink tiled wall. A fluffy, sudsy dog peeks out of one porthole.">
+  <div class="laundromat" role="img" aria-label="A row of pastel washing machines on a pink tiled wall. Through the portholes: a sudsy dog in a bath tub, a fluffy apricot doodle, a puppy wrapped in a towel and a freshly groomed white doodle.">
     <div class="container laundromat__row">
       <div class="open-sign"><span class="open-sign__word">Open</span><span class="open-sign__hours" data-biz="hours">Tue–Sat 8am–5pm
 Sun &amp; Mon closed</span></div>
 
       <div class="machine machine--1">
         <div class="machine__panel"><span class="machine__dial" style="--r:-40deg"></span><span class="machine__lcd">RINSE 0:12</span></div>
-        <div class="machine__door">
-          <svg viewBox="0 0 100 100" focusable="false">
-            <g transform="rotate(-25 48 42)"><circle class="f-butter s-ink" style="stroke-width:3" cx="48" cy="42" r="14"/><path class="f-none" style="stroke:var(--white);stroke-width:3;stroke-linecap:round" d="M38 32c6 5 6 15 0 20M58 32c-6 5-6 15 0 20"/></g>
-            <path class="water" d="M-10 62C5 56 18 56 30 62S55 68 68 62 95 56 110 62V110H-10Z"/>
-            <g class="f-white"><circle cx="10" cy="62" r="6"/><circle cx="22" cy="59" r="5"/><circle cx="74" cy="63" r="6"/><circle cx="87" cy="59" r="5"/></g>
-          </svg>
-        </div>
+        <div class="machine__door"><img src="img/dog-grooming/washer-rinse-bath-tub.webp" width="320" height="320" alt="" decoding="async"></div>
         <span class="machine__no">No. 1</span>
       </div>
 
       <div class="machine machine--2">
         <div class="machine__panel"><span class="machine__dial" style="--r:60deg"></span><span class="machine__lcd">FLUFF 1:45</span></div>
-        <div class="machine__door">
-          <svg viewBox="0 0 100 100" focusable="false">
-            <use href="#pup" x="-14" y="6" width="128" height="102.4"/>
-            <g class="s-ink" style="stroke-width:4;fill:var(--white)"><circle cx="36" cy="29" r="7"/><circle cx="46" cy="23" r="9"/><circle cx="57" cy="24" r="8"/><circle cx="65" cy="30" r="6"/><circle cx="29" cy="34" r="4.5"/></g>
-            <g class="f-white"><circle cx="36" cy="29" r="7"/><circle cx="46" cy="23" r="9"/><circle cx="57" cy="24" r="8"/><circle cx="65" cy="30" r="6"/><circle cx="29" cy="34" r="4.5"/></g>
-            <g class="slosh">
-              <path class="water" d="M-10 76C5 70 18 70 30 76S55 82 68 76 95 70 110 76V110H-10Z"/>
-              <g class="f-white"><circle cx="8" cy="75" r="6"/><circle cx="20" cy="72" r="5"/><circle cx="33" cy="77" r="5"/><circle cx="68" cy="77" r="5"/><circle cx="80" cy="72" r="6"/><circle cx="93" cy="76" r="5"/></g>
-            </g>
-          </svg>
-        </div>
+        <div class="machine__door"><img src="img/dog-grooming/washer-fluff-apricot-doodle.webp" width="320" height="320" alt="" decoding="async"></div>
         <span class="machine__no">No. 2</span>
       </div>
 
       <div class="machine machine--3">
         <div class="machine__panel"><span class="machine__dial" style="--r:150deg"></span><span class="machine__lcd">SPA 0:50</span></div>
-        <div class="machine__door">
-          <svg viewBox="0 0 100 100" focusable="false">
-            <path class="water" d="M-10 48C5 42 18 42 30 48S55 54 68 48 95 42 110 48V110H-10Z"/>
-            <g class="f-none" style="stroke:var(--white);stroke-width:2.5"><circle cx="30" cy="68" r="6"/><circle cx="58" cy="80" r="4"/><circle cx="70" cy="62" r="7"/><circle cx="44" cy="88" r="3"/></g>
-          </svg>
-        </div>
+        <div class="machine__door"><img src="img/dog-grooming/washer-spa-towel-puppy.webp" width="320" height="320" alt="" loading="lazy" decoding="async"></div>
         <span class="machine__no">No. 3</span>
       </div>
 
       <div class="machine machine--4">
         <div class="machine__panel"><span class="machine__dial" style="--r:-110deg"></span><span class="machine__lcd">DONE</span></div>
-        <div class="machine__door">
-          <svg viewBox="0 0 100 100" focusable="false">
-            <g class="s-ink" style="stroke-width:2.5"><rect class="f-butter" x="24" y="66" width="52" height="13" rx="5"/><rect class="f-tile" x="28" y="53" width="44" height="13" rx="5"/><rect class="f-white" x="32" y="40" width="36" height="13" rx="5"/></g>
-          </svg>
-        </div>
+        <div class="machine__door"><img src="img/dog-grooming/washer-done-white-doodle.webp" width="320" height="320" alt="" loading="lazy" decoding="async"></div>
         <span class="machine__no">No. 4</span>
       </div>
     </div>
@@ -912,7 +866,7 @@ Sun &amp; Mon closed</span></div>
         <li><span class="board__ico"><svg class="ico" aria-hidden="true"><use href="#i-rake"/></svg></span><span class="board__name">De-shed treatment<small>Undercoat rake &amp; blowout. $40 for large and X-large.</small></span><span class="board__price">$25</span></li>
         <li><span class="board__ico"><svg class="ico" aria-hidden="true"><use href="#i-jar"/></svg></span><span class="board__name">Paw balm<small>Shea &amp; beeswax for salted winter sidewalks.</small></span><span class="board__price">$8</span></li>
         <li><span class="board__ico"><svg class="ico" aria-hidden="true"><use href="#i-bottle"/></svg></span><span class="board__name">Medicated bath<small>Your vet’s shampoo, left on the full ten minutes.</small></span><span class="board__price">$15</span></li>
-        <li><span class="board__ico"><svg class="ico" aria-hidden="true"><use href="#i-puppy"/></svg></span><span class="board__name">Puppy intro, 10–16 wks<small>Short bath, nail tap, lots of treats.</small></span><span class="board__price">$40</span></li>
+        <li><span class="board__ico"><svg class="ico" aria-hidden="true"><use href="#i-bone"/></svg></span><span class="board__name">Puppy intro, 10–16 wks<small>Short bath, nail tap, lots of treats.</small></span><span class="board__price">$40</span></li>
       </ul>
     </div>
   </div>
@@ -925,133 +879,43 @@ Sun &amp; Mon closed</span></div>
       <figure class="polaroid polaroid--big">
         <div class="ba">
           <div class="ba__layer ba__layer--before">
-            <svg viewBox="0 0 400 320" role="img" aria-labelledby="ba-before-title">
-              <title id="ba-before-title">Before: a scruffy dog with tangled, muddy fur hanging over its eyes</title>
-              <g class="dust"><circle cx="60" cy="70" r="4"/><circle cx="340" cy="250" r="5"/><circle cx="70" cy="250" r="3"/><circle cx="352" cy="160" r="3"/><circle cx="44" cy="160" r="5"/></g>
-              <g class="s-soft"><path d="M60 136q8-10 0-20t0-20"/><path d="M42 176q8-10 0-20t0-20"/><path d="M336 120q8-10 0-20t0-20"/><path d="M352 160q8-10 0-20t0-20"/></g>
-              <!-- shaggy head -->
-              <path class="f-dull s-ink" d="M200 94Q202 72 215 67L223 96Q231 79 245 78L244 104Q259 92 272 95L263 118Q278 111 290 117L277 136Q287 134 297 143L283 159Q299 156 306 168L283 181Q296 189 298 201L277 203Q284 209 283 222L265 223Q273 235 268 247L245 237Q250 255 242 266L223 245Q222 259 211 266L200 248Q199 259 187 264L177 245Q168 255 154 256L155 237Q141 247 127 244L139 220Q126 227 114 221L124 203Q111 208 102 199L115 182Q108 181 101 170L119 159Q102 151 100 138L124 137Q115 131 116 119L138 119Q129 108 133 96L156 104Q150 90 158 79L177 96Q174 76 185 68Z"/>
-              <!-- tangles -->
-              <g class="s-tangle">
-                <path d="M178 100q6-10 12 0t12 0"/><path d="M236 110c-6-6 4-14 10-6s-6 14-10 4"/>
-                <path d="M126 196c6-8 14 4 20-4"/><path d="M256 196c8-6 12 6 20 0"/>
-                <path d="M150 236c6-6 12 4 18-2"/><path d="M226 238c6-8 14 2 18-6"/>
-              </g>
-              <!-- droopy shaggy ears -->
-              <g class="f-dull-dark s-ink s-thin">
-                <path d="M138 112c-26 4-40 34-40 74l-6 26 12-8-2 28 12-16 4 24 8-22 10 12 2-26c8-28 14-64 8-88z"/>
-                <path d="M262 112c26 4 40 34 40 74l6 26-12-8 2 28-12-16-4 24-8-22-10 12-2-26c-8-28-14-64-8-88z"/>
-              </g>
-              <!-- eyes under the fringe -->
-              <circle class="f-ink" cx="172" cy="172" r="9"/><circle class="f-ink" cx="228" cy="172" r="9"/>
-              <circle class="f-white" cx="175" cy="175" r="2.5"/><circle class="f-white" cx="231" cy="175" r="2.5"/>
-              <path class="f-dull s-ink s-thin" d="M136 130q64-18 128 0l-2 26-10-10-6 24-10-20-8 14-10-16-10 24-10-22-10 18-10-20-8 14-10-16-8 22-8-20-8 8z"/>
-              <!-- scruffy beard + muzzle -->
-              <path class="f-dull-light s-ink s-thin" d="M164 212l4 24 8-12 6 20 8-16 8 20 8-20 8 16 8-18 8 14 6-28z"/>
-              <ellipse class="f-dull-light" cx="200" cy="206" rx="40" ry="28"/>
-              <path class="f-ink" d="M188 196q12-7 24 0q2 9-12 14q-14-5-12-14z"/>
-              <path class="f-none s-ink s-thin" d="M186 222q7-5 14 0t14 0"/>
-              <!-- mud, twig and a curious fly -->
-              <path class="f-mud" d="M136 214c6-10 22-6 20 4s-18 12-20-4z"/>
-              <ellipse class="f-mud" cx="262" cy="232" rx="10" ry="6"/>
-              <circle class="f-mud" cx="152" cy="110" r="5"/><circle class="f-mud" cx="250" cy="150" r="4"/>
-              <path class="s-mud" d="M168 92l-14-30"/>
-              <ellipse class="f-leaf" cx="150" cy="58" rx="10" ry="5.5" transform="rotate(-60 150 58)"/>
-              <ellipse class="f-leaf" cx="164" cy="70" rx="7" ry="4" transform="rotate(20 164 70)"/>
-              <path class="f-none s-soft" d="M106 92c-26 8-34-22-12-26" style="stroke-dasharray:3 7"/>
-              <g class="s-ink" style="stroke-width:2.5"><ellipse class="f-white" cx="116" cy="62" rx="7" ry="5" transform="rotate(-20 116 62)"/><ellipse class="f-white" cx="128" cy="62" rx="7" ry="5" transform="rotate(20 128 62)"/></g>
-              <circle class="f-ink" cx="122" cy="70" r="5"/>
-            </svg>
+            <img src="img/dog-grooming/biscuit-maltipoo-before.webp" width="480" height="600" loading="lazy" decoding="async" draggable="false" alt="Before: Biscuit the Maltipoo with a long, shaggy coat hanging over her eyes">
             <span class="ba__tag ba__tag--before">Before</span>
           </div>
           <div class="ba__layer ba__layer--after">
-            <svg viewBox="0 0 400 320" role="img" aria-labelledby="ba-after-title">
-              <title id="ba-after-title">After: the same dog with a neat, round teddy bear cut, a pink bow and a bandana</title>
-              <path class="f-sky s-ink" d="M126 228q74 36 148 0l-10 28q-26 34-64 46-38-12-64-46z"/>
-              <g class="f-white"><circle cx="160" cy="266" r="4.5"/><circle cx="240" cy="266" r="4.5"/><circle cx="182" cy="284" r="4"/><circle cx="218" cy="284" r="4"/><circle cx="200" cy="294" r="3.5"/></g>
-              <use href="#pup" width="400" height="320"/>
-              <g class="f-pink-strong s-ink s-thin">
-                <path d="M200 76c-18-24-44-18-40 2s26 16 40 4z"/>
-                <path d="M200 76c18-24 44-18 40 2s-26 16-40 4z"/>
-                <circle cx="200" cy="79" r="9"/>
-              </g>
-              <use class="spark" href="#sparkle" x="306" y="48" width="28" height="28"/>
-              <use class="spark" href="#sparkle" x="330" y="96" width="16" height="16"/>
-            </svg>
+            <img src="img/dog-grooming/biscuit-maltipoo-after.webp" width="480" height="600" loading="lazy" decoding="async" draggable="false" alt="After: the same dog with a short, rounded teddy bear cut and a green bandana, smiling">
             <span class="ba__tag ba__tag--after">After</span>
           </div>
           <input class="ba__range" type="range" min="0" max="100" value="50" step="1" aria-label="Before and after comparison. Move left to show more of the after picture, right to show more of the before picture.">
           <div class="ba__handle" aria-hidden="true"><span class="ba__knob"><svg viewBox="0 0 24 24"><use href="#i-arrows"/></svg></span></div>
         </div>
-        <figcaption class="polaroid__cap">Biscuit · Goldendoodle · teddy bear cut</figcaption>
+        <figcaption class="polaroid__cap">Biscuit · Maltipoo · teddy bear cut</figcaption>
       </figure>
 
       <div class="work__copy">
         <h2 id="work-title">Recent work</h2>
-        <p>Drag the handle across Biscuit’s photo. She came in with three months of tangles and left with a teddy bear cut.</p>
+        <p>Drag the handle across Biscuit’s photo. She came in with her bangs past her eyes and a coat full of tangles, and left with a teddy bear cut.</p>
         <dl class="cut-sheet">
-          <div><dt>Cycle</dt><dd>Wash &amp; Fluff, medium load</dd></div>
+          <div><dt>Cycle</dt><dd>Wash &amp; Fluff, small load</dd></div>
           <div><dt>Groomer</dt><dd>Rosa</dd></div>
-          <div><dt>Time</dt><dd>2 hrs 15 min, with two breaks</dd></div>
-          <div><dt>Cut notes</dt><dd>½ in. body, round scissored face, fluffy feet. Mats behind the ears worked out by hand.</dd></div>
+          <div><dt>Time</dt><dd>1 hr 45 min, with one break</dd></div>
+          <div><dt>Cut notes</dt><dd>½ in. body, round scissored face, ears left long, bangs cleared from the eyes. Mats behind the ears worked out by hand.</dd></div>
         </dl>
       </div>
     </div>
 
     <ul class="minis">
       <li class="polaroid mini">
-        <div class="mini__photo">
-          <svg viewBox="0 0 160 160" role="img" aria-label="Pepper the Mini Schnauzer after a breed-standard trim">
-            <g class="s-ink" style="stroke-width:4">
-              <path class="f-grey" d="M42 62c0-22 16-32 38-32s38 10 38 32v34c0 30-16 42-38 42s-38-12-38-42z"/>
-              <path class="f-grey-dark" style="stroke-width:3.5" d="M40 50q6-22 30-16L52 66z"/><path class="f-grey-dark" style="stroke-width:3.5" d="M120 50q-6-22-30-16l18 32z"/>
-              <path class="f-white" d="M54 98c10-8 42-8 52 0 6 22 0 42-26 50-26-8-32-28-26-50z"/>
-              <path class="f-white" style="stroke-width:3" d="M47 76c6-14 22-16 31-8l-4 7c-8-5-18-4-27 1z"/>
-              <path class="f-white" style="stroke-width:3" d="M113 76c-6-14-22-16-31-8l4 7c8-5 18-4 27 1z"/>
-            </g>
-            <circle class="f-ink" cx="64" cy="85" r="5"/><circle class="f-ink" cx="96" cy="85" r="5"/>
-            <ellipse class="f-ink" cx="80" cy="101" rx="9" ry="6"/>
-            <path class="f-none s-ink" style="stroke-width:3" d="M72 118q8 5 16 0"/>
-          </svg>
-        </div>
+        <img class="mini__photo" src="img/dog-grooming/pepper-mini-schnauzer-560.webp" srcset="img/dog-grooming/pepper-mini-schnauzer-280.webp 280w, img/dog-grooming/pepper-mini-schnauzer-560.webp 560w" sizes="(min-width: 700px) 226px, 112px" width="560" height="560" loading="lazy" decoding="async" alt="Pepper, a salt-and-pepper Mini Schnauzer with a classic beard and eyebrows, lounging on a blue blanket">
         <p class="polaroid__cap">Pepper · Mini Schnauzer<br>breed-standard trim</p>
       </li>
       <li class="polaroid mini">
-        <div class="mini__photo">
-          <svg viewBox="0 0 160 160" role="img" aria-label="Luna the Shih Tzu after a puppy cut, with a small topknot bow">
-            <g class="s-ink" style="stroke-width:4">
-              <ellipse class="f-fur-dark" cx="40" cy="94" rx="18" ry="34" transform="rotate(10 40 94)"/>
-              <ellipse class="f-fur-dark" cx="120" cy="94" rx="18" ry="34" transform="rotate(-10 120 94)"/>
-              <path class="f-fur" style="stroke-width:3.5" d="M70 46c-2-14 6-22 10-24 4 2 12 10 10 24z"/>
-              <circle class="f-fur-light" cx="80" cy="88" r="46"/>
-            </g>
-            <path class="f-fur" d="M47 74c4-14 18-20 29-14l-2 20c-10 0-21 2-27-6zM113 74c-4-14-18-20-29-14l2 20c10 0 21 2 27-6z"/>
-            <g class="f-pink-strong s-ink" style="stroke-width:3"><path d="M80 44c-8-10-20-8-18 2s12 6 18 0z"/><path d="M80 44c8-10 20-8 18 2s-12 6-18 0z"/><circle cx="80" cy="45" r="4"/></g>
-            <circle class="f-ink" cx="64" cy="86" r="7"/><circle class="f-ink" cx="96" cy="86" r="7"/>
-            <circle class="f-white" cx="66.5" cy="83.5" r="2.4"/><circle class="f-white" cx="98.5" cy="83.5" r="2.4"/>
-            <ellipse class="f-white" cx="80" cy="108" rx="20" ry="14"/>
-            <ellipse class="f-ink" cx="80" cy="101" rx="7" ry="5"/>
-            <path class="f-none s-ink" style="stroke-width:3" d="M74 113q6 5 12 0"/>
-          </svg>
-        </div>
+        <img class="mini__photo" src="img/dog-grooming/luna-shih-tzu-560.webp" srcset="img/dog-grooming/luna-shih-tzu-280.webp 280w, img/dog-grooming/luna-shih-tzu-560.webp 560w" sizes="(min-width: 700px) 226px, 112px" width="560" height="560" loading="lazy" decoding="async" alt="Luna, a white and gold Shih Tzu with a short puppy cut">
         <p class="polaroid__cap">Luna · Shih Tzu<br>puppy cut</p>
       </li>
       <li class="polaroid mini">
-        <div class="mini__photo">
-          <svg viewBox="0 0 160 160" role="img" aria-label="Mochi the Pomeranian after a lion cut, with a full fluffy mane">
-            <g class="f-orange s-ink" style="stroke-width:8">
-              <circle cx="80" cy="86" r="46"/><circle cx="126" cy="86" r="18"/><circle cx="117" cy="112" r="18"/><circle cx="94" cy="128" r="18"/><circle cx="66" cy="128" r="18"/><circle cx="43" cy="112" r="18"/><circle cx="34" cy="86" r="18"/><circle cx="43" cy="60" r="18"/><circle cx="66" cy="44" r="18"/><circle cx="94" cy="44" r="18"/><circle cx="117" cy="60" r="18"/>
-            </g>
-            <g class="f-orange"><circle cx="80" cy="86" r="46"/><circle cx="126" cy="86" r="18"/><circle cx="117" cy="112" r="18"/><circle cx="94" cy="128" r="18"/><circle cx="66" cy="128" r="18"/><circle cx="43" cy="112" r="18"/><circle cx="34" cy="86" r="18"/><circle cx="43" cy="60" r="18"/><circle cx="66" cy="44" r="18"/><circle cx="94" cy="44" r="18"/><circle cx="117" cy="60" r="18"/></g>
-            <circle class="f-fur s-ink" style="stroke-width:3" cx="80" cy="90" r="29"/>
-            <circle class="f-ink" cx="70" cy="86" r="5"/><circle class="f-ink" cx="90" cy="86" r="5"/>
-            <circle class="f-white" cx="71.8" cy="84.2" r="1.8"/><circle class="f-white" cx="91.8" cy="84.2" r="1.8"/>
-            <ellipse class="f-ink" cx="80" cy="97" rx="5" ry="3.6"/>
-            <path class="f-pink-strong s-ink" style="stroke-width:2.5" d="M76.5 104c0 7 7 7 7 0z"/>
-            <path class="f-none s-ink" style="stroke-width:2.5" d="M74 103q6 4 12 0"/>
-          </svg>
-        </div>
-        <p class="polaroid__cap">Mochi · Pomeranian<br>lion cut</p>
+        <img class="mini__photo" src="img/dog-grooming/mochi-pomeranian-560.webp" srcset="img/dog-grooming/mochi-pomeranian-280.webp 280w, img/dog-grooming/mochi-pomeranian-560.webp 560w" sizes="(min-width: 700px) 226px, 112px" width="560" height="560" loading="lazy" decoding="async" alt="Mochi, an orange Pomeranian with a fluffy, freshly dried coat, smiling">
+        <p class="polaroid__cap">Mochi · Pomeranian<br>bath &amp; fluff-dry</p>
       </li>
     </ul>
   </div>
@@ -1072,16 +936,18 @@ Sun &amp; Mon closed</span></div>
 
     <figure class="report" aria-labelledby="report-cap">
       <div class="report__card">
+        <figure class="report__photo">
+          <img src="img/dog-grooming/biscuit-maltipoo-after.webp" width="480" height="600" loading="lazy" decoding="async" alt="Biscuit after her groom">
+          <svg class="report__clip" aria-hidden="true" viewBox="0 0 24 44"><use href="#i-clip"/></svg>
+        </figure>
         <div class="report__head">
-          <div>
-            <p class="report__brand mono" data-biz="name">Wag &amp; Wash Studio</p>
-            <p class="report__title">Groom report</p>
-          </div>
+          <p class="report__brand mono" data-biz="name">Wag &amp; Wash Studio</p>
+          <p class="report__title">Groom report</p>
           <p class="report__no mono">No. 0142</p>
         </div>
         <dl class="report__meta">
           <div><dt>Pup</dt><dd class="hand">Biscuit</dd></div>
-          <div><dt>Breed</dt><dd class="hand">Goldendoodle</dd></div>
+          <div><dt>Breed</dt><dd class="hand">Maltipoo</dd></div>
           <div><dt>Groomer</dt><dd class="hand">Rosa</dd></div>
           <div><dt>Cut</dt><dd class="hand">Teddy bear, ½ in.</dd></div>
         </dl>
@@ -1101,7 +967,7 @@ Sun &amp; Mon closed</span></div>
         <p class="report__note hand">Total angel! Try a slicker brush behind the ears twice a week and those mats won’t come back. See you in 6 weeks. – Rosa</p>
         <p class="report__stamp mono" aria-hidden="true">Ready for pickup</p>
       </div>
-      <figcaption id="report-cap" class="sr-only">Sample groom report card for Biscuit, a Goldendoodle</figcaption>
+      <figcaption id="report-cap" class="sr-only">Sample groom report card for Biscuit, a Maltipoo</figcaption>
     </figure>
   </div>
 </section>
@@ -1112,15 +978,15 @@ Sun &amp; Mon closed</span></div>
     <h2 id="reviews-title">From the regulars</h2>
     <figure class="quote quote--lead">
       <blockquote><p>Rosa actually listened when I said “shorter on the legs, keep the ears long.” Biscuit’s teddy bear cut is the best she’s ever had, and her report card is on our fridge.</p></blockquote>
-      <figcaption><strong>Priya S.</strong>, mom to Biscuit the Goldendoodle<span class="quote__meta">Wash &amp; Fluff · teddy bear cut · with Rosa</span></figcaption>
+      <figcaption><img class="avatar" src="img/dog-grooming/avatar-biscuit-96.webp" width="96" height="96" loading="lazy" decoding="async" alt=""><span><strong>Priya S.</strong>, mom to Biscuit the Maltipoo<span class="quote__meta">Wash &amp; Fluff · teddy bear cut · with Rosa</span></span></figcaption>
     </figure>
     <figure class="quote quote--card">
       <blockquote><p>Luna is a nervous rescue. They put her on the Delicate Cycle, towel-dried her instead of using the loud dryer, and let her take breaks. She walked out wagging.</p></blockquote>
-      <figcaption><strong>Danielle K.</strong>, mom to Luna the Shih Tzu<span class="quote__meta">Delicate Cycle · puppy cut · with Jamie</span></figcaption>
+      <figcaption><img class="avatar" src="img/dog-grooming/avatar-luna-96.webp" width="96" height="96" loading="lazy" decoding="async" alt=""><span><strong>Danielle K.</strong>, mom to Luna the Shih Tzu<span class="quote__meta">Delicate Cycle · puppy cut · with Jamie</span></span></figcaption>
     </figure>
     <figure class="quote quote--card">
       <blockquote><p>Pepper’s schnauzer trim is crisp, eyebrows and all. Booking takes two minutes and they text the second he’s ready.</p></blockquote>
-      <figcaption><strong>Marcus T.</strong>, dad to Pepper the Mini Schnauzer<span class="quote__meta">Wash &amp; Fluff · breed-standard · with Rosa</span></figcaption>
+      <figcaption><img class="avatar" src="img/dog-grooming/avatar-pepper-96.webp" width="96" height="96" loading="lazy" decoding="async" alt=""><span><strong>Marcus T.</strong>, dad to Pepper the Mini Schnauzer<span class="quote__meta">Wash &amp; Fluff · breed-standard · with Rosa</span></span></figcaption>
     </figure>
   </div>
 </section>
@@ -1290,6 +1156,17 @@ Sun &amp; Mon closed</p>
       <!-- SAMPLE RIBBON: remove when customizing for a real client -->
       <div class="sample-ribbon">Sample design</div>
       <!-- /SAMPLE RIBBON -->
+      <!-- PHOTO CREDITS: placeholder photos; delete this block when using the client's own photos -->
+      <details class="credits">
+        <summary>Photo credits</summary>
+        <ul>
+          <li>Biscuit before/after: “<a href="https://www.flickr.com/photos/92799036@N00/16937812322">Grooming Before and After</a>” by funkblast, <a href="https://creativecommons.org/licenses/by/2.0/">CC BY 2.0</a>; split into two photos, cropped and color-adjusted.</li>
+          <li>Shih Tzu: “<a href="https://www.flickr.com/photos/37390607@N02/10685344286">Gizmo</a>” by Bev Goodwin, <a href="https://creativecommons.org/licenses/by/2.0/">CC BY 2.0</a>; cropped and color-adjusted.</li>
+          <li>Puppy in a towel: “<a href="https://www.flickr.com/photos/24949967@N08/3396432884">Maltese-Shihtzu puppy after first bath</a>” by wsilver, <a href="https://creativecommons.org/licenses/by/2.0/">CC BY 2.0</a>; cropped and color-adjusted.</li>
+          <li>Bath tub, apricot doodle, white doodle, Mini Schnauzer and Pomeranian photos: <a href="https://www.rawpixel.com/">rawpixel</a>, public domain (<a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0</a>).</li>
+        </ul>
+      </details>
+      <!-- /PHOTO CREDITS -->
     </div>
   </div>
 </footer>
