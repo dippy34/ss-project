@@ -23,7 +23,25 @@
      reviews are plain HTML. Search "SECTION:" to jump between them.
   5. BOOKING: see the "BOOKING INTEGRATION" comments (Square
      Appointments, Booksy, Formspree, etc.).
-  6. Remove the SAMPLE RIBBON block in the footer before going live.
+  6. PHOTOS: sample photos live in img/barbershop/. Swap these for the
+     client's own photos (keep roughly the same aspect, or edit the
+     <img> tags and their width/height):
+       hero-barber-chair-1024.webp / -1600.webp    hero, behind the glass
+       band-scissor-hands-1000.webp / -2000.webp   band after the services
+       band-counter-tools-1000.webp / -2000.webp   band before the team
+       team-chair1-scissor-work-672.webp           Marco's mirror
+       team-chair2-clippers-240.webp               Dez's mirror
+       team-chair3-shave-kit-240.webp              Hank's mirror
+       team-chair4-first-haircut-240.webp          Ruby's mirror
+     Never put a real person's face next to an invented name or bio.
+     Credits: img/barbershop/CREDITS.md and the "Photo credits" block in
+     the footer. All sample photos are CC0; if you swap in a CC BY photo,
+     credit it there.
+  7. PARALLAX: elements with class="px" drift at style="--k:.." (0 = still,
+     .3 = deep); cards with data-depth drift a few px; the letterboard
+     with data-reveal slides into place. All of it is off under
+     prefers-reduced-motion and without JavaScript.
+  8. Remove the SAMPLE RIBBON block in the footer before going live.
 
   Every name, number (555-01XX), email (@example.com), address, review
   and barber on this page is a fictional placeholder.
@@ -95,7 +113,7 @@
   --leaf: #e3b65c;           /* gold leaf: body */
   --leaf-lo: #9b6b23;        /* gold leaf: burnish */
   --leaf-shade: #3b2408;     /* sign-painter drop shade */
-  --oxblood: #6f1d23;        /* leather, awning, accents */
+  --oxblood: #6f1d23;        /* leather, ribbons, accents */
   --oxblood-deep: #3e1014;
   --ticket-red: #a82228;     /* ticket numbers, prices on cards */
   --paper: #f3e8cd;          /* showcards, tickets, appointment book */
@@ -114,7 +132,6 @@
   --mirror: #2b3336;
   --glass: #0b1011;
   --lamp: #f2aa4c;           /* warm light inside the shop */
-  --awning: #ddd0b2;         /* sun-faded awning stripe */
   --tile: #c9bc9f;           /* checkerboard floor */
   --line: #3a2e24;
   --shadow: #000000;
@@ -127,11 +144,13 @@
   --glare: color-mix(in srgb, var(--cream) 7%, transparent);
   --glare-soft: color-mix(in srgb, var(--cream) 3%, transparent);
   --glare-strong: color-mix(in srgb, var(--cream) 45%, transparent);
-  --lamp-a: color-mix(in srgb, var(--lamp) 28%, transparent);
   --lamp-b: color-mix(in srgb, var(--lamp) 9%, transparent);
   --shadow-a: color-mix(in srgb, var(--shadow) 60%, transparent);
   --shadow-b: color-mix(in srgb, var(--shadow) 30%, transparent);
   --ink-a95: color-mix(in srgb, var(--ink) 95%, transparent);
+  --scrim-soft: color-mix(in srgb, var(--ink) 25%, transparent);
+  --scrim: color-mix(in srgb, var(--ink) 52%, transparent);
+  --scrim-deep: color-mix(in srgb, var(--ink) 84%, transparent);
   --plastic-a: color-mix(in srgb, var(--plastic) 30%, transparent);
   --red-a: color-mix(in srgb, var(--ticket-red) 55%, transparent);
   --highlight: color-mix(in srgb, var(--leaf) 28%, var(--paper));
@@ -230,44 +249,34 @@ html.js .site-nav.is-open { display: block; }
 .nav-list a { display: flex; align-items: center; min-height: 3.25rem; border-bottom: 1px solid var(--line); font: 700 1.5rem/1 var(--font-display); color: var(--cream); text-decoration: none; }
 .nav-list a:hover { color: var(--leaf); }
 
-/* ---------- Storefront (hero) ---------- */
-.storefront { background: var(--soot); }
-.awning {
-  --stripe: 2rem;
-  position: relative; height: clamp(2.75rem, 2rem + 2.4vw, 4.25rem);
+/* ---------- Parallax layers (hero + photo bands) ---------- */
+/* A .px layer is oversized by --k on each side, so it can drift up to that far without showing an edge. */
+.px { --kx: 1; position: absolute; left: 0; right: 0; top: calc(var(--k, 0) * var(--kx) * -100%); height: calc(100% + var(--k, 0) * var(--kx) * 200%); will-change: transform; }
+.px > img { display: block; width: 100%; height: 100%; object-fit: cover; }
+@media (max-width: 767px) { .px { --kx: .55; } }
+
+/* ---------- Storefront (hero): photo of the shop, gold leaf on the glass ---------- */
+.storefront { position: relative; background: var(--soot); }
+.stage { position: relative; isolation: isolate; overflow: hidden; height: clamp(30rem, 76vh, 46rem); background: var(--ink); }
+@supports (height: 1svh) { .stage { height: clamp(30rem, 76svh, 46rem); } }
+.hero-photo > img { object-position: 52% 60%; }
+.hero-shade {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
   background:
-    linear-gradient(180deg, var(--shadow-a) 0, transparent 35%, transparent 70%, var(--shadow-b)),
-    repeating-linear-gradient(90deg, var(--oxblood) 0 var(--stripe), var(--awning) 0 calc(var(--stripe) * 2));
-  -webkit-mask: linear-gradient(#000 0 0) top / 100% calc(100% - var(--stripe) / 2) no-repeat,
-                radial-gradient(circle at 50% 0, #000 calc(var(--stripe) / 2 - .5px), transparent calc(var(--stripe) / 2)) left bottom / var(--stripe) calc(var(--stripe) / 2) repeat-x;
-          mask: linear-gradient(#000 0 0) top / 100% calc(100% - var(--stripe) / 2) no-repeat,
-                radial-gradient(circle at 50% 0, #000 calc(var(--stripe) / 2 - .5px), transparent calc(var(--stripe) / 2)) left bottom / var(--stripe) calc(var(--stripe) / 2) repeat-x;
+    radial-gradient(ellipse 58% 50% at 50% 46%, var(--scrim) 0, transparent 100%),
+    linear-gradient(180deg, var(--scrim-deep) 0, var(--scrim-soft) 24%, var(--scrim-soft) 52%, var(--scrim-deep) 86%, var(--soot) 100%),
+    radial-gradient(ellipse 120% 90% at 50% 42%, transparent 48%, var(--scrim-deep) 100%);
 }
-.facade {
-  display: grid; grid-template-columns: minmax(0, 1fr) 1.9rem; gap: .35rem;
-  padding: 1rem calc(var(--gutter) - .5rem) 0 var(--gutter);
-  background: linear-gradient(180deg, var(--shadow-a), transparent 3.5rem);
-}
-.window { position: relative; padding: clamp(.5rem, 1.2vw, .875rem); background: linear-gradient(180deg, var(--wall-2), var(--soot)); box-shadow: 0 0 0 1px var(--shadow), inset 0 1px 0 var(--line); }
-.window::after { content: ""; position: absolute; inset: .25rem; border: 1px solid var(--gold); opacity: .35; pointer-events: none; }
-.glass {
-  position: relative; isolation: isolate; overflow: hidden; text-align: center;
-  padding: clamp(1.75rem, 1rem + 3vw, 2.75rem) clamp(.75rem, 3.5vw, 3rem) clamp(1.75rem, 1rem + 3vw, 3rem);
-  background: linear-gradient(180deg, var(--glass), var(--ink));
-  box-shadow: inset 0 0 0 1px var(--shadow), inset 0 1.5rem 2.5rem var(--shadow-b);
-}
-.interior { position: absolute; inset: 0; z-index: -1; width: 100%; height: 100%; }
-.interior .g-lamp { stop-color: var(--lamp); stop-opacity: .5; }
-.interior .g-none { stop-color: var(--lamp); stop-opacity: 0; }
-.interior .i-dark { fill: var(--ink); stroke: var(--lamp-b); stroke-width: 1; }
-.interior .i-cord { stroke: var(--ink); stroke-width: 2; }
-.interior .i-bulb { fill: var(--leaf-hi); }
+.glass-layer { z-index: 2; display: flex; align-items: center; justify-content: center; padding: 0 var(--gutter); }
+.lettering { width: min(100%, 46rem); padding-bottom: clamp(1.5rem, 6vh, 4.5rem); text-align: center; }
 .glare {
-  position: absolute; inset: 0; z-index: 2; pointer-events: none;
+  z-index: 3; pointer-events: none;
+  -webkit-mask-image: linear-gradient(180deg, #000 0, #000 45%, transparent 85%);
+          mask-image: linear-gradient(180deg, #000 0, #000 45%, transparent 85%);
   background:
     linear-gradient(112deg, transparent 0 13%, var(--glare) 13% 20%, transparent 20% 22.5%, var(--glare-soft) 22.5% 24%, transparent 24%),
     linear-gradient(112deg, transparent 0 68%, var(--glare-soft) 68% 77%, transparent 77%),
-    linear-gradient(180deg, var(--glare-soft), transparent 35%);
+    linear-gradient(180deg, var(--glare-soft), transparent 30%);
 }
 .sign { margin: 0; }
 .sign-svg { width: min(100%, 42rem); height: auto; margin: 0 auto; overflow: visible; }
@@ -295,28 +304,27 @@ html.js .site-nav.is-open { display: block; }
 .glass-foot {
   display: flex; flex-wrap: wrap; justify-content: center; gap: .35rem 2rem; margin: 0;
   font: 700 .8125rem/1.3 var(--font-body); letter-spacing: .2em; text-transform: uppercase;
-  color: var(--leaf); text-shadow: 1px 1px 0 var(--leaf-shade);
+  color: var(--leaf); text-shadow: 1px 1px 0 var(--ink), 2px 2px 0 var(--leaf-shade);
 }
-.pole-post { position: relative; display: flex; justify-content: center; padding-top: 2.75rem; }
-.pole-post::before { content: ""; position: absolute; top: 3.4rem; left: -.35rem; width: 60%; height: .3rem; background: var(--chrome-bar); }
-.pole {
-  position: relative; width: .875rem; height: 55%; min-height: 8rem;
-  background: linear-gradient(90deg, var(--shadow-a), transparent 35%, var(--glare-strong) 48%, transparent 62%, var(--shadow-a)), var(--pole);
-  background-size: 100% 100%, 40px 40px;
-}
-.pole::before, .pole::after { content: ""; position: absolute; left: -.2rem; right: -.2rem; background: var(--chrome-bar); }
-.pole::before { top: -.9rem; height: .9rem; border-radius: 999px 999px 2px 2px; }
-.pole::after { bottom: -.6rem; height: .6rem; border-radius: 2px 2px 999px 999px; }
-@media (prefers-reduced-motion: no-preference) {
-  .pole { animation: pole-spin 3.5s linear infinite; }
-  @keyframes pole-spin { to { background-position: 0 0, 0 -40px; } }
-}
-.sill { padding: 0 0 clamp(2.5rem, 2rem + 2vw, 3.5rem); }
-.sill::before { content: ""; display: block; height: .7rem; margin: 0 calc(var(--gutter) - .5rem) 0 calc(var(--gutter) - .5rem); background: linear-gradient(180deg, var(--line), var(--wall-2)); box-shadow: 0 8px 12px -8px var(--shadow); }
+.sill { position: relative; z-index: 4; padding: 0 0 clamp(2.5rem, 2rem + 2vw, 3.5rem); background: var(--soot); }
 .sill-inner { display: grid; gap: 1.75rem; padding-top: 2rem; }
 .sill-copy { margin: 0; max-width: 38rem; font-size: clamp(1.125rem, 1.02rem + .45vw, 1.375rem); line-height: 1.5; }
 .sill-cta { display: grid; justify-items: start; gap: 1rem; }
 .sill-call { margin: 0; color: var(--cream-dim); }
+
+/* ---------- Photo bands between sections ---------- */
+.band { position: relative; isolation: isolate; overflow: hidden; height: clamp(17rem, 46vw, 34rem); margin: 0; background: var(--ink); }
+.band::after {
+  content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background:
+    linear-gradient(180deg, var(--scrim-deep) 0, transparent 16%, transparent 52%, var(--scrim-deep) 100%),
+    radial-gradient(ellipse 95% 85% at 50% 50%, transparent 55%, var(--scrim) 100%);
+}
+.band-cap { position: absolute; z-index: 2; left: 0; right: 0; bottom: clamp(.9rem, 2.6vw, 2.25rem); margin: 0; }
+.band-cap > .wrap { display: block; }
+.band-cap .leaf-text { display: inline-block; padding: 0 .2em .12em 0; font: 400 clamp(1.625rem, 1.15rem + 2.3vw, 3rem)/1.15 var(--font-script); }
+.band--counter img { object-position: 50% 45%; }
+.band--hands img { object-position: 66% 50%; }
 
 /* ---------- Showcards (services) ---------- */
 .wall { position: relative; background: radial-gradient(ellipse 70% 40% at 50% 0, var(--lamp-b), transparent 70%), var(--wall); padding-block: var(--section) clamp(3.5rem, 2.5rem + 4vw, 5.5rem); border-top: 1px solid var(--line); }
@@ -358,7 +366,7 @@ html.js .site-nav.is-open { display: block; }
   --groove: .875rem;
   padding: calc(var(--groove) * 2) clamp(1rem, 4vw, 3rem);
   background: repeating-linear-gradient(180deg, var(--felt) 0 calc(var(--groove) - 2px), var(--felt-groove) calc(var(--groove) - 2px) var(--groove));
-  box-shadow: inset 0 4px 10px var(--shadow-a);
+  box-shadow: inset 0 4px 10px var(--shadow-a); overflow: hidden;
   font-family: var(--font-body); font-weight: 600; text-transform: uppercase; letter-spacing: .12em;
   color: var(--plastic); text-shadow: 0 1px 0 var(--shadow), 1px 2px 2px var(--shadow-a);
 }
@@ -378,11 +386,6 @@ html.js .site-nav.is-open { display: block; }
 .fine ul { list-style: none; margin: 0; padding: 0; color: var(--cream-dim); }
 .fine li { padding: .8rem 0; border-top: 1px solid var(--line); }
 .fine li:last-child { border-bottom: 1px solid var(--line); }
-
-/* Checkerboard floor */
-.floor { position: relative; height: clamp(6rem, 4rem + 6vw, 10rem); overflow: hidden; perspective: 16rem; perspective-origin: 50% 100%; background: var(--ink); border-top: .5rem solid var(--oak-dark); }
-.floor::before { content: ""; position: absolute; left: -150%; right: -150%; bottom: 0; height: 1000%; transform-origin: 50% 100%; transform: rotateX(58deg); background: repeating-conic-gradient(var(--tile) 0 25%, var(--ink) 0 50%) 50% 100% / 4.5rem 4.5rem; }
-.floor::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, var(--ink) 0, var(--shadow-a) 30%, transparent 60%, var(--shadow-b) 85%, var(--ink) 100%), radial-gradient(ellipse 75% 140% at 50% 100%, transparent 35%, var(--ink) 95%); }
 
 /* ---------- About + house rules ---------- */
 .about { padding-block: var(--section); }
@@ -416,12 +419,24 @@ html.js .site-nav.is-open { display: block; }
 .team-head .lede { margin: 0; }
 .team-grid { display: grid; gap: 3rem; }
 .mirror { position: relative; aspect-ratio: 3 / 4; padding: .5rem; border-radius: var(--mr); background: linear-gradient(135deg, var(--chrome-hi), var(--chrome-lo) 28%, var(--chrome) 48%, var(--chrome-lo) 72%, var(--chrome-hi)); box-shadow: 0 20px 30px -20px var(--shadow-a); }
-.mirror-glass { position: relative; display: grid; place-items: center; height: 100%; overflow: hidden; border-radius: var(--mr); background: linear-gradient(115deg, transparent 0 30%, var(--glare) 30% 36%, transparent 36% 40%, var(--glare-soft) 40% 42%, transparent 42%), linear-gradient(165deg, var(--mirror), var(--ink) 75%); box-shadow: inset 0 0 0 1px var(--shadow), inset 0 0 2rem var(--shadow-b); }
+.mirror-glass { position: relative; display: grid; place-items: end center; height: 100%; overflow: hidden; border-radius: var(--mr); background: var(--mirror); }
+.mirror-glass img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.mirror-glass::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background:
+    linear-gradient(115deg, transparent 0 30%, var(--glare) 30% 36%, transparent 36% 40%, var(--glare-soft) 40% 42%, transparent 42%),
+    radial-gradient(ellipse 85% 75% at 50% 42%, transparent 50%, var(--scrim) 100%);
+  box-shadow: inset 0 0 0 1px var(--shadow), inset 0 0 1.5rem var(--shadow-b);
+}
+.mirror--arch .mirror-glass::after {
+  background:
+    linear-gradient(115deg, transparent 0 30%, var(--glare) 30% 36%, transparent 36% 40%, var(--glare-soft) 40% 42%, transparent 42%),
+    linear-gradient(180deg, transparent 42%, var(--scrim-deep) 100%);
+}
 .mirror--arch { --mr: 999px 999px .3rem .3rem; width: min(100%, 14rem); }
 .mirror--oval { --mr: 50%; width: 100%; padding: .35rem; }
-.mirror-name { font: 400 3.75rem/1 var(--font-script); padding: 0 .1em .15em; transform: rotate(-6deg); }
-.mirror--oval .mirror-name { font-size: 1.6rem; }
-.chair-no { position: absolute; bottom: 9%; left: 0; right: 0; text-align: center; font: 700 .75rem/1 var(--font-body); letter-spacing: .26em; text-transform: uppercase; color: var(--cream-dim); }
+.mirror-name { position: relative; z-index: 1; margin-bottom: 22%; padding: 0 .1em .15em; font: 400 3.75rem/1 var(--font-script); transform: rotate(-6deg); }
+.chair-no { position: absolute; z-index: 1; bottom: 9%; left: 0; right: 0; text-align: center; font: 700 .75rem/1 var(--font-body); letter-spacing: .26em; text-transform: uppercase; color: var(--cream-dim); }
 .lead { display: grid; gap: 1.75rem; justify-items: start; }
 .barber h3 { margin: 0 0 .4rem; font: 700 clamp(1.5rem, 1.3rem + .8vw, 2.125rem)/1.1 var(--font-display); }
 .barber-meta { margin: 0 0 .9rem; font: 700 .8125rem/1.3 var(--font-body); letter-spacing: .16em; text-transform: uppercase; color: var(--gold); }
@@ -582,6 +597,12 @@ html.js .site-nav.is-open { display: block; }
 .footer-bottom p { margin: 0; }
 .footer-bottom a { display: inline-flex; align-items: center; min-height: 44px; }
 .sample-ribbon { display: inline-block; padding: .4rem .7rem; font: 700 .75rem/1 var(--font-body); letter-spacing: .2em; text-transform: uppercase; color: var(--ticket-red); background: var(--paper); border: 1px dashed var(--ticket-red); transform: rotate(-2deg); }
+.credits { flex-basis: 100%; font-size: .875rem; color: var(--cream-dim); }
+.credits summary { display: inline-flex; align-items: center; min-height: 44px; cursor: pointer; font: 700 .8125rem/1 var(--font-body); letter-spacing: .14em; text-transform: uppercase; color: var(--gold); }
+.credits summary:hover { color: var(--leaf-hi); }
+.credits ul { display: grid; gap: .35rem; max-width: 62rem; margin: .25rem 0 .5rem; padding-left: 1.1rem; }
+.footer-bottom .credits a { display: inline; min-height: 0; color: var(--cream); text-underline-offset: .15em; }
+.credits li { line-height: 1.5; }
 .checker { height: 1.25rem; background: repeating-conic-gradient(var(--tile) 0 25%, var(--ink) 0 50%) 0 0 / 1.25rem 1.25rem; opacity: .85; }
 .site-footer::after { content: ""; display: block; height: calc(4.25rem + env(safe-area-inset-bottom, 0px)); background: var(--ink); }
 
@@ -617,12 +638,6 @@ html.js .site-nav.is-open { display: block; }
   .footer-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .footer-sign { grid-column: 1 / -1; }
   .lb-cols { grid-template-columns: 1fr 1fr; }
-}
-@media (min-width: 768px) {
-  .facade { grid-template-columns: minmax(0, 1fr) 3rem; gap: .5rem; }
-  .pole { width: 1.25rem; min-height: 12rem; }
-  .glass-foot { justify-content: space-between; padding-inline: 1rem; }
-  .awning { --stripe: 2.75rem; }
 }
 @media (min-width: 960px) {
   .site-footer::after { display: none; }
@@ -668,6 +683,7 @@ html.js .site-nav.is-open { display: block; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition-duration: .01ms !important; animation: none !important; }
+  .px { --kx: 0; will-change: auto; }
 }
 </style>
 </head>
@@ -703,72 +719,48 @@ html.js .site-nav.is-open { display: block; }
 
 <main id="main">
 
-  <!-- SECTION: Storefront (hero). The shop name on the glass comes from BUSINESS.shortName. -->
+  <!-- SECTION: Storefront (hero). Three depths: the shop photo (deep, slow), the gold leaf on the glass
+       (middle) and the sill copy + ticket (front). The name on the glass comes from BUSINESS.shortName. -->
   <section class="storefront" aria-labelledby="shop-name">
-    <div class="awning" aria-hidden="true"></div>
-    <div class="facade">
-      <div class="window">
-        <div class="glass">
-          <svg class="interior" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
-            <defs>
-              <radialGradient id="lamp-glow"><stop offset="0" class="g-lamp"/><stop offset="1" class="g-none"/></radialGradient>
-              <g id="chair">
-                <rect x="50" y="0" width="40" height="16" rx="6"/>
-                <rect x="67" y="15" width="6" height="16"/>
-                <path d="M38 30h64a8 8 0 0 1 8 8v64H30V38a8 8 0 0 1 8-8z"/>
-                <rect x="10" y="88" width="38" height="10" rx="4"/>
-                <rect x="92" y="88" width="38" height="10" rx="4"/>
-                <rect x="22" y="100" width="96" height="22" rx="6"/>
-                <path d="M40 122h60l-8 16H48z"/>
-                <rect x="64" y="136" width="12" height="46"/>
-                <path d="M70 128l-34 34h-6v6h40z"/>
-                <ellipse cx="70" cy="188" rx="46" ry="8"/>
-              </g>
-            </defs>
-            <ellipse cx="220" cy="110" rx="270" ry="210" fill="url(#lamp-glow)"/>
-            <ellipse cx="590" cy="110" rx="270" ry="210" fill="url(#lamp-glow)" opacity=".8"/>
-            <ellipse cx="400" cy="560" rx="460" ry="170" fill="url(#lamp-glow)" opacity=".55"/>
-            <path d="M220 0v62M590 0v62" class="i-cord"/>
-            <path d="M194 84l12-24h28l12 24z" class="i-dark"/>
-            <path d="M564 84l12-24h28l12 24z" class="i-dark"/>
-            <circle cx="220" cy="88" r="6" class="i-bulb"/>
-            <circle cx="590" cy="88" r="6" class="i-bulb"/>
-            <use href="#chair" class="i-dark" transform="translate(70 285) scale(1.05)"/>
-            <use href="#chair" class="i-dark" transform="translate(600 300) scale(.95)"/>
-          </svg>
-
-          <div class="lettering">
-            <h1 class="sign" id="shop-name">
-              <span class="sr-only" data-biz="name">Glen &amp; Blade Barbers</span>
-              <svg class="sign-svg" viewBox="0 52 720 300" aria-hidden="true" focusable="false">
-                <defs>
-                  <linearGradient id="leaf" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0" class="s-hi"/><stop offset=".3" class="s-mid"/><stop offset=".52" class="s-lo"/>
-                    <stop offset=".62" class="s-mid"/><stop offset=".84" class="s-hi"/><stop offset="1" class="s-mid"/>
-                  </linearGradient>
-                  <path id="sign-arc" d="M60 205Q360 55 660 205"/>
-                  <text id="sign-name" class="sign-name" text-anchor="middle"><textPath href="#sign-arc" startOffset="50%" textLength="600" lengthAdjust="spacingAndGlyphs" data-biz="shortName">Glen &amp; Blade</textPath></text>
-                  <text id="sign-trade" class="sign-trade" x="360" y="296" text-anchor="middle">Barbers</text>
-                  <path id="sign-swash" d="M205 318c95 22 220 24 330-14-100 30-232 30-330 14z"/>
-                </defs>
-                <use href="#sign-name" class="l-shade"/>
-                <use href="#sign-name" class="l-key"/>
-                <use href="#sign-name" class="l-leaf"/>
-                <use href="#sign-trade" class="l-shade"/>
-                <use href="#sign-trade" class="l-key"/>
-                <use href="#sign-trade" class="l-leaf"/>
-                <use href="#sign-swash" class="l-shade"/>
-                <use href="#sign-swash" class="l-swash"/>
-              </svg>
-            </h1>
-            <p class="glass-line"><span class="nowrap">Haircuts &middot;</span> <span class="nowrap">Shaves &middot;</span> <span class="nowrap">Beard Work</span></p>
-            <p class="glass-ribbon"><span>Walk-ins Welcome</span></p>
-            <p class="glass-foot"><span>Est. 2009</span><span>Tues &ndash; Sat</span><span data-biz="phone">(847) 555-0167</span></p>
-          </div>
-          <div class="glare" aria-hidden="true"></div>
+    <div class="stage">
+      <div class="px hero-photo" style="--k:.32">
+        <img src="img/barbershop/hero-barber-chair-1024.webp"
+             srcset="img/barbershop/hero-barber-chair-1024.webp 1024w, img/barbershop/hero-barber-chair-1600.webp 1600w"
+             sizes="100vw" width="1600" height="1067" fetchpriority="high" decoding="async"
+             alt="A vintage leather-and-chrome barber chair in a warmly lit shop, with a porcelain sink and wooden cabinets behind it.">
+      </div>
+      <div class="hero-shade" aria-hidden="true"></div>
+      <div class="px glass-layer" style="--k:.07">
+        <div class="lettering">
+          <h1 class="sign" id="shop-name">
+            <span class="sr-only" data-biz="name">Glen &amp; Blade Barbers</span>
+            <svg class="sign-svg" viewBox="0 52 720 300" aria-hidden="true" focusable="false">
+              <defs>
+                <linearGradient id="leaf" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" class="s-hi"/><stop offset=".3" class="s-mid"/><stop offset=".52" class="s-lo"/>
+                  <stop offset=".62" class="s-mid"/><stop offset=".84" class="s-hi"/><stop offset="1" class="s-mid"/>
+                </linearGradient>
+                <path id="sign-arc" d="M60 205Q360 55 660 205"/>
+                <text id="sign-name" class="sign-name" text-anchor="middle"><textPath href="#sign-arc" startOffset="50%" textLength="600" lengthAdjust="spacingAndGlyphs" data-biz="shortName">Glen &amp; Blade</textPath></text>
+                <text id="sign-trade" class="sign-trade" x="360" y="296" text-anchor="middle">Barbers</text>
+                <path id="sign-swash" d="M205 318c95 22 220 24 330-14-100 30-232 30-330 14z"/>
+              </defs>
+              <use href="#sign-name" class="l-shade"/>
+              <use href="#sign-name" class="l-key"/>
+              <use href="#sign-name" class="l-leaf"/>
+              <use href="#sign-trade" class="l-shade"/>
+              <use href="#sign-trade" class="l-key"/>
+              <use href="#sign-trade" class="l-leaf"/>
+              <use href="#sign-swash" class="l-shade"/>
+              <use href="#sign-swash" class="l-swash"/>
+            </svg>
+          </h1>
+          <p class="glass-line"><span class="nowrap">Haircuts &middot;</span> <span class="nowrap">Shaves &middot;</span> <span class="nowrap">Beard Work</span></p>
+          <p class="glass-ribbon"><span>Walk-ins Welcome</span></p>
+          <p class="glass-foot"><span>Est. 2009</span><span>Tues &ndash; Sat</span><span data-biz="phone">(847) 555-0167</span></p>
         </div>
       </div>
-      <div class="pole-post" aria-hidden="true"><span class="pole"></span></div>
+      <div class="px glare" style="--k:.05" data-dir="-1" aria-hidden="true"></div>
     </div>
     <div class="sill">
       <div class="wrap sill-inner">
@@ -792,17 +784,17 @@ html.js .site-nav.is-open { display: block; }
         <p class="lede">The showcards on the wall were lettered by hand the week we opened. The prices have moved a little since. The routine hasn&rsquo;t.</p>
       </div>
       <div class="cards">
-        <article class="card card--classic">
+        <article class="card card--classic" data-depth="14">
           <h3><span class="c-script">The Classic</span><span class="c-roman">Cut</span></h3>
           <p class="c-meta"><span>30 min</span><span class="c-price"><span>$</span>40</span></p>
           <p class="c-body">Consult, scissor-and-clipper cut, hot towel, straight-razor neckline, tonic and a comb-through. Same way since day one.</p>
         </article>
-        <article class="card card--fade">
+        <article class="card card--fade" data-depth="-12">
           <h3 class="c-band"><span class="c-gothic">Skin Fade</span><span class="c-script">bald to blended</span></h3>
           <p class="c-meta"><span>45 min</span><span class="c-price"><span>$</span>45</span></p>
           <p class="c-body">Foil-smooth at the bottom, blended by hand under the lamp. Line-up and neck shave included. Low, mid or high, your call.</p>
         </article>
-        <article class="card card--shave">
+        <article class="card card--shave" data-depth="8">
           <div class="shave-inner">
             <div>
               <h3><span class="c-script">Hot Towel</span><span class="c-roman">Shave</span></h3>
@@ -811,12 +803,12 @@ html.js .site-nav.is-open { display: block; }
             <p class="c-steps"><b>Pre-shave oil</b>, then <b>three hot towels</b>, warm lather and <b>two passes</b> with a straight razor: with the grain, then across. <b>Cold towel</b> to close, balm to finish. Phones go face down. Naps are allowed.</p>
           </div>
         </article>
-        <article class="card card--beard">
+        <article class="card card--beard" data-depth="-18">
           <h3><span class="c-gothic c-outline">Beard</span><span class="c-script">trim &amp; line-up</span></h3>
           <p class="c-meta"><span>25 min</span><span class="c-price"><span>$</span>25</span></p>
           <p class="c-body">Shape, trim, hot towel, razor-sharp edges, oil and balm. Grown out or grown in, it&rsquo;ll look like you meant it.</p>
         </article>
-        <article class="card card--kids">
+        <article class="card card--kids" data-depth="24">
           <h3><span class="c-script">Kids&rsquo;</span><span class="c-gothic">12 &amp; under</span></h3>
           <p class="c-meta"><span>20 min</span><span class="c-price"><span>$</span>28</span></p>
           <p class="c-body">Booster seat, a lollipop, and a first-haircut certificate for the fridge when it&rsquo;s the first.</p>
@@ -825,10 +817,21 @@ html.js .site-nav.is-open { display: block; }
     </div>
   </section>
 
+  <!-- PHOTO BAND (parallax) -->
+  <figure class="band band--hands">
+    <div class="px" style="--k:.18">
+      <img src="img/barbershop/band-scissor-hands-1000.webp"
+           srcset="img/barbershop/band-scissor-hands-1000.webp 1000w, img/barbershop/band-scissor-hands-2000.webp 2000w"
+           sizes="100vw" width="2000" height="1334" loading="lazy" decoding="async"
+           alt="Close-up of a barber&rsquo;s hands lifting a section of hair between comb and shears.">
+    </div>
+    <figcaption class="band-cap"><span class="wrap"><span class="leaf-text">Scissor over comb. No rush.</span></span></figcaption>
+  </figure>
+
   <!-- SECTION: Price list on a felt letterboard (prices are placeholders) -->
   <section class="board-wrap" id="prices" aria-labelledby="prices-title">
     <div class="wrap board-grid">
-      <div class="letterboard">
+      <div class="letterboard" data-reveal>
         <div class="felt">
           <h2 class="lb-title" id="prices-title">Prices</h2>
           <div class="lb-cols">
@@ -867,7 +870,6 @@ html.js .site-nav.is-open { display: block; }
       </div>
     </div>
   </section>
-  <div class="floor" aria-hidden="true"></div>
 
   <!-- SECTION: About + house rules -->
   <section class="about" id="about" aria-labelledby="about-title">
@@ -892,6 +894,17 @@ html.js .site-nav.is-open { display: block; }
     </div>
   </section>
 
+  <!-- PHOTO BAND (parallax) -->
+  <figure class="band band--counter">
+    <div class="px" style="--k:.18">
+      <img src="img/barbershop/band-counter-tools-1000.webp"
+           srcset="img/barbershop/band-counter-tools-1000.webp 1000w, img/barbershop/band-counter-tools-2000.webp 2000w"
+           sizes="100vw" width="2000" height="1091" loading="lazy" decoding="async"
+           alt="Two pairs of shears, two combs and a paddle brush laid out on a wood-grain barber counter.">
+    </div>
+    <figcaption class="band-cap"><span class="wrap"><span class="leaf-text">The counter, ten minutes before the first chair.</span></span></figcaption>
+  </figure>
+
   <!-- SECTION: Team (fictional barbers) -->
   <section class="team" id="team" aria-labelledby="team-title">
     <div class="wrap">
@@ -901,7 +914,10 @@ html.js .site-nav.is-open { display: block; }
       </div>
       <div class="team-grid">
         <article class="barber lead">
-          <div class="mirror mirror--arch" aria-hidden="true"><div class="mirror-glass"><span class="mirror-name leaf-text">Marco</span><span class="chair-no">Chair 1</span></div></div>
+          <div class="mirror mirror--arch"><div class="mirror-glass">
+            <img src="img/barbershop/team-chair1-scissor-work-672.webp" width="672" height="896" loading="lazy" decoding="async" alt="Scissor-over-comb at chair 1: hands taking a section of dark, curly hair between comb and shears.">
+            <span class="mirror-name leaf-text" aria-hidden="true">Marco</span><span class="chair-no" aria-hidden="true">Chair 1</span>
+          </div></div>
           <div>
             <h3>Marco Vitale</h3>
             <p class="barber-meta">Owner &middot; Chair 1 &middot; 17 years</p>
@@ -911,7 +927,7 @@ html.js .site-nav.is-open { display: block; }
         </article>
         <ul class="crew">
           <li class="barber">
-            <div class="mirror mirror--oval" aria-hidden="true"><div class="mirror-glass"><span class="mirror-name leaf-text">Dez</span></div></div>
+            <div class="mirror mirror--oval"><div class="mirror-glass"><img src="img/barbershop/team-chair2-clippers-240.webp" width="240" height="320" loading="lazy" decoding="async" alt="Chair 2&rsquo;s kit: corded clippers, a trimmer and two pairs of shears on black velvet."></div></div>
             <div>
               <h3>Dez Okafor</h3>
               <p class="barber-meta">Chair 2 &middot; 11 years</p>
@@ -920,7 +936,7 @@ html.js .site-nav.is-open { display: block; }
             </div>
           </li>
           <li class="barber">
-            <div class="mirror mirror--oval" aria-hidden="true"><div class="mirror-glass"><span class="mirror-name leaf-text">Hank</span></div></div>
+            <div class="mirror mirror--oval"><div class="mirror-glass"><img src="img/barbershop/team-chair3-shave-kit-240.webp" width="240" height="320" loading="lazy" decoding="async" alt="Chair 3&rsquo;s shave kit: a brush in a silver lather bowl beside two straight razors."></div></div>
             <div>
               <h3>Hank Lindqvist</h3>
               <p class="barber-meta">Chair 3 &middot; 9 years</p>
@@ -929,7 +945,7 @@ html.js .site-nav.is-open { display: block; }
             </div>
           </li>
           <li class="barber">
-            <div class="mirror mirror--oval" aria-hidden="true"><div class="mirror-glass"><span class="mirror-name leaf-text">Ruby</span></div></div>
+            <div class="mirror mirror--oval"><div class="mirror-glass"><img src="img/barbershop/team-chair4-first-haircut-240.webp" width="240" height="320" loading="lazy" decoding="async" alt="A young customer seen from behind in a striped cape while a barber trims with comb and shears."></div></div>
             <div>
               <h3>Ruby Calloway</h3>
               <p class="barber-meta">Chair 4 &middot; 6 years</p>
@@ -1160,6 +1176,18 @@ html.js .site-nav.is-open { display: block; }
     <!-- SAMPLE RIBBON: remove when customizing for a real client -->
     <div class="sample-ribbon">Sample design</div>
     <!-- /SAMPLE RIBBON -->
+    <!-- PHOTO CREDITS: the sample photos are CC0 (no attribution required, credited anyway).
+         Delete this block together with the photos. Full list: img/barbershop/CREDITS.md -->
+    <details class="credits">
+      <summary>Photo credits</summary>
+      <ul>
+        <li>Barber chair and clippers: <a href="https://www.rawpixel.com/image/5948519/free-public-domain-cc0-photo">rawpixel.com</a>, CC0 1.0.</li>
+        <li>Barber&rsquo;s counter: Nilo Velez, <a href="https://wordpress.org/photos/photo/27966437d7/">WordPress Photo Directory</a>, CC0 1.0.</li>
+        <li>Scissor work and first haircut: Mostafa Meraji, <a href="https://commons.wikimedia.org/wiki/User:Mostafameraji">Wikimedia Commons</a>, CC0 1.0.</li>
+        <li>Shave kit: Nick Demou, <a href="https://stocksnap.io/photo/barbershop-brush-GZP9ZEQPFL">StockSnap</a>, CC0 1.0.</li>
+      </ul>
+    </details>
+    <!-- /PHOTO CREDITS -->
   </div>
   <div class="checker" aria-hidden="true"></div>
 </footer>
@@ -1274,6 +1302,77 @@ html.js .site-nav.is-open { display: block; }
     form.hidden = false;
     $("#f-name").focus();
   });
+
+  /* Parallax: transform-only, rAF-throttled, and only for layers near the viewport.
+     .px layers drift by up to --k of their frame's height (never past their oversize),
+     [data-depth] cards drift a few px, [data-reveal] (the letterboard) slides into place.
+     Off under prefers-reduced-motion; phones get 55% of the movement. */
+  (function () {
+    if (!("IntersectionObserver" in window) || !window.requestAnimationFrame) return;
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+    var small = window.matchMedia("(max-width: 767px)");
+    var items = [], boxes = [], active = new Set(), ticking = false, io = null, vh = 0, kx = 1;
+    function cssNum(el, prop) { var v = parseFloat(getComputedStyle(el).getPropertyValue(prop)); return isNaN(v) ? 0 : v; }
+    function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
+    function ease(t) { return 1 - Math.pow(1 - t, 3); }
+    document.querySelectorAll(".px").forEach(function (el) {
+      items.push({ el: el, box: el.parentElement, kind: "layer", k: cssNum(el, "--k"), dir: Number(el.getAttribute("data-dir") || 1) });
+    });
+    document.querySelectorAll("[data-depth]").forEach(function (el) {
+      items.push({ el: el, box: el.parentElement, kind: "depth", d: Number(el.getAttribute("data-depth")), tilt: getComputedStyle(el).getPropertyValue("--tilt").trim() || "0deg" });
+    });
+    document.querySelectorAll("[data-reveal]").forEach(function (el) {
+      items.push({ el: el, box: el.parentElement, kind: "reveal", rows: el.querySelectorAll(".lb-cols > div") });
+    });
+    items.forEach(function (it) { if (boxes.indexOf(it.box) < 0) boxes.push(it.box); });
+
+    function frame() {
+      ticking = false;
+      var batch = [];
+      active.forEach(function (it) { batch.push([it, it.box.getBoundingClientRect()]); }); /* read all, then write */
+      batch.forEach(function (pair) {
+        var it = pair[0], r = pair[1];
+        if (it.kind === "reveal") {
+          var q = clamp((vh - r.top) / (vh * 0.62), 0, 1), e = ease(q), e2 = ease(clamp(q * 1.35 - 0.35, 0, 1));
+          it.el.style.transform = "translate3d(0," + ((1 - e) * 70 * kx).toFixed(1) + "px,0) rotate(" + ((1 - e) * -1.5).toFixed(2) + "deg)";
+          it.rows.forEach(function (row, i) { row.style.transform = "translate3d(" + ((1 - e2) * (i % 2 ? 56 : -56) * kx).toFixed(1) + "px,0,0)"; });
+          return;
+        }
+        var p = clamp((r.top + r.height / 2 - vh / 2) / (vh / 2 + r.height / 2), -1, 1);
+        if (it.kind === "layer") {
+          it.el.style.transform = "translate3d(0," + (-p * it.k * kx * r.height * it.dir).toFixed(1) + "px,0)";
+        } else {
+          it.el.style.transform = "translate3d(0," + (-p * it.d * kx).toFixed(1) + "px,0) rotate(" + it.tilt + ")";
+        }
+      });
+    }
+    function request() { if (!ticking) { ticking = true; requestAnimationFrame(frame); } }
+    function measure() { vh = window.innerHeight; kx = small.matches ? 0.55 : 1; request(); }
+    function enable() {
+      io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          items.forEach(function (it) { if (it.box === en.target) { if (en.isIntersecting) active.add(it); else active.delete(it); } });
+        });
+        request();
+      }, { rootMargin: "25% 0px" });
+      boxes.forEach(function (b) { io.observe(b); });
+      window.addEventListener("scroll", request, { passive: true });
+      window.addEventListener("resize", measure, { passive: true });
+      measure();
+    }
+    function disable() {
+      if (io) io.disconnect();
+      window.removeEventListener("scroll", request);
+      window.removeEventListener("resize", measure);
+      active.clear();
+      items.forEach(function (it) {
+        it.el.style.transform = "";
+        if (it.rows) it.rows.forEach(function (row) { row.style.transform = ""; });
+      });
+    }
+    if (!reduce.matches) enable();
+    if (reduce.addEventListener) reduce.addEventListener("change", function () { if (reduce.matches) disable(); else enable(); });
+  })();
 
   /* Hide the sticky bar while the booking form is on screen */
   var bar = $("#book-bar"), book = $("#book");
